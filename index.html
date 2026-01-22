@@ -170,6 +170,10 @@
             <button id="tab-simracing" class="cat-btn" onclick="switchCategory('simracing')">Sim Racing (賽車)</button>
             <button id="tab-aviation" class="cat-btn" onclick="switchCategory('aviation')">Aviation (航空)</button>
             <button id="tab-travel" class="cat-btn" onclick="switchCategory('travel')">Travel (旅遊)</button>
+            <button id="tab-ai" class="cat-btn" onclick="switchCategory('ai')">AI & Data (數據)</button>
+            <button id="tab-hardware" class="cat-btn" onclick="switchCategory('hardware')">Hardware (硬體)</button>
+            <button id="tab-gaming" class="cat-btn" onclick="switchCategory('gaming')">Gaming (電競)</button>
+            <button id="tab-slang" class="cat-btn" onclick="switchCategory('slang')">Slang (口語)</button>
         </div>
 
         <div class="grid-container" id="button-grid">
@@ -214,6 +218,30 @@
                     prefix: 'Travel_Day',
                     color: '#f39c12',
                     label: 'Trip'
+                },
+                'ai': {
+                    totalDays: 30,
+                    prefix: 'AIData_Day',
+                    color: '#8e44ad',
+                    label: 'Epoch'
+                },
+                'hardware': {
+                    totalDays: 30,
+                    prefix: 'Hardware_Day',
+                    color: '#27ae60', // Reusing green shade but handled by theme mainly
+                    label: 'Unit'
+                },
+                'gaming': {
+                    totalDays: 30,
+                    prefix: 'Gaming_Day',
+                    color: '#9146ff',
+                    label: 'Lvl'
+                },
+                'slang': {
+                    totalDays: 30,
+                    prefix: 'Slang_Day',
+                    color: '#000000',
+                    label: 'Talk'
                 }
             };
 
@@ -223,7 +251,7 @@
                 currentCategory = cat;
 
                 // Update Tab Styles
-                const tabs = ['toeic', 'coding', 'simracing', 'aviation', 'travel'];
+                const tabs = ['toeic', 'coding', 'simracing', 'aviation', 'travel', 'ai', 'hardware', 'gaming', 'slang'];
                 tabs.forEach(t => {
                     const btn = document.getElementById('tab-' + t);
                     if (t === cat) {

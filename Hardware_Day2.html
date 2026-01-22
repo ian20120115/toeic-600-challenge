@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware & IoT - Day 2 - Hardware & IoT</title>
+    <style>
+        /* Hardware Theme Variables */
+        :root {
+            --bg-color: #0b2e13;   /* Dark PCB Green */
+            --card-bg: #11421d;    /* Chip Green */
+            --text-main: #d4edda;  /* Light Green/White */
+            --text-sub: #a8d5ba;   /* Trace Green */
+            --accent: #d35400;     /* Copper */
+            --accent-glow: #e67e22;/* Soldering Gold */
+            --trace: #1e7e34;      /* PCB Trace Color */
+            --font-main: 'Segoe UI', sans-serif;
+            --font-tech: 'Courier New', monospace;
+        }
+
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg-color); 
+            /* PCB Trace Pattern */
+            background-image: 
+                linear-gradient(90deg, var(--trace) 1px, transparent 1px),
+                linear-gradient(0deg, var(--trace) 1px, transparent 1px);
+            background-size: 40px 40px;
+            margin: 0; padding: 20px; 
+            color: var(--text-main); 
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 800px; margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 2px; 
+            box-shadow: 5px 5px 0px var(--accent); 
+            border: 2px solid var(--accent-glow);
+            position: relative;
+        }
+
+        /* Screw holes visual effect */
+        .container::before, .container::after {
+            content: ''; position: absolute; top: 10px; width: 15px; height: 15px;
+            background: #333; border-radius: 50%; border: 2px solid #777;
+        }
+        .container::before { left: 10px; }
+        .container::after { right: 10px; }
+
+        h1 { 
+            text-align: center; color: var(--accent-glow); 
+            font-family: var(--font-tech);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-bottom: 2px dashed var(--accent); 
+            padding-bottom: 15px; 
+        }
+        
+        .nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .btn { 
+            padding: 10px 25px; border: 2px solid var(--accent); background: #222;
+            color: var(--accent-glow); font-family: var(--font-tech); font-weight: bold;
+            cursor: pointer; font-size: 16px; transition: 0.2s;
+            box-shadow: 3px 3px 0 #000;
+        }
+        
+        .btn:hover, .btn-active { 
+            background: var(--accent); color: #000; 
+            transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000;
+        }
+
+        /* Learning Mode Cards */
+        .word-card { 
+            border-left: 5px solid var(--accent); 
+            background: #0f391a; 
+            padding: 20px; margin-bottom: 20px; 
+            border-radius: 2px;
+            border: 1px solid var(--trace);
+        }
+        .word-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .english-word { 
+            font-size: 24px; font-weight: bold; color: var(--accent-glow); 
+            font-family: var(--font-tech);
+        }
+        .speak-btn { 
+            background: #155724; border: 1px solid var(--accent); 
+            border-radius: 0; width: 30px; height: 30px; color: #fff;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; 
+        }
+        .speak-btn:hover { background: var(--accent-glow); color: #000; }
+        .meaning { color: var(--text-main); font-weight: bold; font-size: 20px; }
+        
+        .sentence-box { margin-top: 10px; padding-top: 10px; border-top: 1px dotted var(--text-sub); }
+        .sentence { font-style: italic; color: #e9ecef; font-size: 1.1em; margin-bottom: 4px; }
+        .sentence-zh { color: var(--text-sub); font-size: 0.95em; }
+
+        /* Quiz Mode */
+        #quiz-section { display: none; text-align: center; }
+        .question-word { 
+            font-size: 32px; font-weight: bold; margin-bottom: 30px; 
+            color: var(--accent-glow); font-family: var(--font-tech);
+        }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { 
+            background: #1c5228; border: 1px solid var(--trace); color: #fff;
+            padding: 15px; cursor: pointer; font-size: 16px; transition: 0.2s; 
+            font-family: var(--font-tech);
+        }
+        .option-btn:hover { background-color: var(--accent); color: #000; }
+        .option-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .result-message { font-size: 22px; font-weight: bold; margin-top: 25px; padding: 15px; border: 2px solid; }
+        .correct { color: #d4edda; border-color: #28a745; background: #155724; }
+        .wrong { color: #f8d7da; border-color: #dc3545; background: #721c24; }
+        .score-board { font-size: 28px; color: var(--accent-glow); margin-top: 30px; font-family: var(--font-tech); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔌 Day 2 - Hardware & IoT</h1>
+    
+    <div class="nav">
+        <a href="index.html" class="btn">🏠 Mainboard</a>
+        <button class="btn btn-active" onclick="showSection('learn')">📖 Schematics</button>
+        <button class="btn" onclick="startQuiz()">⚡ Test Circuit</button>
+    </div>
+
+    <div id="learn-section"></div>
+
+    <div id="quiz-section">
+        <div id="quiz-container">
+            <div class="question-word" id="q-word">Word</div>
+            <div class="options-grid" id="options-area"></div>
+            <div id="result-msg"></div>
+        </div>
+        <div id="final-score" style="display:none;" class="score-board"></div>
+        <button id="restart-btn" class="btn" style="display:none; margin-top:20px;" onclick="startQuiz()">🔄 Reboot</button>
+    </div>
+</div>
+
+<script>
+    const wordsDB = [{"en": "Protocol", "zh": "協定", "sent": "MQTT protocol for IoT.", "sentZh": "IoT 使用的 MQTT 協定。"}, {"en": "Screen", "zh": "螢幕/面板", "sent": "Touch screen display.", "sentZh": "觸控螢幕顯示。"}, {"en": "SSD", "zh": "固態硬碟", "sent": "SSDs are faster than HDDs.", "sentZh": "SSD 比 HDD 快。"}, {"en": "Fan", "zh": "風扇", "sent": "Fan noise is loud.", "sentZh": "風扇噪音很大。"}, {"en": "Bandwidth", "zh": "頻寬", "sent": "High bandwidth connection.", "sentZh": "高頻寬連線。"}, {"en": "Pixel", "zh": "像素", "sent": "Dead pixel on screen.", "sentZh": "螢幕上有亮點/死點。"}, {"en": "Boot", "zh": "開機/啟動", "sent": "The system failed to boot.", "sentZh": "系統啟動失敗。"}, {"en": "Hard Drive", "zh": "硬碟", "sent": "The hard drive is full.", "sentZh": "硬碟滿了。"}, {"en": "Microcontroller", "zh": "微控制器", "sent": "Arduino is a microcontroller.", "sentZh": "Arduino 是一個微控制器。"}, {"en": "Circuit", "zh": "電路", "sent": "Complete the circuit.", "sentZh": "完成電路。"}, {"en": "Refresh Rate", "zh": "更新率", "sent": "144Hz refresh rate.", "sentZh": "144Hz 更新率。"}, {"en": "Port", "zh": "連接埠", "sent": "HDMI port.", "sentZh": "HDMI 連接埠。"}, {"en": "Battery", "zh": "電池", "sent": "Low battery warning.", "sentZh": "低電量警告。"}, {"en": "Keyboard", "zh": "鍵盤", "sent": "Mechanical keyboard switches.", "sentZh": "機械鍵盤軸體。"}, {"en": "Bios", "zh": "BIOS/韌體介面", "sent": "Enter BIOS setup.", "sentZh": "進入 BIOS 設定。"}, {"en": "Capacitor", "zh": "電容", "sent": "Capacitors store energy.", "sentZh": "電容儲存能量。"}, {"en": "Mouse", "zh": "滑鼠", "sent": "Adjust mouse sensitivity.", "sentZh": "調整滑鼠靈敏度。"}, {"en": "Resolution", "zh": "解析度", "sent": "1080p resolution.", "sentZh": "1080p 解析度。"}, {"en": "Heatsink", "zh": "散熱片", "sent": "The heatsink cools the chip.", "sentZh": "散熱片冷卻晶片。"}, {"en": "Monitor", "zh": "螢幕", "sent": "The monitor resolution is 4K.", "sentZh": "螢幕解析度為 4K。"}];
+
+    function initLearn() {
+        const container = document.getElementById('learn-section');
+        container.innerHTML = '';
+        wordsDB.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `
+                <div class="word-header">
+                    <span class="english-word">${item.en}</span>
+                    <button class="speak-btn" onclick="speak('${item.en}')" title="Audio Output">🔊</button>
+                    <span class="meaning">${item.zh}</span>
+                </div>
+                <div class="sentence-box">
+                    <div class="sentence">"${item.sent}"</div>
+                    <div class="sentence-zh">${item.sentZh}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US'; 
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function showSection(section) {
+        document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+    }
+
+    let currentQuestion = 0;
+    let score = 0;
+    let quizList = [];
+    let wrongAnswers = [];
+
+    function startQuiz() {
+        showSection('quiz');
+        currentQuestion = 0;
+        score = 0;
+        wrongAnswers = [];
+        document.getElementById('final-score').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        quizList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentQuestion >= quizList.length) {
+            endQuiz();
+            return;
+        }
+        const currentWord = quizList[currentQuestion];
+        document.getElementById('q-word').textContent = currentWord.en;
+        document.getElementById('result-msg').className = '';
+        document.getElementById('result-msg').innerHTML = '';
+
+        let options = [currentWord.zh];
+        while (options.length < 4) {
+            const randomWord = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(randomWord.zh)) options.push(randomWord.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const optionsArea = document.getElementById('options-area');
+        optionsArea.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(opt, currentWord.zh);
+            optionsArea.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct) {
+        const resultDiv = document.getElementById('result-msg');
+        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            score++;
+            resultDiv.textContent = "✅ Signal Stable!";
+            resultDiv.className = "result-message correct";
+        } else {
+            resultDiv.textContent = `❌ Short Circuit! Answer: ${correct}`;
+            resultDiv.className = "result-message wrong";
+            wrongAnswers.push({...quizList[currentQuestion], selected: selected});
+        }
+        setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+        }, 1500);
+    }
+
+    function endQuiz() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const scoreBoard = document.getElementById('final-score');
+        scoreBoard.style.display = 'block';
+        let report = `Test Completed.<br>Voltage: ${score} / ${wordsDB.length}`;
+        if (wrongAnswers.length > 0) {
+            report += '<div style="margin-top:20px; text-align:left; background:#300; padding:15px; border-radius:4px; border:1px solid #c00;">';
+            report += '<h3 style="color:#f66; margin-top:0;">Debug Log (Errors):</h3><ul style="padding-left:20px; color:#ddd;">';
+            wrongAnswers.forEach(w => {
+                report += `<li style="margin-bottom:5px;"><strong>${w.en}</strong>: <span style="color:#0f0;">${w.zh}</span> <span style="color:#aaa; font-size:0.9em;">(Input: ${w.selected})</span></li>`;
+            });
+            report += '</ul></div>';
+        }
+        scoreBoard.innerHTML = report;
+        document.getElementById('restart-btn').style.display = 'inline-block';
+    }
+
+    initLearn();
+</script>
+</body>
+</html>

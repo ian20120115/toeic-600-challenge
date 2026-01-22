@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Data Science - Day 14 - AI & Data Science</title>
+    <style>
+        /* AI Theme Variables */
+        :root {
+            --bg-color: #0b1021;   /* Deep Space Blue */
+            --card-bg: #151b2e;    /* Dark Panel */
+            --text-main: #e0e6ed;  /* Soft White */
+            --text-sub: #8b9bb4;   /* Blue Grey */
+            --accent: #8e44ad;     /* Cyber Purple */
+            --accent-glow: #9b59b6; 
+            --secondary: #2980b9;  /* Data Blue */
+            --font-main: 'Segoe UI', 'Roboto', sans-serif;
+            --font-code: 'Consolas', 'Monaco', monospace;
+        }
+
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg-color); 
+            /* Neural network node pattern */
+            background-image: radial-gradient(circle, #2c3e50 1px, transparent 1px), radial-gradient(circle, #2c3e50 1px, transparent 1px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            margin: 0; padding: 20px; 
+            color: var(--text-main); 
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 800px; margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 0 30px rgba(142, 68, 173, 0.15); 
+            border: 1px solid #2d3e50;
+        }
+
+        h1 { 
+            text-align: center; color: var(--accent); 
+            font-family: var(--font-main);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid linear-gradient(to right, var(--accent), var(--secondary));
+            margin-bottom: 30px;
+        }
+        
+        .nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .btn { 
+            padding: 10px 25px; border: 1px solid var(--accent); background: transparent;
+            color: var(--accent); border-radius: 4px;
+            cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; 
+        }
+        
+        .btn:hover, .btn-active { 
+            background: var(--accent); color: white; 
+            box-shadow: 0 0 15px rgba(142, 68, 173, 0.4);
+        }
+
+        /* Learning Mode Cards */
+        .word-card { 
+            border-left: 4px solid var(--secondary); 
+            background: #1e2738; 
+            padding: 20px; margin-bottom: 20px; 
+            border-radius: 4px;
+        }
+        .word-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .english-word { 
+            font-size: 24px; font-weight: bold; color: var(--accent-glow); 
+            font-family: var(--font-code);
+        }
+        .speak-btn { 
+            background: #2c3e50; border: none; 
+            border-radius: 50%; width: 32px; height: 32px; color: #fff;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; 
+        }
+        .speak-btn:hover { background: var(--secondary); }
+        .meaning { color: var(--text-main); font-weight: bold; font-size: 20px; }
+        
+        .sentence-box { margin-top: 10px; padding-top: 10px; border-top: 1px solid #2c3e50; }
+        .sentence { font-style: italic; color: #cfd8dc; font-size: 1.1em; margin-bottom: 4px; }
+        .sentence-zh { color: var(--text-sub); font-size: 0.95em; }
+
+        /* Quiz Mode */
+        #quiz-section { display: none; text-align: center; }
+        .question-word { 
+            font-size: 32px; font-weight: bold; margin-bottom: 30px; 
+            color: var(--secondary); font-family: var(--font-code);
+        }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { 
+            background: #1e2738; border: 1px solid #34495e; color: var(--text-main);
+            padding: 15px; border-radius: 4px; cursor: pointer; font-size: 16px; transition: 0.2s; 
+            font-weight: bold;
+        }
+        .option-btn:hover { background-color: #34495e; border-color: var(--accent); }
+        .option-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .result-message { font-size: 22px; font-weight: bold; margin-top: 25px; padding: 15px; border-radius: 4px; }
+        .correct { color: #a2fbd5; background: #004d40; border: 1px solid #00695c; }
+        .wrong { color: #ffcdd2; background: #b71c1c; border: 1px solid #c62828; }
+        .score-board { font-size: 28px; color: var(--accent); margin-top: 30px; font-family: var(--font-code); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🤖 Day 14 - AI & Data Science</h1>
+    
+    <div class="nav">
+        <a href="index.html" class="btn">🏠 Home</a>
+        <button class="btn btn-active" onclick="showSection('learn')">🧬 Learn</button>
+        <button class="btn" onclick="startQuiz()">🧠 Quiz</button>
+    </div>
+
+    <div id="learn-section"></div>
+
+    <div id="quiz-section">
+        <div id="quiz-container">
+            <div class="question-word" id="q-word">Word</div>
+            <div class="options-grid" id="options-area"></div>
+            <div id="result-msg"></div>
+        </div>
+        <div id="final-score" style="display:none;" class="score-board"></div>
+        <button id="restart-btn" class="btn" style="display:none; margin-top:20px;" onclick="startQuiz()">🔄 Re-train Model</button>
+    </div>
+</div>
+
+<script>
+    const wordsDB = [{"en": "Data Mining", "zh": "資料探勘", "sent": "Data mining extracts useful info.", "sentZh": "資料探勘提取有用資訊。"}, {"en": "Chatbot", "zh": "聊天機器人", "sent": "The chatbot answers questions.", "sentZh": "聊天機器人回答問題。"}, {"en": "Outlier", "zh": "離群值", "sent": "Remove outliers from the data.", "sentZh": "從數據中移除離群值。"}, {"en": "Recall", "zh": "召回率", "sent": "Recall is important for medical diagnosis.", "sentZh": "召回率對醫療診斷很重要。"}, {"en": "Underfitting", "zh": "擬合不足", "sent": "Underfitting means the model is too simple.", "sentZh": "擬合不足意味著模型太簡單。"}, {"en": "Attention Mechanism", "zh": "注意力機制", "sent": "Attention focuses on key words.", "sentZh": "注意力機制聚焦於關鍵字。"}, {"en": "Algorithm", "zh": "演算法", "sent": "The algorithm optimizes the path.", "sentZh": "該演算法優化了路徑。"}, {"en": "Throughput", "zh": "吞吐量", "sent": "Maximize data throughput.", "sentZh": "最大化數據吞吐量。"}, {"en": "Transformer", "zh": "Transformer 架構", "sent": "GPT is based on Transformer.", "sentZh": "GPT 基於 Transformer 架構。"}, {"en": "Epoch", "zh": "週期 (訓練輪數)", "sent": "Train for 100 epochs.", "sentZh": "訓練 100 個週期。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Regression", "zh": "迴歸", "sent": "Linear regression predicts values.", "sentZh": "線性迴歸預測數值。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}, {"en": "Precision", "zh": "精確率", "sent": "High precision reduces false positives.", "sentZh": "高精確率減少假陽性。"}, {"en": "Deep Learning", "zh": "深度學習", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網絡。"}, {"en": "Correlation", "zh": "相關性", "sent": "Correlation does not imply causation.", "sentZh": "相關性不代表因果關係。"}, {"en": "Edge Computing", "zh": "邊緣運算", "sent": "Run AI on edge devices.", "sentZh": "在邊緣裝置上運行 AI。"}, {"en": "Loss Function", "zh": "損失函數", "sent": "Minimize the loss function.", "sentZh": "最小化損失函數。"}, {"en": "Overfitting", "zh": "過度擬合", "sent": "Overfitting performs poorly on new data.", "sentZh": "過度擬合在數據上表現不佳。"}, {"en": "Clustering", "zh": "分群", "sent": "K-means clustering groups data.", "sentZh": "K-means 分群將數據分組。"}];
+
+    function initLearn() {
+        const container = document.getElementById('learn-section');
+        container.innerHTML = '';
+        wordsDB.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `
+                <div class="word-header">
+                    <span class="english-word">${item.en}</span>
+                    <button class="speak-btn" onclick="speak('${item.en}')" title="Pronounce">🔊</button>
+                    <span class="meaning">${item.zh}</span>
+                </div>
+                <div class="sentence-box">
+                    <div class="sentence">"${item.sent}"</div>
+                    <div class="sentence-zh">${item.sentZh}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US'; 
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function showSection(section) {
+        document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+    }
+
+    let currentQuestion = 0;
+    let score = 0;
+    let quizList = [];
+    let wrongAnswers = [];
+
+    function startQuiz() {
+        showSection('quiz');
+        currentQuestion = 0;
+        score = 0;
+        wrongAnswers = [];
+        document.getElementById('final-score').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        quizList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentQuestion >= quizList.length) {
+            endQuiz();
+            return;
+        }
+        const currentWord = quizList[currentQuestion];
+        document.getElementById('q-word').textContent = currentWord.en;
+        document.getElementById('result-msg').className = '';
+        document.getElementById('result-msg').innerHTML = '';
+
+        let options = [currentWord.zh];
+        while (options.length < 4) {
+            const randomWord = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(randomWord.zh)) options.push(randomWord.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const optionsArea = document.getElementById('options-area');
+        optionsArea.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(opt, currentWord.zh);
+            optionsArea.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct) {
+        const resultDiv = document.getElementById('result-msg');
+        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            score++;
+            resultDiv.textContent = "✅ Accuracy +1";
+            resultDiv.className = "result-message correct";
+        } else {
+            resultDiv.textContent = `❌ Loss Detected! Answer: ${correct}`;
+            resultDiv.className = "result-message wrong";
+            wrongAnswers.push({...quizList[currentQuestion], selected: selected});
+        }
+        setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+        }, 1500);
+    }
+
+    function endQuiz() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const scoreBoard = document.getElementById('final-score');
+        scoreBoard.style.display = 'block';
+        let report = `Training Complete!<br>Accuracy: ${score} / ${wordsDB.length}`;
+        if (wrongAnswers.length > 0) {
+            report += '<div style="margin-top:20px; text-align:left; background:#300; padding:15px; border-radius:4px; border:1px solid #c00;">';
+            report += '<h3 style="color:#f66; margin-top:0;">Optimization Needed (Errors):</h3><ul style="padding-left:20px; color:#ddd;">';
+            wrongAnswers.forEach(w => {
+                report += `<li style="margin-bottom:5px;"><strong>${w.en}</strong>: <span style="color:#0f0;">${w.zh}</span> <span style="color:#aaa; font-size:0.9em;">(Prediction: ${w.selected})</span></li>`;
+            });
+            report += '</ul></div>';
+        }
+        scoreBoard.innerHTML = report;
+        document.getElementById('restart-btn').style.display = 'inline-block';
+    }
+
+    initLearn();
+</script>
+</body>
+</html>
