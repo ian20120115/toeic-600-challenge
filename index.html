@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC 600 - 學習主畫面</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        
+        header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #3498db; padding-bottom: 20px; }
+        h1 { color: #2c3e50; margin: 0; font-size: 2.5em; }
+        p { color: #7f8c8d; font-size: 1.2em; margin-top: 10px; }
+
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .day-btn {
+            background-color: white;
+            border: 2px solid #3498db;
+            color: #3498db;
+            padding: 20px 10px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            text-decoration: none; /* Remove underline from links */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .day-btn:hover {
+            background-color: #3498db;
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .day-label { font-size: 24px; margin-bottom: 5px; }
+        .day-sub { font-size: 12px; opacity: 0.8; }
+
+        /* Disable style for days not yet created (optional visual cue) */
+        .day-btn.disabled {
+            border-color: #ccc;
+            color: #ccc;
+            pointer-events: none; /* Make unclickable if you want */
+            background: #f9f9f9;
+        }
+
+        .tips {
+            margin-top: 40px;
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ffeeba;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>TOEIC 600 特訓中心</h1>
+        <p>選擇你的訓練進度</p>
+    </header>
+
+    <div class="grid-container" id="button-grid">
+        </div>
+
+    <div class="tips">
+        💡 @Ian
+</div>
+
+<script>
+    const grid = document.getElementById('button-grid');
+    const totalDays = 30; // 總天數目標
+    const availableDays = 10; // 目前你已經有的檔案天數 (Day 1 - Day 10)
+
+    for (let i = 1; i <= totalDays; i++) {
+        // 建立連結按鈕
+        const link = document.createElement('a');
+        
+        // 設定連結目標 (例如: TOEIC_Day1.html)
+        link.href = `TOEIC_Day${i}.html`;
+        link.className = 'day-btn';
+        
+        // 如果是還沒拿到的檔案 (Day 11之後)，先變灰色 (你可以之後把這行刪掉)
+        // if (i > availableDays) {
+        //     link.classList.add('disabled');
+        //     link.href = '#'; // 禁止點擊
+        // }
+
+        link.innerHTML = `
+            <span class="day-label">Day ${i}</span>
+            <span class="day-sub">Go ➔</span>
+        `;
+
+        grid.appendChild(link);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC 600 - Day 2 特訓</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 15px; }
+        
+        /* Navigation */
+        .nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
+        .btn { padding: 10px 25px; border: none; border-radius: 50px; cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; }
+        .btn-learn { background-color: #3498db; color: white; }
+        .btn-quiz { background-color: #e74c3c; color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Learning Mode */
+        .word-card { border-left: 5px solid #3498db; background: #f9f9f9; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .word-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .english-word { font-size: 22px; font-weight: bold; color: #2980b9; }
+        .speak-btn { background: none; border: 1px solid #ccc; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .speak-btn:hover { background: #e0e0e0; }
+        .meaning { color: #555; font-weight: bold; font-size: 18px; }
+        
+        .sentence-box { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #ddd; }
+        .sentence { font-style: italic; color: #2c3e50; font-size: 1em; margin-bottom: 2px; }
+        .sentence-zh { color: #7f8c8d; font-size: 0.9em; }
+
+        /* Quiz Mode */
+        #quiz-section { display: none; text-align: center; }
+        .question-box { margin-top: 20px; }
+        .question-word { font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #2c3e50; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { background: white; border: 2px solid #bdc3c7; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .option-btn:hover { background-color: #ecf0f1; border-color: #3498db; }
+        
+        .result-message { font-size: 20px; font-weight: bold; margin-top: 20px; padding: 15px; border-radius: 8px; }
+        .correct { color: #27ae60; background: #d5f5e3; }
+        .wrong { color: #c0392b; background: #fadbd8; }
+        .score-board { font-size: 24px; color: #2c3e50; font-weight: bold; margin-top: 30px; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>TOEIC 600 - Day 2 Challenge</h1>
+    
+    <div class="nav">
+        <button class="btn btn-learn" onclick="showSection('learn')">📖 學習單字</button>
+        <button class="btn btn-quiz" onclick="startQuiz()">📝 開始測驗</button>
+    </div>
+
+    <div id="learn-section">
+        </div>
+
+    <div id="quiz-section">
+        <div id="quiz-container">
+            <div class="question-word" id="q-word">Word</div>
+            <div class="options-grid" id="options-area">
+                </div>
+            <div id="result-msg"></div>
+        </div>
+        <div id="final-score" style="display:none;" class="score-board"></div>
+        <button id="restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startQuiz()">重新測驗</button>
+    </div>
+</div>
+
+<script>
+    // Day 2 單字資料庫
+    const wordsDB = [
+        { en: "allocate", zh: "分配；撥出", sent: "We need to allocate more resources to the marketing team.", sentZh: "我們需要分配更多資源給行銷團隊。" },
+        { en: "candidate", zh: "候選人", sent: "The best candidate will be chosen for the job.", sentZh: "最合適的候選人將被選中擔任這份工作。" },
+        { en: "capacity", zh: "容量；能力", sent: "The hall has a seating capacity of 500.", sentZh: "這個大廳有500個座位的容量。" },
+        { en: "collaborate", zh: "合作", sent: "We often collaborate with other departments on projects.", sentZh: "我們經常與其他部門合作專案。" },
+        { en: "competitor", zh: "競爭對手", sent: "Our main competitor has lowered their prices.", sentZh: "我們的主要競爭對手降低了價格。" },
+        { en: "contract", zh: "合約", sent: "Please sign the contract before starting work.", sentZh: "請在開始工作前簽署合約。" },
+        { en: "demonstrate", zh: "示範；證明", sent: "He will demonstrate how to use the new software.", sentZh: "他將示範如何使用這套新軟體。" },
+        { en: "distribute", zh: "分發；分配", sent: "The manager distributed the tasks among the team.", sentZh: "經理將任務分配給團隊成員。" },
+        { en: "expand", zh: "擴大；擴展", sent: "The company plans to expand its business into Asia.", sentZh: "公司計畫將業務擴展到亞洲。" },
+        { en: "facility", zh: "設施；場所", sent: "The hotel offers excellent conference facilities.", sentZh: "這家飯店提供極佳的會議設施。" },
+        { en: "impact", zh: "影響", sent: "The new tax law will have a significant impact on small businesses.", sentZh: "新稅法將對小型企業產生重大影響。" },
+        { en: "inspect", zh: "檢查", sent: "Officials will inspect the factory for safety compliance.", sentZh: "官員將檢查工廠是否符合安全規定。" },
+        { en: "maintenance", zh: "維護；保養", sent: "Regular maintenance extends the life of the machine.", sentZh: "定期保養可延長機器的壽命。" },
+        { en: "merger", zh: "合併", sent: "The merger of the two banks was announced yesterday.", sentZh: "兩家銀行的合併案於昨天宣布。" },
+        { en: "objective", zh: "目標", sent: "Our primary objective is to increase customer satisfaction.", sentZh: "我們的主要目標是提高客戶滿意度。" },
+        { en: "potential", zh: "潛力；潛在的", sent: "There is a potential market for this product.", sentZh: "這項產品有潛在的市場。" },
+        { en: "promote", zh: "晉升；推廣", sent: "She was promoted to senior manager last week.", sentZh: "她上週被晉升為資深經理。" },
+        { en: "revenue", zh: "營收", sent: "The company reported a sharp increase in revenue.", sentZh: "公司報告營收大幅增加。" },
+        { en: "strategy", zh: "策略", sent: "We need a new marketing strategy to attract young customers.", sentZh: "我們需要新的行銷策略來吸引年輕客戶。" },
+        { en: "submit", zh: "提交", sent: "Please submit your report by Friday.", sentZh: "請在週五前提交你的報告。" }
+    ];
+
+    // 初始化學習列表
+    function initLearn() {
+        const container = document.getElementById('learn-section');
+        container.innerHTML = '';
+        wordsDB.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `
+                <div class="word-header">
+                    <span class="english-word">${item.en}</span>
+                    <button class="speak-btn" onclick="speak('${item.en}')" title="點擊發音">🔊</button>
+                    <span class="meaning">${item.zh}</span>
+                </div>
+                <div class="sentence-box">
+                    <div class="sentence">${item.sent}</div>
+                    <div class="sentence-zh">${item.sentZh}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // 發音功能
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US'; 
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // 頁面切換
+    function showSection(section) {
+        document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+    }
+
+    // 測驗邏輯
+    let currentQuestion = 0;
+    let score = 0;
+    let quizList = [];
+
+    function startQuiz() {
+        showSection('quiz');
+        currentQuestion = 0;
+        score = 0;
+        document.getElementById('final-score').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        
+        // 隨機打亂題目順序
+        quizList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentQuestion >= quizList.length) {
+            endQuiz();
+            return;
+        }
+
+        const currentWord = quizList[currentQuestion];
+        document.getElementById('q-word').textContent = currentWord.en;
+        
+        // 語音自動播放單字 (可選)
+        // speak(currentWord.en);
+
+        document.getElementById('result-msg').className = '';
+        document.getElementById('result-msg').innerHTML = '';
+
+        // 產生選項 (1個正確 + 3個錯誤)
+        let options = [currentWord.zh];
+        while (options.length < 4) {
+            const randomWord = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(randomWord.zh)) {
+                options.push(randomWord.zh);
+            }
+        }
+        // 打亂選項
+        options.sort(() => 0.5 - Math.random());
+
+        const optionsArea = document.getElementById('options-area');
+        optionsArea.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(opt, currentWord.zh);
+            optionsArea.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct) {
+        const resultDiv = document.getElementById('result-msg');
+        // 鎖定按鈕防止重複點擊
+        const btns = document.querySelectorAll('.option-btn');
+        btns.forEach(b => b.disabled = true);
+
+        if (selected === correct) {
+            score++;
+            resultDiv.textContent = "✅ 正確 Correct!";
+            resultDiv.className = "result-message correct";
+        } else {
+            resultDiv.textContent = `❌ 錯誤! 正解是: ${correct}`;
+            resultDiv.className = "result-message wrong";
+        }
+
+        // 延遲後進入下一題
+        setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+        }, 1500);
+    }
+
+    function endQuiz() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const scoreBoard = document.getElementById('final-score');
+        scoreBoard.style.display = 'block';
+        scoreBoard.innerHTML = `測驗結束!<br>你的分數: ${score} / ${wordsDB.length}`;
+        document.getElementById('restart-btn').style.display = 'inline-block';
+    }
+
+    // 啟動時載入學習列表
+    initLearn();
+
+</script>
+
+</body>
+</html>
