@@ -109,43 +109,101 @@
 
     <div class="container">
         <header>
-            <h1>TOEIC 600 特訓中心</h1>
-            <p>選擇你的訓練進度</p>
+            <h1>English Learning Hub</h1>
+            <p>選擇你的學習主題</p>
         </header>
+
+        <!-- Category Tabs -->
+        <div style="display:flex; justify-content:center; gap:20px; margin-bottom:30px;">
+            <button id="tab-toeic" onclick="switchCategory('toeic')"
+                style="padding:10px 30px; border-radius:30px; border:none; background:#3498db; color:white; font-size:18px; cursor:pointer; font-weight:bold; box-shadow:0 4px 10px rgba(52,152,219,0.3);">TOEIC
+                600</button>
+            <button id="tab-coding" onclick="switchCategory('coding')"
+                style="padding:10px 30px; border-radius:30px; border:none; background:#e0e0e0; color:#555; font-size:18px; cursor:pointer; font-weight:bold;">程式專業英文
+                (Coding)</button>
+        </div>
 
         <div class="grid-container" id="button-grid">
         </div>
 
         <div class="tips">
-            💡 @Ian
+            💡 <a href="https://github.com/ian20120115/toeic-600-challenge" target="_blank"
+                style="text-decoration:none; color:inherit;">@Ian (GitHub)</a>
         </div>
 
         <script>
             const grid = document.getElementById('button-grid');
-            const totalDays = 30; // 總天數目標
-            const availableDays = 30; // 目前你已經有的檔案天數 (Day 1 - Day 30)
 
-            for (let i = 1; i <= totalDays; i++) {
-                // 建立連結按鈕
-                const link = document.createElement('a');
+            // Config for categories
+            const categories = {
+                'toeic': {
+                    totalDays: 30,
+                    prefix: 'TOEIC_Day',
+                    color: '#3498db',
+                    label: 'Day'
+                },
+                'coding': {
+                    totalDays: 1, // Currently only 1 day
+                    prefix: 'Programming_Day',
+                    color: '#27ae60', // Green for coding
+                    label: 'Level'
+                }
+            };
 
-                // 設定連結目標 (例如: TOEIC_Day1.html)
-                link.href = `TOEIC_Day${i}.html`;
-                link.className = 'day-btn';
+            let currentCategory = 'toeic';
 
-                // 如果是還沒拿到的檔案 (Day 11之後)，先變灰色 (你可以之後把這行刪掉)
-                // if (i > availableDays) {
-                //     link.classList.add('disabled');
-                //     link.href = '#'; // 禁止點擊
-                // }
+            function switchCategory(cat) {
+                currentCategory = cat;
 
-                link.innerHTML = `
-            <span class="day-label">Day ${i}</span>
-            <span class="day-sub">Go ➔</span>
-        `;
+                // Update Tab Styles
+                const tab1 = document.getElementById('tab-toeic');
+                const tab2 = document.getElementById('tab-coding');
 
-                grid.appendChild(link);
+                if (cat === 'toeic') {
+                    tab1.style.background = '#3498db'; tab1.style.color = 'white';
+                    tab2.style.background = '#e0e0e0'; tab2.style.color = '#555';
+                } else {
+                    tab2.style.background = '#27ae60'; tab2.style.color = 'white';
+                    tab1.style.background = '#e0e0e0'; tab1.style.color = '#555';
+                }
+
+                renderGrid();
             }
+
+            function renderGrid() {
+                grid.innerHTML = '';
+                const config = categories[currentCategory];
+
+                for (let i = 1; i <= config.totalDays; i++) {
+                    const link = document.createElement('a');
+                    link.href = `${config.prefix}${i}.html`;
+                    link.className = 'day-btn';
+
+                    // Custom style for different categories if needed
+                    link.style.borderColor = config.color;
+                    link.style.color = config.color;
+
+                    link.innerHTML = `
+                        <span class="day-label">${config.label} ${i}</span>
+                        <span class="day-sub">Go ➔</span>
+                    `;
+
+                    // Add hover effect specifically for dynamic color
+                    link.onmouseenter = function () {
+                        this.style.backgroundColor = config.color;
+                        this.style.color = 'white';
+                    };
+                    link.onmouseleave = function () {
+                        this.style.backgroundColor = 'white';
+                        this.style.color = config.color;
+                    };
+
+                    grid.appendChild(link);
+                }
+            }
+
+            // Initial Render
+            renderGrid();
         </script>
 
 </body>
