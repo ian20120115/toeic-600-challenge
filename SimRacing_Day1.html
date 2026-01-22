@@ -118,6 +118,7 @@
         <a href="index.html" class="btn btn-learn" style="text-decoration:none;"><span>🏠 主選單</span></a>
         <button class="btn btn-learn" onclick="showSection('learn')"><span>📖 單字卡</span></button>
         <button class="btn btn-quiz" onclick="startQuiz()"><span>🏁 開始比賽</span></button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 聽力測驗</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -133,6 +134,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333;">▶️ Replay Audio</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 再測一次</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Apex", "zh": "彎頂點", "sent": "Hit the apex for the fastest line.", "sentZh": "觸碰彎頂點以獲得最快路線。"}, {"en": "Braking Point", "zh": "煞車點", "sent": "Find your braking point marker.", "sentZh": "找到你的煞車點標記。"}, {"en": "Racing Line", "zh": "賽車路線", "sent": "Follow the optimal racing line.", "sentZh": "沿著最佳賽車路線行駛。"}, {"en": "Throttle", "zh": "油門", "sent": "Apply throttle smoothly.", "sentZh": "平順地踩油門。"}, {"en": "Steering", "zh": "轉向", "sent": "Precise steering inputs are key.", "sentZh": "精確的轉向輸入是關鍵。"}, {"en": "Gear", "zh": "檔位", "sent": "Shift to a lower gear.", "sentZh": "降檔。"}, {"en": "Clutch", "zh": "離合器", "sent": "Use the clutch for manual shifts.", "sentZh": "手排換檔時使用離合器。"}, {"en": "Lap Time", "zh": "單圈時間", "sent": "Your lap time is improving.", "sentZh": "你的單圈時間正在進步。"}, {"en": "Sector", "zh": "區段", "sent": "You are fastest in sector 2.", "sentZh": "你在第二區段最快。"}, {"en": "Track Limits", "zh": "賽道邊界", "sent": "Stay within track limits.", "sentZh": "保持在賽道邊界內。"}, {"en": "Paddock", "zh": "圍場", "sent": "Teams prepare in the paddock.", "sentZh": "車隊在圍場做準備。"}, {"en": "Pit Lane", "zh": "維修區通道", "sent": "Speed limit in the pit lane.", "sentZh": "維修區通道有速限。"}, {"en": "Grid", "zh": "起跑格", "sent": "Form up on the grid.", "sentZh": "在起跑格就位。"}, {"en": "Pole Position", "zh": "桿位", "sent": "He qualified on pole position.", "sentZh": "他取得了桿位。"}, {"en": "Start Lights", "zh": "起跑燈", "sent": "Wait for the start lights.", "sentZh": "等待起跑燈。"}, {"en": "Chequered Flag", "zh": "方格旗", "sent": "The race ends with the chequered flag.", "sentZh": "比賽在方格旗揮動時結束。"}, {"en": "Podium", "zh": "頒獎台", "sent": "Finish in the top 3 for a podium.", "sentZh": "前三名完賽可上頒獎台。"}, {"en": "Gap", "zh": "差距", "sent": "The gap to the car ahead is 2 seconds.", "sentZh": "與前車的差距是 2 秒。"}, {"en": "Split", "zh": "分段時間差", "sent": "Check your split times.", "sentZh": "檢查你的分段時間差。"}, {"en": "PB (Personal Best)", "zh": "個人最佳", "sent": "That was a new PB!", "sentZh": "那是新的個人最佳成績！"}];
 
@@ -165,6 +178,7 @@
 
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
     }
 
@@ -248,6 +262,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
 

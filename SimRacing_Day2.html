@@ -118,6 +118,7 @@
         <a href="index.html" class="btn btn-learn" style="text-decoration:none;"><span>🏠 主選單</span></a>
         <button class="btn btn-learn" onclick="showSection('learn')"><span>📖 單字卡</span></button>
         <button class="btn btn-quiz" onclick="startQuiz()"><span>🏁 開始比賽</span></button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 聽力測驗</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -133,6 +134,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333;">▶️ Replay Audio</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 再測一次</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Understeer", "zh": "轉向不足 (推頭)", "sent": "Understeer happens when front tires lose grip.", "sentZh": "前輪失去抓地力時會發生轉向不足。"}, {"en": "Oversteer", "zh": "轉向過度 (甩尾)", "sent": "Catch the oversteer with counter-steering.", "sentZh": "用反打方向盤來修正轉向過度。"}, {"en": "Grip", "zh": "抓地力", "sent": "Tires provide mechanical grip.", "sentZh": "輪胎提供機械抓地力。"}, {"en": "Traction", "zh": "牽引力", "sent": "Maximize traction on exit.", "sentZh": "最大化出彎時的牽引力。"}, {"en": "Weight Transfer", "zh": "重心轉移", "sent": "Braking causes forward weight transfer.", "sentZh": "煞車會導致重心前移。"}, {"en": "Trail Braking", "zh": "帶煞入彎", "sent": "Trail braking helps rotation.", "sentZh": "帶煞入彎有助於車輛轉向。"}, {"en": "Slip Angle", "zh": "滑移角", "sent": "Optimal slip angle gives max grip.", "sentZh": "最佳滑移角提供最大抓地力。"}, {"en": "Lock up", "zh": "鎖死", "sent": "Avoid locking up the brakes.", "sentZh": "避免煞車鎖死。"}, {"en": "Flat Spot", "zh": "平班 (輪胎磨損)", "sent": "Locking up causes a flat spot.", "sentZh": "鎖死會導致輪胎出現平班。"}, {"en": "Downforce", "zh": "下壓力", "sent": "Wings create aerodynamic downforce.", "sentZh": "尾翼產生空氣動力學下壓力。"}, {"en": "Drag", "zh": "阻力", "sent": "Less drag means higher top speed.", "sentZh": "較少的阻力意味著更高的極速。"}, {"en": "Slipstream", "zh": "真空帶 (尾流)", "sent": "Get in the slipstream to overtake.", "sentZh": "進入真空帶以進行超車。"}, {"en": "Dirty Air", "zh": "亂流", "sent": "Dirty air reduces downforce.", "sentZh": "亂流會降低下壓力。"}, {"en": "Rotation", "zh": "轉向/旋轉", "sent": "Get the car to rotate mid-corner.", "sentZh": "讓車輛在彎中完成轉向。"}, {"en": "Counter-steer", "zh": "反打方向盤", "sent": "Counter-steer to correct a slide.", "sentZh": "反打方向盤以修正滑行。"}, {"en": "Lift and Coast", "zh": "滑行省油", "sent": "Lift and coast to save fuel.", "sentZh": "放油門滑行以節省燃油。"}, {"en": "Short Shift", "zh": "提早換檔", "sent": "Short shift to manage traction.", "sentZh": "提早換檔以控制牽引力。"}, {"en": "Blip", "zh": "補油", "sent": "Blip the throttle on downshifts.", "sentZh": "降檔時補油。"}, {"en": "Cadence Braking", "zh": "點煞", "sent": "Use cadence braking without ABS.", "sentZh": "無 ABS 時使用點煞技巧。"}, {"en": "Smoothness", "zh": "平順度", "sent": "Smoothness is fast.", "sentZh": "平順即是快。"}];
 
@@ -165,6 +178,7 @@
 
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
     }
 
@@ -248,6 +262,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
 
