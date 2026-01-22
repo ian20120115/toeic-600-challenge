@@ -148,7 +148,7 @@ TEMPLATE = """<!DOCTYPE html>
     function initLearn() {{
         const container = document.getElementById('learn-section');
         container.innerHTML = '';
-        wordsDB.forEach(item => {{
+        wordsDB.forEach((item, index) => {{
             const card = document.createElement('div');
             card.className = 'word-card';
             card.innerHTML = `
@@ -158,7 +158,9 @@ TEMPLATE = """<!DOCTYPE html>
                     <span class="meaning">${{item.zh}}</span>
                 </div>
                 <div class="sentence-box">
-                    <div class="sentence">"${{item.sent}}"</div>
+                    <div class="sentence">"${{item.sent}}"
+                        <button class="speak-btn" style="width:24px; height:24px; font-size:12px; display:inline-flex; vertical-align:middle; margin-left:5px;" onclick="speak(wordsDB[${{index}}].sent)" title="Play Voice Line">🔊</button>
+                    </div>
                     <div class="sentence-zh">${{item.sentZh}}</div>
                 </div>
             `;
