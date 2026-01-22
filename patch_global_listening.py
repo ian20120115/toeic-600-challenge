@@ -22,6 +22,11 @@ def patch_file(filepath):
         # SimRacing already done, skip silently
         return
 
+    # Skip Listening Category specifically because it has its own audio, don't want duplicate
+    if "Listening_Day" in filename:
+        print(f"Skipping {filename} - Listening category has its own audio.")
+        return
+
     # --- 1. Identify Button Color ---
     # Different themes have different button styles.
     # Default: Yellow (#f1c40f) or something fitting.

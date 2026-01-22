@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC Listening - Day 26 - Part 4 (Talks)</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f3e5f5; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #8e44ad; border-bottom: 2px solid #9b59b6; padding-bottom: 15px; }
+        .nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .btn { padding: 10px 25px; border: none; border-radius: 50px; cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; background: #8e44ad; color: white; text-decoration: none; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3); }
+        
+        .question-card { background: #fff; border: 1px solid #ddd; padding: 20px; margin-bottom: 25px; border-radius: 10px; }
+        .audio-btn { background: #333; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; }
+        .audio-btn:hover { background: #555; }
+        
+        .options-grid { display: grid; gap: 10px; margin-top: 15px; }
+        .option-label { display: flex; align-items: center; padding: 10px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .option-label:hover { background: #f9f9f9; border-color: #8e44ad; }
+        .option-label input { margin-right: 15px; transform: scale(1.2); }
+        
+        .part-label { display: inline-block; background: #9b59b6; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8em; margin-bottom: 10px; }
+        
+        .feedback { margin-top: 10px; font-weight: bold; display: none; padding: 10px; border-radius: 5px; }
+        .correct { background: #d4edda; color: #155724; }
+        .incorrect { background: #f8d7da; color: #721c24; }
+
+        /* Part specific styles */
+        .photo-placeholder { width: 100%; height: 300px; background: #eee; display: flex; align-items: center; justify-content: center; color: #888; font-size: 1.2em; border-radius: 8px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎧 Day 26 - Part 4 (Talks)</h1>
+    <div class="nav">
+        <a href="index.html" class="btn">🏠 Home</a>
+    </div>
+
+    <div class="question-card">
+        <span class="part-label">Part 4: Short Talks</span>
+        <p>Listen to the announcement and answer the questions.</p>
+        <button class="audio-btn" onclick="playAudio('Attention passengers. Flight 84 to Tokyo has been delayed due to heavy snow. The new departure time is 8 PM. Please check the monitors for gate changes.')">▶️ Play Announcement</button>
+        <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+        
+        <!-- Q1 -->
+        <p><strong>1. Where is the flight going?</strong></p>
+        <div class="options-grid">
+            <label class="option-label"><input type="radio" name="q260_1" value="A" onclick="checkAnswer('260_1', 'B')"> A) London</label>
+            <label class="option-label"><input type="radio" name="q260_1" value="B" onclick="checkAnswer('260_1', 'B')"> B) Tokyo</label>
+            <label class="option-label"><input type="radio" name="q260_1" value="C" onclick="checkAnswer('260_1', 'B')"> C) New York</label>
+            <label class="option-label"><input type="radio" name="q260_1" value="D" onclick="checkAnswer('260_1', 'B')"> D) Paris</label>
+        </div>
+        <div id="fb-260_1" class="feedback"></div>
+
+        <!-- Q2 -->
+        <p><strong>2. Why is it delayed?</strong></p>
+        <div class="options-grid">
+            <label class="option-label"><input type="radio" name="q260_2" value="A" onclick="checkAnswer('260_2', 'B')"> A) Technical issue</label>
+            <label class="option-label"><input type="radio" name="q260_2" value="B" onclick="checkAnswer('260_2', 'B')"> B) Heavy snow</label>
+            <label class="option-label"><input type="radio" name="q260_2" value="C" onclick="checkAnswer('260_2', 'B')"> C) Late crew</label>
+            <label class="option-label"><input type="radio" name="q260_2" value="D" onclick="checkAnswer('260_2', 'B')"> D) Security check</label>
+        </div>
+        <div id="fb-260_2" class="feedback"></div>
+    </div>
+    
+    <div class="question-card">
+        <span class="part-label">Part 4: Short Talks</span>
+        <p>Listen to the announcement and answer the questions.</p>
+        <button class="audio-btn" onclick="playAudio('Attention passengers. Flight 84 to Tokyo has been delayed due to heavy snow. The new departure time is 8 PM. Please check the monitors for gate changes.')">▶️ Play Announcement</button>
+        <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+        
+        <!-- Q1 -->
+        <p><strong>1. Where is the flight going?</strong></p>
+        <div class="options-grid">
+            <label class="option-label"><input type="radio" name="q261_1" value="A" onclick="checkAnswer('261_1', 'B')"> A) London</label>
+            <label class="option-label"><input type="radio" name="q261_1" value="B" onclick="checkAnswer('261_1', 'B')"> B) Tokyo</label>
+            <label class="option-label"><input type="radio" name="q261_1" value="C" onclick="checkAnswer('261_1', 'B')"> C) New York</label>
+            <label class="option-label"><input type="radio" name="q261_1" value="D" onclick="checkAnswer('261_1', 'B')"> D) Paris</label>
+        </div>
+        <div id="fb-261_1" class="feedback"></div>
+
+        <!-- Q2 -->
+        <p><strong>2. Why is it delayed?</strong></p>
+        <div class="options-grid">
+            <label class="option-label"><input type="radio" name="q261_2" value="A" onclick="checkAnswer('261_2', 'B')"> A) Technical issue</label>
+            <label class="option-label"><input type="radio" name="q261_2" value="B" onclick="checkAnswer('261_2', 'B')"> B) Heavy snow</label>
+            <label class="option-label"><input type="radio" name="q261_2" value="C" onclick="checkAnswer('261_2', 'B')"> C) Late crew</label>
+            <label class="option-label"><input type="radio" name="q261_2" value="D" onclick="checkAnswer('261_2', 'B')"> D) Security check</label>
+        </div>
+        <div id="fb-261_2" class="feedback"></div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ Mark Complete</button>
+    </div>
+</div>
+<script>
+    function playAudio(text) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = 'en-US';
+        utt.rate = 0.9;
+        window.speechSynthesis.speak(utt);
+    }
+
+    function checkAnswer(qId, correctVal) {
+        const selected = document.querySelector(`input[name="q${qId}"]:checked`);
+        const feedback = document.getElementById(`fb-${qId}`);
+        if (!selected) return;
+        
+        feedback.style.display = 'block';
+        if (selected.value === correctVal) {
+            feedback.textContent = "✅ Correct!";
+            feedback.className = "feedback correct";
+        } else {
+            feedback.textContent = "❌ Incorrect. The correct answer is " + correctVal;
+            feedback.className = "feedback incorrect";
+        }
+    }
+
+    function markComplete() {
+        const pageId = 'Listening_Day26';
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Progress Saved!');
+        location.href = 'index.html';
+    }
+</script>
+</body>
+</html>

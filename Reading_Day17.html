@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC Reading - Day 17 - Part 7 (Reading Comprehension)</title>
+    <style>
+        body { font-family: 'Segoe UI', serif; background-color: #eaf2f8; margin: 0; padding: 20px; color: #2c3e50; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: #2980b9; border-bottom: 3px solid #3498db; padding-bottom: 15px; font-family: 'Segoe UI', sans-serif; }
+        .nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
+        .btn { padding: 10px 25px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; background: #2980b9; color: white; text-decoration: none; }
+        .btn:hover { background: #3498db; }
+        
+        .question-block { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        .passage { background: #fdfdfd; border: 1px solid #ddd; padding: 25px; font-size: 1.1em; line-height: 1.6; margin-bottom: 25px; font-family: 'Times New Roman', serif; }
+        .passage-label { background: #2c3e50; color: white; display: inline-block; padding: 4px 12px; font-size: 0.8em; margin-bottom: 10px; border-radius: 2px; }
+        
+        .q-text { font-weight: bold; margin-bottom: 15px; font-size: 1.05em; font-family: 'Segoe UI', sans-serif; }
+        .radio-opt { display: block; margin: 8px 0; cursor: pointer; }
+        .radio-opt input { margin-right: 10px; }
+        
+        .feedback { margin-top: 10px; font-weight: bold; display: none; padding: 10px; border-left: 4px solid #ccc; background: #f9f9f9; }
+        .correct { border-color: #27ae60; color: #27ae60; }
+        .incorrect { border-color: #c0392b; color: #c0392b; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📖 Day 17 - Part 7 (Reading Comprehension)</h1>
+    <div class="nav">
+        <a href="index.html" class="btn">🏠 Back to Dashboard</a>
+        <button class="btn" onclick="startListening()" style="background-color: #f1c40f; color: #000; margin-left: 15px;">👂 Listening Test</button>
+    </div>
+
+    <div class="question-block">
+        <div class="passage-label">Single: Train Schedule</div>
+        <div class="passage"><strong>Express Rail Timeline</strong><br>New York -> Boston: 08:00 (Dep) - 11:30 (Arr)<br>New York -> DC: 09:00 (Dep) - 12:00 (Arr)<br>Note: Tickets must be purchased 1 hour prior.</div>
+        <div class="q-text">1. How long is the trip to Boston?</div>
+        <label class="radio-opt"><input type="radio" name="q0" value="A" onclick="checkAnswer(0, 'B')"> A) 2.5h</label>
+        <label class="radio-opt"><input type="radio" name="q0" value="B" onclick="checkAnswer(0, 'B')"> B) 3.5h</label>
+        <label class="radio-opt"><input type="radio" name="q0" value="C" onclick="checkAnswer(0, 'B')"> C) 4h</label>
+        <label class="radio-opt"><input type="radio" name="q0" value="D" onclick="checkAnswer(0, 'B')"> D) 5h</label>
+        <div id="fb-0" class="feedback"></div><br>
+        <div class="q-text">2. When must tickets be bought?</div>
+        <label class="radio-opt"><input type="radio" name="q1" value="A" onclick="checkAnswer(1, 'B')"> A) On the train</label>
+        <label class="radio-opt"><input type="radio" name="q1" value="B" onclick="checkAnswer(1, 'B')"> B) 1 hour before</label>
+        <label class="radio-opt"><input type="radio" name="q1" value="C" onclick="checkAnswer(1, 'B')"> C) 1 day before</label>
+        <label class="radio-opt"><input type="radio" name="q1" value="D" onclick="checkAnswer(1, 'B')"> D) Anytime</label>
+        <div id="fb-1" class="feedback"></div><br></div>
+    <div style="text-align: center; margin-top: 50px;">
+        <button onclick="markComplete()" style="padding: 15px 40px; background: #27ae60; color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; font-weight: bold;">✅ Complete Day 17</button>
+    </div>
+</div>
+
+<div id="listen-section" style="display: none; text-align: center; margin-top:30px; border-top:2px solid #ccc; padding-top:20px;">
+    <h2>👂 Listening Quiz</h2>
+    <div id="listen-container">
+        <div class="question-word" style="font-size: 60px; margin-bottom: 20px;">🔊</div>
+        <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+        <div class="options-grid" id="listen-options-area" style="max-width:600px; margin:0 auto; display:grid; gap:10px;"></div>
+        <div id="listen-result-msg" style="margin-top:15px; font-weight:bold; font-size:1.2em;"></div>
+    </div>
+    <div id="listen-final-score" style="display:none; font-size:1.5em; color:#8e44ad; font-weight:bold; margin-top:20px;"></div>
+    <button id="listen-restart-btn" class="btn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+</div>
+
+<script>
+    // --- Mock Data for Listening ---
+    const wordsDB = [
+        {en: "Comprehension", zh: "理解", sent: "Reading comprehension is important.", sentZh: "閱讀理解很重要。' "},
+        {en: "Passage", zh: "文章段落", sent: "Read the passage carefully.", sentZh: "仔細閱讀這段文字。"},
+        {en: "Article", zh: "文章", sent: "This article discusses economy.", sentZh: "這篇文章討論經濟。"},
+        {en: "Review", zh: "複習/評論", sent: "Let's review the answers.", sentZh: "讓我們複習答案。"},
+        {en: "Schedule", zh: "行程表", sent: "Check the schedule.", sentZh: "檢查行程表。"}
+    ];
+
+    function speak(text) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = 'en-US';
+        window.speechSynthesis.speak(utt);
+    }
+
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        document.querySelector('.container').style.display = 'none';
+        document.getElementById('listen-section').style.display = 'block';
+        
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.style.background = '#fff';
+            btn.style.color = '#333';
+            btn.style.border = '1px solid #ccc';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.style.color = "green";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.style.color = "red";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+
+    function checkAnswer(qId, correctVal) {
+        const selected = document.querySelector(`input[name="q${qId}"]:checked`);
+        const feedback = document.getElementById(`fb-${qId}`);
+        if (!selected) return;
+        feedback.style.display = 'block';
+        if (selected.value === correctVal) {
+            feedback.textContent = "✅ Correct!";
+            feedback.className = "feedback correct";
+        } else {
+            feedback.textContent = "❌ Incorrect. Correct answer: " + correctVal;
+            feedback.className = "feedback incorrect";
+        }
+    }
+
+    function markComplete() {
+        const pageId = 'Reading_Day17';
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Reading Progress Saved!');
+        location.href = 'index.html';
+    }
+</script>
+</body>
+</html>

@@ -267,6 +267,8 @@
             <button id="tab-social" class="cat-btn" onclick="switchCategory('social')">Social (社群)</button>
             <button id="tab-technews" class="cat-btn" onclick="switchCategory('technews')">Tech News (科技)</button>
             <button id="tab-daily" class="cat-btn" onclick="switchCategory('daily')">Daily (日常)</button>
+            <button id="tab-listening" class="cat-btn" onclick="switchCategory('listening')">Listening (聽力)</button>
+            <button id="tab-reading" class="cat-btn" onclick="switchCategory('reading')">Reading (閱讀)</button>
         </div>
 
         <div class="grid-container" id="button-grid">
@@ -366,6 +368,18 @@
                     prefix: 'Daily_Day',
                     color: '#43a047',
                     label: 'Chat'
+                },
+                'listening': {
+                    totalDays: 30,
+                    prefix: 'Listening_Day',
+                    color: '#8e44ad',
+                    label: 'Test'
+                },
+                'reading': {
+                    totalDays: 30,
+                    prefix: 'Reading_Day',
+                    color: '#2980b9',
+                    label: 'Test'
                 }
             };
 
@@ -373,9 +387,10 @@
 
             function switchCategory(cat) {
                 currentCategory = cat;
+                localStorage.setItem('EnglishHub_LastCategory', cat);
 
                 // Update Tab Styles
-                const tabs = ['toeic', 'coding', 'simracing', 'aviation', 'travel', 'ai', 'hardware', 'gaming', 'slang', 'medical', 'food', 'social', 'technews', 'daily'];
+                const tabs = ['toeic', 'coding', 'simracing', 'aviation', 'travel', 'ai', 'hardware', 'gaming', 'slang', 'medical', 'food', 'social', 'technews', 'daily', 'listening', 'reading'];
                 tabs.forEach(t => {
                     const btn = document.getElementById('tab-' + t);
                     if (t === cat) {
@@ -443,7 +458,13 @@
             }
 
             // Initial Render
-            renderGrid();
+            // Restore last category if exists
+            const savedCat = localStorage.getItem('EnglishHub_LastCategory');
+            if (savedCat && categories[savedCat]) {
+                switchCategory(savedCat);
+            } else {
+                switchCategory('toeic'); // Default
+            }
         </script>
 
     </div>

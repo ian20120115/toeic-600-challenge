@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC Listening - Day 10 - Part 2 (Q&A)</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f3e5f5; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #8e44ad; border-bottom: 2px solid #9b59b6; padding-bottom: 15px; }
+        .nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .btn { padding: 10px 25px; border: none; border-radius: 50px; cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; background: #8e44ad; color: white; text-decoration: none; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(142, 68, 173, 0.3); }
+        
+        .question-card { background: #fff; border: 1px solid #ddd; padding: 20px; margin-bottom: 25px; border-radius: 10px; }
+        .audio-btn { background: #333; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; }
+        .audio-btn:hover { background: #555; }
+        
+        .options-grid { display: grid; gap: 10px; margin-top: 15px; }
+        .option-label { display: flex; align-items: center; padding: 10px; border: 2px solid #eee; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .option-label:hover { background: #f9f9f9; border-color: #8e44ad; }
+        .option-label input { margin-right: 15px; transform: scale(1.2); }
+        
+        .part-label { display: inline-block; background: #9b59b6; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8em; margin-bottom: 10px; }
+        
+        .feedback { margin-top: 10px; font-weight: bold; display: none; padding: 10px; border-radius: 5px; }
+        .correct { background: #d4edda; color: #155724; }
+        .incorrect { background: #f8d7da; color: #721c24; }
+
+        /* Part specific styles */
+        .photo-placeholder { width: 100%; height: 300px; background: #eee; display: flex; align-items: center; justify-content: center; color: #888; font-size: 1.2em; border-radius: 8px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎧 Day 10 - Part 2 (Q&A)</h1>
+    <div class="nav">
+        <a href="index.html" class="btn">🏠 Home</a>
+    </div>
+
+    <div class="question-card">
+        <span class="part-label">Part 2: Question-Response</span>
+        <p>Listen to the question and three responses. Select the best response.</p>
+        <button class="audio-btn" onclick="playAudio('Question: Who is responsible for the budget? ... Response A: A) It's about 500 dollars. ... Response B: B) Mr. Henderson is. ... Response C: C) I bought it yesterday.')">▶️ Play Audio</button>
+        
+        <div class="options-grid">
+            <label class="option-label"><input type="radio" name="q100" value="A" onclick="checkAnswer(100, 'B')"> (A)</label>
+            <label class="option-label"><input type="radio" name="q100" value="B" onclick="checkAnswer(100, 'B')"> (B)</label>
+            <label class="option-label"><input type="radio" name="q100" value="C" onclick="checkAnswer(100, 'B')"> (C)</label>
+        </div>
+        <div id="fb-100" class="feedback"></div>
+    </div>
+    
+    <div class="question-card">
+        <span class="part-label">Part 2: Question-Response</span>
+        <p>Listen to the question and three responses. Select the best response.</p>
+        <button class="audio-btn" onclick="playAudio('Question: Where did you put the file? ... Response A: A) On your desk. ... Response B: B) It's a large file. ... Response C: C) No, I didn't.')">▶️ Play Audio</button>
+        
+        <div class="options-grid">
+            <label class="option-label"><input type="radio" name="q101" value="A" onclick="checkAnswer(101, 'A')"> (A)</label>
+            <label class="option-label"><input type="radio" name="q101" value="B" onclick="checkAnswer(101, 'A')"> (B)</label>
+            <label class="option-label"><input type="radio" name="q101" value="C" onclick="checkAnswer(101, 'A')"> (C)</label>
+        </div>
+        <div id="fb-101" class="feedback"></div>
+    </div>
+    
+    <div class="question-card">
+        <span class="part-label">Part 2: Question-Response</span>
+        <p>Listen to the question and three responses. Select the best response.</p>
+        <button class="audio-btn" onclick="playAudio('Question: When does the meeting start? ... Response A: A) In conference room B. ... Response B: B) At 2 PM sharp. ... Response C: C) Yes, I am going.')">▶️ Play Audio</button>
+        
+        <div class="options-grid">
+            <label class="option-label"><input type="radio" name="q102" value="A" onclick="checkAnswer(102, 'B')"> (A)</label>
+            <label class="option-label"><input type="radio" name="q102" value="B" onclick="checkAnswer(102, 'B')"> (B)</label>
+            <label class="option-label"><input type="radio" name="q102" value="C" onclick="checkAnswer(102, 'B')"> (C)</label>
+        </div>
+        <div id="fb-102" class="feedback"></div>
+    </div>
+    
+    <div class="question-card">
+        <span class="part-label">Part 2: Question-Response</span>
+        <p>Listen to the question and three responses. Select the best response.</p>
+        <button class="audio-btn" onclick="playAudio('Question: Who is responsible for the budget? ... Response A: A) It's about 500 dollars. ... Response B: B) Mr. Henderson is. ... Response C: C) I bought it yesterday.')">▶️ Play Audio</button>
+        
+        <div class="options-grid">
+            <label class="option-label"><input type="radio" name="q103" value="A" onclick="checkAnswer(103, 'B')"> (A)</label>
+            <label class="option-label"><input type="radio" name="q103" value="B" onclick="checkAnswer(103, 'B')"> (B)</label>
+            <label class="option-label"><input type="radio" name="q103" value="C" onclick="checkAnswer(103, 'B')"> (C)</label>
+        </div>
+        <div id="fb-103" class="feedback"></div>
+    </div>
+    
+    <div class="question-card">
+        <span class="part-label">Part 2: Question-Response</span>
+        <p>Listen to the question and three responses. Select the best response.</p>
+        <button class="audio-btn" onclick="playAudio('Question: Where did you put the file? ... Response A: A) On your desk. ... Response B: B) It's a large file. ... Response C: C) No, I didn't.')">▶️ Play Audio</button>
+        
+        <div class="options-grid">
+            <label class="option-label"><input type="radio" name="q104" value="A" onclick="checkAnswer(104, 'A')"> (A)</label>
+            <label class="option-label"><input type="radio" name="q104" value="B" onclick="checkAnswer(104, 'A')"> (B)</label>
+            <label class="option-label"><input type="radio" name="q104" value="C" onclick="checkAnswer(104, 'A')"> (C)</label>
+        </div>
+        <div id="fb-104" class="feedback"></div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ Mark Complete</button>
+    </div>
+</div>
+<script>
+    function playAudio(text) {
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = 'en-US';
+        utt.rate = 0.9;
+        window.speechSynthesis.speak(utt);
+    }
+
+    function checkAnswer(qId, correctVal) {
+        const selected = document.querySelector(`input[name="q${qId}"]:checked`);
+        const feedback = document.getElementById(`fb-${qId}`);
+        if (!selected) return;
+        
+        feedback.style.display = 'block';
+        if (selected.value === correctVal) {
+            feedback.textContent = "✅ Correct!";
+            feedback.className = "feedback correct";
+        } else {
+            feedback.textContent = "❌ Incorrect. The correct answer is " + correctVal;
+            feedback.className = "feedback incorrect";
+        }
+    }
+
+    function markComplete() {
+        const pageId = 'Listening_Day10';
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Progress Saved!');
+        location.href = 'index.html';
+    }
+</script>
+</body>
+</html>
