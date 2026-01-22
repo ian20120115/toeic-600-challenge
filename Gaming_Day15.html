@@ -122,6 +122,7 @@
         <a href="index.html" class="btn">🏠 Lobby</a>
         <button class="btn" onclick="showSection('learn')">🗡️ Quest</button>
         <button class="btn" onclick="startQuiz()">⚔️ Boss Fight</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -137,6 +138,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Chat", "zh": "聊天室", "sent": "Read the chat.", "sentZh": "看聊天室。"}, {"en": "Camp", "zh": "龜點/蹲點", "sent": "Stop camping in the corner!", "sentZh": "別再龜在角落了！"}, {"en": "Salty", "zh": "惱羞", "sent": "Why are you so salty?", "sentZh": "你幹嘛這麼惱羞？"}, {"en": "Op (Overpowered)", "zh": "過強(做壞了)", "sent": "That gun is OP.", "sentZh": "那把槍太 OP 了。"}, {"en": "Highlights", "zh": "精華片段", "sent": "Watch the stream highlights.", "sentZh": "觀看實況精華。"}, {"en": "GG (Good Game)", "zh": "好局(結束了)", "sent": "GG WP (Well Played).", "sentZh": "好局，打得好。"}, {"en": "Meta", "zh": "主流戰術", "sent": "This is the current meta.", "sentZh": "這是目前的主流玩法。"}, {"en": "Overlay", "zh": "介面層", "sent": "New stream overlay.", "sentZh": "新的實況介面。"}, {"en": "Streamer", "zh": "實況主", "sent": "My favorite streamer is live.", "sentZh": "我最愛的實況主開台了。"}, {"en": "Mod (Moderator)", "zh": "板手(管理員)", "sent": "Mods, ban him.", "sentZh": "管理員，Ban 掉他。"}, {"en": "Cooldown", "zh": "冷卻時間", "sent": "Skill is on cooldown.", "sentZh": "技能冷卻中。"}, {"en": "Emote", "zh": "表情符號", "sent": "Spam emotes in chat.", "sentZh": "在聊天室狂刷表情。"}, {"en": "XP (Experience)", "zh": "經驗值", "sent": "Gain XP to level up.", "sentZh": "獲得經驗值升級。"}, {"en": "Bitrate", "zh": "位元率", "sent": "Increase the streaming bitrate.", "sentZh": "提高串流位元率。"}, {"en": "Clutch", "zh": "關鍵時刻逆轉", "sent": "That was a clutch play!", "sentZh": "那操作太關鍵了！"}, {"en": "Ban", "zh": "封鎖", "sent": "You are permanently banned.", "sentZh": "你被永久封鎖了。"}, {"en": "Healer", "zh": "補師", "sent": "Protect the healer.", "sentZh": "保護補師。"}, {"en": "MP (Mana Points)", "zh": "魔力值", "sent": "Out of MP.", "sentZh": "沒魔了。"}, {"en": "Noob", "zh": "新手/菜鳥", "sent": "Don't be a noob.", "sentZh": "別當個菜鳥。"}, {"en": "Ult / Ultimate", "zh": "大招/終極技能", "sent": "My ult is ready.", "sentZh": "我的大招好了。"}];
 
@@ -172,6 +185,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -254,6 +268,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
     <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">

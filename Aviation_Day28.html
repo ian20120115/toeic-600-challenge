@@ -122,6 +122,7 @@
         <a href="index.html" class="btn btn-learn" style="text-decoration:none;">🏠 Main Menu</a>
         <button class="btn btn-learn" onclick="showSection('learn')">📖 Study</button>
         <button class="btn btn-quiz" onclick="startQuiz()">📝 Exam</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -137,6 +138,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Taxiway", "zh": "滑行道", "sent": "Exit via taxiway Alpha.", "sentZh": "經由滑行道 Alpha 脫離。"}, {"en": "Glideslope", "zh": "下滑道", "sent": "Follow the glideslope.", "sentZh": "跟隨下滑道。"}, {"en": "Ceiling", "zh": "雲幂高", "sent": "Ceiling is 2000 feet.", "sentZh": "雲幂高 2000 英呎。"}, {"en": "Visibility", "zh": "能見度", "sent": "Low visibility due to fog.", "sentZh": "因霧能見度低。"}, {"en": "Localizer", "zh": "左右定位台", "sent": "Localizer captured.", "sentZh": "攔截到左右定位台。"}, {"en": "Compass", "zh": "羅盤", "sent": "The magnetic compass points North.", "sentZh": "磁羅盤指向北方。"}, {"en": "Horizon", "zh": "地平儀/姿態儀", "sent": "Artificial horizon shows pitch and roll.", "sentZh": "姿態儀顯示俯仰和滾轉。"}, {"en": "VOR", "zh": "特高頻全向信标", "sent": "Tune to the VOR station.", "sentZh": "調頻至 VOR 電台。"}, {"en": "Wind Shear", "zh": "風切", "sent": "Warning: Wind shear reported.", "sentZh": "警告：報告有風切。"}, {"en": "Line Up and Wait", "zh": "進跑道等待", "sent": "Line up and wait runway 09.", "sentZh": "跑道 09 進跑道等待。"}, {"en": "Go Around", "zh": "重飛", "sent": "Go around, runway not clear.", "sentZh": "重飛，跑道未淨空。"}, {"en": "IFR", "zh": "儀器飛行規則", "sent": "File an IFR flight plan.", "sentZh": "提交 IFR 飛行計畫。"}, {"en": "Pan-Pan", "zh": "緊急情況 (次於遇難)", "sent": "Pan-Pan, fuel low.", "sentZh": "Pan-Pan，燃油不足。"}, {"en": "Thrust", "zh": "推力", "sent": "Thrust opposes drag.", "sentZh": "推力對抗阻力。"}, {"en": "Airspeed Indicator", "zh": "空速表", "sent": "Monitor your airspeed.", "sentZh": "監控你的空速。"}, {"en": "Roger", "zh": "收到", "sent": "Roger, maintain 5000.", "sentZh": "收到，維持 5000。"}, {"en": "Headwind", "zh": "逆風", "sent": "Headwind helps takeoff.", "sentZh": "逆風有助於起飛。"}, {"en": "Vertical Speed", "zh": "垂直速率", "sent": "Check vertical speed indicator.", "sentZh": "檢查垂直速率表。"}, {"en": "Landing", "zh": "降落", "sent": "Cleared for landing.", "sentZh": "許可降落。"}, {"en": "Fog", "zh": "霧", "sent": "Heavy fog at the airport.", "sentZh": "機場有大霧。"}];
 
@@ -170,6 +183,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -252,6 +266,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
 

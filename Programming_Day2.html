@@ -109,6 +109,7 @@
         <a href="index.html" class="btn btn-learn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">🏠 主選單</a>
         <button class="btn btn-learn" onclick="showSection('learn')">📖 學習模式</button>
         <button class="btn btn-quiz" onclick="startQuiz()">📝 挑戰測驗</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -124,6 +125,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "element", "zh": "元素", "sent": "HTML elements structure the document.", "sentZh": "HTML 元素構建了文件結構。"}, {"en": "attribute", "zh": "屬性", "sent": "The 'href' attribute specifies the link URL.", "sentZh": "'href' 屬性指定連結網址。"}, {"en": "responsive", "zh": "響應式", "sent": "Responsive design works on mobile devices.", "sentZh": "響應式設計適用於行動裝置。"}, {"en": "selector", "zh": "選擇器", "sent": "Use CSS selectors to style elements.", "sentZh": "使用 CSS 選擇器來設定元素樣式。"}, {"en": "property", "zh": "屬性 (CSS)", "sent": "Color is a CSS property.", "sentZh": "顏色是一個 CSS 屬性。"}, {"en": "framework", "zh": "框架", "sent": "Vue.js is a progressive framework.", "sentZh": "Vue.js 是一個漸進式框架。"}, {"en": "library", "zh": "函式庫", "sent": "React is a UI library.", "sentZh": "React 是一個 UI 函式庫。"}, {"en": "component", "zh": "組件", "sent": "Break the UI into small components.", "sentZh": "將 UI 拆分為小組件。"}, {"en": "DOM", "zh": "文件物件模型", "sent": "The DOM represents the page structure.", "sentZh": "DOM 代表頁面結構。"}, {"en": "event", "zh": "事件", "sent": "Button click is a common event.", "sentZh": "按鈕點擊是一個常見事件。"}, {"en": "listener", "zh": "監聽器", "sent": "Add an event listener to the button.", "sentZh": "為按鈕新增事件監聽器。"}, {"en": "callback", "zh": "回呼函式", "sent": "The callback runs after the request finishes.", "sentZh": "回呼函式在請求完成後執行。"}, {"en": "async", "zh": "非同步", "sent": "Async code doesn't block execution.", "sentZh": "非同步程式碼不會阻塞執行。"}, {"en": "promise", "zh": "承諾 (Promise)", "sent": "A Promise handles async operations.", "sentZh": "Promise 處理非同步操作。"}, {"en": "fetch", "zh": "獲取", "sent": "Use fetch API to get data.", "sentZh": "使用 fetch API 獲取資料。"}, {"en": "state", "zh": "狀態", "sent": "Manage application state carefully.", "sentZh": "小心管理應用程式狀態。"}, {"en": "props", "zh": "屬性 (Props)", "sent": "Pass data to child components via props.", "sentZh": "透過 props 傳遞資料給子組件。"}, {"en": "hook", "zh": "掛鉤 (Hook)", "sent": "React Hooks manage state logic.", "sentZh": "React Hooks 管理狀態邏輯。"}, {"en": "render", "zh": "渲染", "sent": "The browser renders the HTML.", "sentZh": "瀏覽器渲染 HTML。"}, {"en": "bundle", "zh": "打包", "sent": "Webpack bundles your assets.", "sentZh": "Webpack 打包您的資源。"}];
 
@@ -159,6 +172,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -241,6 +255,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
     <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">

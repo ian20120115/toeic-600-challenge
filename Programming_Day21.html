@@ -109,6 +109,7 @@
         <a href="index.html" class="btn btn-learn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">🏠 主選單</a>
         <button class="btn btn-learn" onclick="showSection('learn')">📖 學習模式</button>
         <button class="btn btn-quiz" onclick="startQuiz()">📝 挑戰測驗</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -124,6 +125,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "queue", "zh": "佇列", "sent": "Queue follows FIFO principle.", "sentZh": "佇列遵循 FIFO 原則。"}, {"en": "experience", "zh": "體驗", "sent": "UX focuses on user satisfaction.", "sentZh": "UX 著重於使用者滿意度。"}, {"en": "firewall", "zh": "防火牆", "sent": "Configure the firewall rules.", "sentZh": "設定防火牆規則。"}, {"en": "scrum", "zh": "Scrum", "sent": "Daily scrum meetings keep us synced.", "sentZh": "每日 Scrum 會議讓我們保持同步。"}, {"en": "integration", "zh": "整合", "sent": "Continuous integration (CI) is key.", "sentZh": "持續整合 (CI) 是關鍵。"}, {"en": "orchestration", "zh": "編排", "sent": "Kubernetes handles orchestration.", "sentZh": "Kubernetes 處理編排。"}, {"en": "structure", "zh": "結構", "sent": "Data structure organizes data.", "sentZh": "資料結構組織資料。"}, {"en": "virtualization", "zh": "虛擬化", "sent": "VMware provides virtualization.", "sentZh": "VMware 提供虛擬化。"}, {"en": "serverless", "zh": "無伺服器", "sent": "Serverless functions scale auto.", "sentZh": "無伺服器函式自動擴展。"}, {"en": "exploit", "zh": "利用(漏洞)", "sent": "Hackers exploit weaknesses.", "sentZh": "駭客利用弱點。"}, {"en": "encryption", "zh": "加密", "sent": "SSL uses encryption for security.", "sentZh": "SSL 使用加密來確保安全。"}, {"en": "byte", "zh": "位元組", "sent": "8 bits make a byte.", "sentZh": "8 個位元組成一個位元組。"}, {"en": "decryption", "zh": "解密", "sent": "Decryption requires a private key.", "sentZh": "解密需要私鑰。"}, {"en": "node", "zh": "節點", "sent": "Each node contains data.", "sentZh": "每個節點包含資料。"}, {"en": "agile", "zh": "敏捷", "sent": "Agile methodology focuses on speed.", "sentZh": "敏捷方法論著重於速度。"}, {"en": "hexadecimal", "zh": "十六進位", "sent": "Colors are often in hexadecimal.", "sentZh": "顏色通常是十六進位的。"}, {"en": "prototype", "zh": "原型", "sent": "Test the interactive prototype.", "sentZh": "測試互動原型。"}, {"en": "linked list", "zh": "連結串列", "sent": "Linked lists are dynamic.", "sentZh": "連結串列是動態的。"}, {"en": "hash", "zh": "雜湊", "sent": "Hash functions map data to keys.", "sentZh": "雜湊函式將資料對應到鍵值。"}, {"en": "machine learning", "zh": "機器學習", "sent": "ML models learn from data.", "sentZh": "機器學習模型從資料中學習。"}];
 
@@ -159,6 +172,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -241,6 +255,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
     <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">

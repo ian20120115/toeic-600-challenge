@@ -136,6 +136,7 @@
         <a href="index.html" class="btn">🏠 Safe Zone</a>
         <button class="btn btn-active" onclick="showSection('learn')">🗣️ Street Talk</button>
         <button class="btn" onclick="startQuiz()">🔥 Rap Battle</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -151,6 +152,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Screw up", "zh": "搞砸了", "sent": "I screwed up big time.", "sentZh": "我搞砸得一塌糊塗。", "tag": "Caution"}, {"en": "Sucks", "zh": "爛透了", "sent": "This internet sucks.", "sentZh": "這網路爛透了。", "tag": "Caution"}, {"en": "Whatever", "zh": "隨便啦", "sent": "Whatever, I don't care.", "sentZh": "隨便啦，我不在乎。", "tag": "Mild"}, {"en": "Awesome", "zh": "棒極了", "sent": "The movie was awesome.", "sentZh": "這部電影棒極了。", "tag": "Mild"}, {"en": "Ghosting", "zh": "神隱(搞消失)", "sent": "He is ghosting me.", "sentZh": "他對我搞消失(已讀不回)。", "tag": "Slang"}, {"en": "Cap / No Cap", "zh": "謊話/不騙你", "sent": "That's cap. / No cap.", "sentZh": "那是騙人的。/ 我不騙你。", "tag": "Slang"}, {"en": "WTF", "zh": "搞什麼(縮寫)", "sent": "WTF is happening?", "sentZh": "現在是搞什麼？", "tag": "Explicit"}, {"en": "Sketchy", "zh": "可疑的/怪怪的", "sent": "This alley looks sketchy.", "sentZh": "這條巷子看起來怪怪的。", "tag": "Mild"}, {"en": "Shut up", "zh": "閉嘴", "sent": "Shut up and listen.", "sentZh": "閉嘴聽我說。", "tag": "Caution"}, {"en": "Geek", "zh": "狂熱者/怪咖", "sent": "I'm a tech geek.", "sentZh": "我是個科技狂熱者。", "tag": "Common"}, {"en": "Karen", "zh": "奧客大媽(Karen)", "sent": "She is acting like a Karen.", "sentZh": "她表現得像個奧客大媽。", "tag": "Slang"}, {"en": "Freak", "zh": "怪胎", "sent": "Don't be a freak.", "sentZh": "別當個怪胎。", "tag": "Common"}, {"en": "Damn", "zh": "該死/可惡", "sent": "Damn, I forgot my keys.", "sentZh": "該死，我忘帶鑰匙了。", "tag": "Caution"}, {"en": "Simp", "zh": "火山孝子/舔狗", "sent": "Stop being a simp.", "sentZh": "別當個舔狗。", "tag": "Slang"}, {"en": "Pissed off", "zh": "超不爽", "sent": "I am so pissed off.", "sentZh": "我超不爽。", "tag": "Caution"}, {"en": "Jerk", "zh": "渾蛋", "sent": "He is such a jerk.", "sentZh": "他真是個渾蛋。", "tag": "Insult"}, {"en": "Cringe", "zh": "尷尬癌發作", "sent": "That video is so cringe.", "sentZh": "那影片超尷尬。", "tag": "Slang"}, {"en": "Ass", "zh": "屁股/笨蛋", "sent": "Don't be a smart ass.", "sentZh": "別自作聰明。", "tag": "Caution"}, {"en": "Idiot", "zh": "白痴", "sent": "Don't be an idiot.", "sentZh": "別當個白痴。", "tag": "Insult"}, {"en": "Nerd", "zh": "書呆子", "sent": "He is a computer nerd.", "sentZh": "他是個電腦書呆子。", "tag": "Common"}];
 
@@ -190,6 +203,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -272,6 +286,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
     <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">

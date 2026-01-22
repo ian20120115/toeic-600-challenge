@@ -121,6 +121,7 @@
         <a href="index.html" class="btn">🏠 Home</a>
         <button class="btn btn-active" onclick="showSection('learn')">📖 Learn</button>
         <button class="btn" onclick="startQuiz()">📝 Quiz</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -136,6 +137,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Checkup", "zh": "健康檢查", "sent": "Go for an annual checkup.", "sentZh": "去做年度健康檢查。"}, {"en": "Dizziness", "zh": "頭暈", "sent": "She complained of dizziness.", "sentZh": "她抱怨說頭暈。"}, {"en": "Appointment", "zh": "預約(看診)", "sent": "I have a doctor's appointment.", "sentZh": "我有預約看醫生。"}, {"en": "Side Effect", "zh": "副作用", "sent": "Drowsiness is a side effect.", "sentZh": "嗜睡是副作用之一。"}, {"en": "Vaccine", "zh": "疫苗", "sent": "The vaccine prevents disease.", "sentZh": "疫苗可預防疾病。"}, {"en": "Painkiller", "zh": "止痛藥", "sent": "Take a painkiller for the pain.", "sentZh": "吃止痛藥止痛。"}, {"en": "Recovery", "zh": "康復", "sent": "We wish you a speedy recovery.", "sentZh": "祝你早日康復。"}, {"en": "Symptom", "zh": "症狀", "sent": "What are your symptoms?", "sentZh": "你有什麼症狀？"}, {"en": "Nausea", "zh": "噁心(想吐)", "sent": "I feel sudden nausea.", "sentZh": "我突然感到噁心。"}, {"en": "Infection", "zh": "感染", "sent": "Clean the wound to prevent infection.", "sentZh": "清潔傷口以防感染。"}, {"en": "Asthma", "zh": "氣喘", "sent": "He uses an inhaler for asthma.", "sentZh": "他使用吸入器治療氣喘。"}, {"en": "Blood Pressure", "zh": "血壓", "sent": "Check your blood pressure regularly.", "sentZh": "定期檢查你的血壓。"}, {"en": "Ambulance", "zh": "救護車", "sent": "The ambulance arrived quickly.", "sentZh": "救護車很快就到了。"}, {"en": "Diabetes", "zh": "糖尿病", "sent": "Manage diabetes with diet.", "sentZh": "透過飲食控制糖尿病。"}, {"en": "Insurance", "zh": "保險", "sent": "Does your insurance cover this?", "sentZh": "你的保險有承保這個嗎？"}, {"en": "Emergency", "zh": "緊急情況/急診", "sent": "Call 911 in an emergency.", "sentZh": "緊急情況請撥打 911。"}, {"en": "Treatment", "zh": "治療", "sent": "Early treatment is key.", "sentZh": "早期治療是關鍵。"}, {"en": "Surgery", "zh": "手術", "sent": "He requires emergency surgery.", "sentZh": "他需要緊急手術。"}, {"en": "Prescription", "zh": "處方籤", "sent": "The doctor gave me a prescription.", "sentZh": "醫生給了我一張處方籤。"}, {"en": "Diagnosis", "zh": "診斷", "sent": "The diagnosis was flu.", "sentZh": "診斷結果是流感。"}];
 
@@ -171,6 +184,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
         
         // Reset button states
         const btns = document.querySelectorAll('.nav .btn');
@@ -258,6 +272,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
 

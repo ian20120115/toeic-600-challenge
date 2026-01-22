@@ -126,6 +126,7 @@
         <a href="index.html" class="btn">🏠 Mainboard</a>
         <button class="btn btn-active" onclick="showSection('learn')">📖 Schematics</button>
         <button class="btn" onclick="startQuiz()">⚡ Test Circuit</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -141,6 +142,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Keyboard", "zh": "鍵盤", "sent": "Mechanical keyboard switches.", "sentZh": "機械鍵盤軸體。"}, {"en": "Protocol", "zh": "協定", "sent": "MQTT protocol for IoT.", "sentZh": "IoT 使用的 MQTT 協定。"}, {"en": "Firmware", "zh": "韌體", "sent": "Update the firmware.", "sentZh": "更新韌體。"}, {"en": "Port", "zh": "連接埠", "sent": "HDMI port.", "sentZh": "HDMI 連接埠。"}, {"en": "Thermal Paste", "zh": "散熱膏", "sent": "Apply thermal paste to CPU.", "sentZh": "在 CPU 塗散熱膏。"}, {"en": "GPIO", "zh": "通用輸入輸出", "sent": "Connect LED to GPIO pin.", "sentZh": "將 LED 接到 GPIO 腳位。"}, {"en": "Lag", "zh": "延遲/卡頓", "sent": "Input lag.", "sentZh": "輸入延遲。"}, {"en": "Wireless", "zh": "無線", "sent": "Wireless charging.", "sentZh": "無線充電。"}, {"en": "Connector", "zh": "接頭", "sent": "Check the cable connector.", "sentZh": "檢查電纜接頭。"}, {"en": "Resolution", "zh": "解析度", "sent": "1080p resolution.", "sentZh": "1080p 解析度。"}, {"en": "Ground", "zh": "接地", "sent": "Connect the wire to ground.", "sentZh": "將線接地。"}, {"en": "Clock Speed", "zh": "時脈速度", "sent": "Overclocking increases clock speed.", "sentZh": "超頻增加時脈速度。"}, {"en": "Pixel", "zh": "像素", "sent": "Dead pixel on screen.", "sentZh": "螢幕上有亮點/死點。"}, {"en": "Screen", "zh": "螢幕/面板", "sent": "Touch screen display.", "sentZh": "觸控螢幕顯示。"}, {"en": "Latency", "zh": "延遲", "sent": "Reduce input latency.", "sentZh": "減少輸入延遲。"}, {"en": "Capacitor", "zh": "電容", "sent": "Capacitors store energy.", "sentZh": "電容儲存能量。"}, {"en": "Heatsink", "zh": "散熱片", "sent": "The heatsink cools the chip.", "sentZh": "散熱片冷卻晶片。"}, {"en": "Bios", "zh": "BIOS/韌體介面", "sent": "Enter BIOS setup.", "sentZh": "進入 BIOS 設定。"}, {"en": "Bluetooth", "zh": "藍牙", "sent": "Pair via Bluetooth.", "sentZh": "透過藍牙配對。"}, {"en": "Motherboard", "zh": "主機板", "sent": "Connect to the motherboard.", "sentZh": "連接到主機板。"}];
 
@@ -176,6 +189,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -258,6 +272,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
     <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">

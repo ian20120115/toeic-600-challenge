@@ -122,6 +122,7 @@
         <a href="index.html" class="btn btn-learn" style="text-decoration:none;">🏠 Main Menu</a>
         <button class="btn btn-learn" onclick="showSection('learn')">📖 Study</button>
         <button class="btn btn-quiz" onclick="startQuiz()">📝 Exam</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -137,6 +138,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Fuselage", "zh": "機身", "sent": "The fuselage holds the passengers.", "sentZh": "機身容納乘客。"}, {"en": "Wing", "zh": "機翼", "sent": "The wing generates lift.", "sentZh": "機翼產生升力。"}, {"en": "Aileron", "zh": "副翼", "sent": "Ailerons control roll.", "sentZh": "副翼控制滾轉。"}, {"en": "Flaps", "zh": "襟翼", "sent": "Extend flaps for landing.", "sentZh": "降落時放下襟翼。"}, {"en": "Rudder", "zh": "方向舵", "sent": "The rudder controls yaw.", "sentZh": "方向舵控制偏航。"}, {"en": "Elevator", "zh": "升降舵", "sent": "Elevators control pitch.", "sentZh": "升降舵控制俯仰。"}, {"en": "Cockpit", "zh": "駕駛艙", "sent": "Pilots sit in the cockpit.", "sentZh": "飛行員坐在駕駛艙內。"}, {"en": "Engine", "zh": "引擎", "sent": "The engine provides thrust.", "sentZh": "引擎提供推力。"}, {"en": "Propeller", "zh": "螺旋槳", "sent": "The propeller provides propulsion.", "sentZh": "螺旋槳提供推進力。"}, {"en": "Landing Gear", "zh": "起落架", "sent": "Retract landing gear after takeoff.", "sentZh": "起飛後收起起落架。"}, {"en": "Empennage", "zh": "尾翼", "sent": "The empennage is the tail assembly.", "sentZh": "尾翼是機尾組件。"}, {"en": "Stabilizer", "zh": "安定面", "sent": "The stabilizer keeps the plane level.", "sentZh": "安定面保持飛機水平。"}, {"en": "Spoiler", "zh": "擾流板", "sent": "Spoilers reduce lift.", "sentZh": "擾流板減少升力。"}, {"en": "Slat", "zh": "前緣縫翼", "sent": "Slats improve low-speed lift.", "sentZh": "前緣縫翼改善低速升力。"}, {"en": "Canopy", "zh": "座艙罩", "sent": "Fighter jets have a canopy.", "sentZh": "戰鬥機有座艙罩。"}, {"en": "Wheel Well", "zh": "輪艙", "sent": "Gear retracts into the wheel well.", "sentZh": "起落架收進輪艙。"}, {"en": "Nose Cone", "zh": "機鼻整流罩", "sent": "The radar is inside the nose cone.", "sentZh": "雷達在機鼻整流罩內。"}, {"en": "Windshield", "zh": "擋風玻璃", "sent": "Bird strike cracked the windshield.", "sentZh": "鳥擊撞裂了擋風玻璃。"}, {"en": "Galley", "zh": "空廚/廚房", "sent": "Food is prepared in the galley.", "sentZh": "食物在空廚準備。"}, {"en": "Cargo Hold", "zh": "貨艙", "sent": "Luggage goes in the cargo hold.", "sentZh": "行李放入貨艙。"}];
 
@@ -170,6 +183,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -252,6 +266,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
 

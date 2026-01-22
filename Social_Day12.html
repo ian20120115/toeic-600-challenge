@@ -116,6 +116,7 @@
         <a href="index.html" class="btn">🏠 Feed</a>
         <button class="btn btn-active" onclick="showSection('learn')">♥️ Learn</button>
         <button class="btn" onclick="startQuiz()">💬 Quiz</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -131,6 +132,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Meme", "zh": "迷因/梗圖", "sent": "Send me that meme.", "sentZh": "傳那張梗圖給我。"}, {"en": "Trending", "zh": "流行/趨勢", "sent": "This hashtag is trending.", "sentZh": "這個標籤正在流行。"}, {"en": "Reel / Short", "zh": "短影音", "sent": "Reels are very popular.", "sentZh": "短影音非常受歡迎。"}, {"en": "Profile", "zh": "個人檔案", "sent": "Link in bio / profile.", "sentZh": "連結在個人檔案。"}, {"en": "Filter", "zh": "濾鏡", "sent": "No filter needed.", "sentZh": "不需要濾鏡。"}, {"en": "Algorithm", "zh": "演算法", "sent": "The algorithm changed again.", "sentZh": "演算法又變了。"}, {"en": "Feed", "zh": "動態牆", "sent": "Scroll through the feed.", "sentZh": "滑動態牆。"}, {"en": "Tag", "zh": "標記", "sent": "Tag me in the photo.", "sentZh": "在照片裡標記我。"}, {"en": "DM (Direct Message)", "zh": "私訊", "sent": "Slide into the DMs.", "sentZh": "傳私訊 (搭訕)。"}, {"en": "Caption", "zh": "貼文說明", "sent": "Write a funny caption.", "sentZh": "寫個有趣的貼文說明。"}, {"en": "Platform", "zh": "平台", "sent": "Which platform do you use?", "sentZh": "你使用哪個平台？"}, {"en": "Notification", "zh": "通知", "sent": "Turn on notifications.", "sentZh": "開啟通知。"}, {"en": "Hashtag", "zh": "標籤(#)", "sent": "Use relevant hashtags.", "sentZh": "使用相關的標籤。"}, {"en": "Block", "zh": "封鎖", "sent": "I had to block him.", "sentZh": "我不得不封鎖他。"}, {"en": "Troll", "zh": "酸民/引戰者", "sent": "Don't feed the trolls.", "sentZh": "別理會酸民。"}, {"en": "Story", "zh": "限時動態", "sent": "Post a story.", "sentZh": "發佈限時動態。"}, {"en": "Bio", "zh": "自我介紹", "sent": "Update your bio.", "sentZh": "更新你的自我介紹。"}, {"en": "Community", "zh": "社群", "sent": "Build a loyal community.", "sentZh": "建立忠實的社群。"}, {"en": "Influencer", "zh": "網紅/影響者", "sent": "She is a beauty influencer.", "sentZh": "她是一位美妝網紅。"}, {"en": "Engagement", "zh": "互動率", "sent": "High engagement is good.", "sentZh": "高互動率是好事。"}];
 
@@ -167,6 +180,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
         
         // Reset button states
         const btns = document.querySelectorAll('.nav .btn');
@@ -254,6 +268,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
 

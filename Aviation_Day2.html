@@ -122,6 +122,7 @@
         <a href="index.html" class="btn btn-learn" style="text-decoration:none;">🏠 Main Menu</a>
         <button class="btn btn-learn" onclick="showSection('learn')">📖 Study</button>
         <button class="btn btn-quiz" onclick="startQuiz()">📝 Exam</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -137,6 +138,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Coordinates", "zh": "座標", "sent": "Enter GPS coordinates.", "sentZh": "輸入 GPS 座標。"}, {"en": "Waypoint", "zh": "導航點", "sent": "Next waypoint is DUMBA.", "sentZh": "下一個導航點是 DUMBA。"}, {"en": "Crosswind", "zh": "側風", "sent": "Strong crosswind on landing.", "sentZh": "降落時有強烈側風。"}, {"en": "Airspeed Indicator", "zh": "空速表", "sent": "Monitor your airspeed.", "sentZh": "監控你的空速。"}, {"en": "Roger", "zh": "收到", "sent": "Roger, maintain 5000.", "sentZh": "收到，維持 5000。"}, {"en": "Transponder", "zh": "詢答機", "sent": "Set transponder to 7700.", "sentZh": "設定詢答機為 7700。"}, {"en": "Icing", "zh": "積冰", "sent": "Turn on anti-icing.", "sentZh": "開啟防冰系統。"}, {"en": "Ground", "zh": "地面管制", "sent": "Contact ground for taxi.", "sentZh": "聯繫地面管制請求滑行。"}, {"en": "Glideslope", "zh": "下滑道", "sent": "Follow the glideslope.", "sentZh": "跟隨下滑道。"}, {"en": "Ceiling", "zh": "雲幂高", "sent": "Ceiling is 2000 feet.", "sentZh": "雲幂高 2000 英呎。"}, {"en": "Wind Shear", "zh": "風切", "sent": "Warning: Wind shear reported.", "sentZh": "警告：報告有風切。"}, {"en": "Mayday", "zh": "遇難呼救", "sent": "Mayday Mayday Mayday, engine failure.", "sentZh": "Mayday x3，引擎失效。"}, {"en": "Hold Short", "zh": "在...前停等", "sent": "Hold short of runway 18.", "sentZh": "在跑道 18 前停等。"}, {"en": "Altitude", "zh": "高度", "sent": "Cruising altitude is 35,000 feet.", "sentZh": "巡航高度為 35,000 英呎。"}, {"en": "IFR", "zh": "儀器飛行規則", "sent": "File an IFR flight plan.", "sentZh": "提交 IFR 飛行計畫。"}, {"en": "METAR", "zh": "定時機場天氣報告", "sent": "Read the METAR for destination.", "sentZh": "讀取目的地的 METAR。"}, {"en": "Headwind", "zh": "逆風", "sent": "Headwind helps takeoff.", "sentZh": "逆風有助於起飛。"}, {"en": "Turbulence", "zh": "亂流", "sent": "Fasten seatbelt during turbulence.", "sentZh": "亂流時繫緊安全帶。"}, {"en": "Attitude", "zh": "姿態", "sent": "Check the flight attitude.", "sentZh": "檢查飛行姿態。"}, {"en": "Pan-Pan", "zh": "緊急情況 (次於遇難)", "sent": "Pan-Pan, fuel low.", "sentZh": "Pan-Pan，燃油不足。"}];
 
@@ -170,6 +183,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -252,6 +266,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
 

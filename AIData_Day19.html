@@ -114,6 +114,7 @@
         <a href="index.html" class="btn">🏠 Home</a>
         <button class="btn btn-active" onclick="showSection('learn')">🧬 Learn</button>
         <button class="btn" onclick="startQuiz()">🧠 Quiz</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -129,6 +130,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Classification", "zh": "分類", "sent": "Image classification.", "sentZh": "圖像分類。"}, {"en": "TPU", "zh": "張量處理器", "sent": "Google uses TPUs for AI.", "sentZh": "Google 使用 TPU 進行 AI 運算。"}, {"en": "Backpropagation", "zh": "反向傳播", "sent": "Backpropagation updates weights.", "sentZh": "反向傳播更新權重。"}, {"en": "Gradient Descent", "zh": "梯度下降", "sent": "Use gradient descent to optimize.", "sentZh": "使用梯度下降來優化。"}, {"en": "Pipeline", "zh": "管線/流程", "sent": "Build a data pipeline.", "sentZh": "建立數據處理流程。"}, {"en": "Deployment", "zh": "部署", "sent": "Deploy the model to production.", "sentZh": "將模型部署到生產環境。"}, {"en": "Data Mining", "zh": "資料探勘", "sent": "Data mining extracts useful info.", "sentZh": "資料探勘提取有用資訊。"}, {"en": "Detection", "zh": "偵測", "sent": "Object detection finds cars.", "sentZh": "物件偵測找出汽車。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Cloud Computing", "zh": "雲端運算", "sent": "We train models in the cloud.", "sentZh": "我們在雲端訓練模型。"}, {"en": "Layer", "zh": "層", "sent": "A deep network has many layers.", "sentZh": "深層網絡有很多層。"}, {"en": "Algorithm", "zh": "演算法", "sent": "The algorithm optimizes the path.", "sentZh": "該演算法優化了路徑。"}, {"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}, {"en": "Neuron", "zh": "神經元", "sent": "Neurons activate based on input.", "sentZh": "神經元根據輸入激活。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}, {"en": "Precision", "zh": "精確率", "sent": "High precision reduces false positives.", "sentZh": "高精確率減少假陽性。"}, {"en": "Deep Learning", "zh": "深度學習", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網絡。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Hallucination", "zh": "幻覺 (AI胡說)", "sent": "LLMs can suffer from hallucination.", "sentZh": "大型語言模型可能會產生幻覺。"}, {"en": "Token", "zh": "詞元 (Token)", "sent": "The model processes tokens.", "sentZh": "模型處理 Token。"}];
 
@@ -164,6 +177,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -246,6 +260,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
     <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">

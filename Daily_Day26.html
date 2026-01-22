@@ -117,6 +117,7 @@
         <a href="index.html" class="btn">🏠 Home</a>
         <button class="btn btn-active" onclick="showSection('learn')">👋 Practice</button>
         <button class="btn" onclick="startQuiz()">🎯 Test</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -132,6 +133,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Phone", "zh": "電話", "sent": "Can I borrow your phone?", "sentZh": "我可以借你的電話嗎？"}, {"en": "Music", "zh": "音樂", "sent": "I like listening to music.", "sentZh": "我喜歡聽音樂。"}, {"en": "Student", "zh": "學生", "sent": "I am a student.", "sentZh": "我是一名學生。"}, {"en": "Train", "zh": "火車", "sent": "The train is late.", "sentZh": "火車誤點了。"}, {"en": "Happy", "zh": "快樂", "sent": "She looks happy.", "sentZh": "她看起來很開心。"}, {"en": "Price", "zh": "價格", "sent": "The price is too high.", "sentZh": "價格太高了。"}, {"en": "Discount", "zh": "折扣", "sent": "Is there a discount?", "sentZh": "有折扣嗎？"}, {"en": "Movie", "zh": "電影", "sent": "Let's watch a movie.", "sentZh": "我們去看場電影吧。"}, {"en": "Battery", "zh": "電池", "sent": "My battery is low.", "sentZh": "我的電池電量低。"}, {"en": "Time", "zh": "時間", "sent": "What time is it?", "sentZh": "現在幾點了？"}, {"en": "Sorry", "zh": "對不起", "sent": "I am sorry for being late.", "sentZh": "抱歉我遲到了。"}, {"en": "Job / Work", "zh": "工作", "sent": "I like my job.", "sentZh": "我喜歡我的工作。"}, {"en": "Friend", "zh": "朋友", "sent": "He is my best friend.", "sentZh": "他是我最好的朋友。"}, {"en": "Family", "zh": "家庭", "sent": "How is your family?", "sentZh": "你的家人好嗎？"}, {"en": "Travel", "zh": "旅行", "sent": "I love to travel.", "sentZh": "我熱愛旅行。"}, {"en": "Tired", "zh": "累", "sent": "I feel really tired.", "sentZh": "我覺得很累。"}, {"en": "Hobby", "zh": "嗜好", "sent": "What is your hobby?", "sentZh": "你的嗜好是什麼？"}, {"en": "Weekend", "zh": "週末", "sent": "Any plans for the weekend?", "sentZh": "週末有什麼計畫嗎？"}, {"en": "Bus", "zh": "公車", "sent": "Take the bus home.", "sentZh": "搭公車回家。"}, {"en": "Thirsty", "zh": "渴", "sent": "I am thirsty for water.", "sentZh": "我口渴想喝水。"}];
 
@@ -167,6 +180,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
         
         // Reset button states
         const btns = document.querySelectorAll('.nav .btn');
@@ -254,6 +268,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
 

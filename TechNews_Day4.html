@@ -114,6 +114,7 @@
         <a href="index.html" class="btn">🏠 Home</a>
         <button class="btn btn-active" onclick="showSection('learn')">📡 Read</button>
         <button class="btn" onclick="startQuiz()">🧪 Test</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -129,6 +130,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "Rumor", "zh": "謠言/傳聞", "sent": "Rumors say a new iPad is coming.", "sentZh": "傳聞說新的 iPad 即將推出。"}, {"en": "Cloud", "zh": "雲端", "sent": "Move data to the cloud.", "sentZh": "將資料移至雲端。"}, {"en": "IPO", "zh": "首次公開募股", "sent": "The company filed for an IPO.", "sentZh": "該公司申請了首次公開募股。"}, {"en": "Leak", "zh": "洩漏", "sent": "Photos of the phone leaked.", "sentZh": "手機的照片洩漏了。"}, {"en": "Funding", "zh": "資金/融資", "sent": "They secured Series A funding.", "sentZh": "他們獲得了 A 輪融資。"}, {"en": "Breach", "zh": "違規/漏洞/外洩", "sent": "A massive data breach.", "sentZh": "大規模資料外洩。"}, {"en": "Innovation", "zh": "創新", "sent": "Innovation drives growth.", "sentZh": "創新驅動成長。"}, {"en": "Bug Fix", "zh": "錯誤修復", "sent": "The patch includes bug fixes.", "sentZh": "這個補丁包含了錯誤修復。"}, {"en": "Startup", "zh": "新創公司", "sent": "The startup raised $1M.", "sentZh": "這家新創公司籌集了一百萬美元。"}, {"en": "Stocks", "zh": "股票", "sent": "Tech stocks are volatile.", "sentZh": "科技股波動很大。"}, {"en": "Launch", "zh": "發布/上市", "sent": "The product launch is tomorrow.", "sentZh": "產品發布會就在明天。"}, {"en": "Merger", "zh": "合併", "sent": "The merger created a giant.", "sentZh": "這次合併創造了一個巨頭。"}, {"en": "Unicorn", "zh": "獨角獸(估值10億鎂)", "sent": "It became the newest unicorn.", "sentZh": "它成為了最新的獨角獸公司。"}, {"en": "Cybersecurity", "zh": "網路安全", "sent": "Invest in cybersecurity.", "sentZh": "投資網路安全。"}, {"en": "Feature", "zh": "功能", "sent": "This is a key feature.", "sentZh": "這是一個關鍵功能。"}, {"en": "Antitrust", "zh": "反壟斷", "sent": "Facing an antitrust lawsuit.", "sentZh": "面臨反壟斷訴訟。"}, {"en": "Venture Capital (VC)", "zh": "風險投資", "sent": "VCs are investing in AI.", "sentZh": "風投正在投資人工智慧。"}, {"en": "Disruption", "zh": "顛覆/破壞式創新", "sent": "Digital disruption is real.", "sentZh": "數位顛覆是真實存在的。"}, {"en": "Quarterly Report", "zh": "季報", "sent": "Revenue is up in the quarterly report.", "sentZh": "季報顯示營收成長。"}, {"en": "CEO", "zh": "執行長", "sent": "The CEO stepped down.", "sentZh": "執行長下台了。"}];
 
@@ -164,6 +177,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
         
         // Reset button states
         const btns = document.querySelectorAll('.nav .btn');
@@ -251,6 +265,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
 

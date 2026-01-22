@@ -109,6 +109,7 @@
         <a href="index.html" class="btn btn-learn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">🏠 主選單</a>
         <button class="btn btn-learn" onclick="showSection('learn')">📖 學習模式</button>
         <button class="btn btn-quiz" onclick="startQuiz()">📝 挑戰測驗</button>
+        <button class="btn btn-quiz" onclick="startListening()" style="background-color: #f1c40f; color: #000;"><span>👂 Listening</span></button>
     </div>
 
     <div id="learn-section"></div>
@@ -124,6 +125,18 @@
     </div>
 </div>
 
+
+    <div id="listen-section" style="display: none; text-align: center;">
+        <div id="listen-container">
+            <div class="question-word" style="font-size: 80px; margin-bottom: 20px;">🔊</div>
+            <button class="btn" onclick="playCurrentAudio()" style="margin-bottom: 30px; background: #fff; color: #333; border: 1px solid #ccc;">▶️ Replay</button>
+            <div class="options-grid" id="listen-options-area"></div>
+            <div id="listen-result-msg"></div>
+        </div>
+        <div id="listen-final-score" style="display:none;" class="score-board"></div>
+        <button id="listen-restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startListening()"><span>🔄 Retry</span></button>
+    </div>
+    
 <script>
     const wordsDB = [{"en": "variable", "zh": "變數", "sent": "A variable stores a value.", "sentZh": "變數儲存一個數值。"}, {"en": "function", "zh": "函式", "sent": "Call the function to execute code.", "sentZh": "呼叫函式來執行程式碼。"}, {"en": "array", "zh": "陣列", "sent": "An array is a list of items.", "sentZh": "陣列是項目的列表。"}, {"en": "integer", "zh": "整數", "sent": "5 is an integer.", "sentZh": "5 是一個整數。"}, {"en": "string", "zh": "字串", "sent": "Strings are text data.", "sentZh": "字串是文字資料。"}, {"en": "boolean", "zh": "布林值", "sent": "True or False.", "sentZh": "真或假。"}, {"en": "loop", "zh": "迴圈", "sent": "Loops repeat actions.", "sentZh": "迴圈重複動作。"}, {"en": "condition", "zh": "條件", "sent": "If-else is a condition.", "sentZh": "If-else 是一個條件。"}, {"en": "syntax", "zh": "語法", "sent": "Check your syntax.", "sentZh": "檢查您的語法。"}, {"en": "bug", "zh": "錯誤", "sent": "There is a bug in the code.", "sentZh": "程式碼中有一個錯誤。"}, {"en": "debug", "zh": "除錯", "sent": "Use console to debug.", "sentZh": "使用控制台除錯。"}, {"en": "compile", "zh": "編譯", "sent": "Compile the source code.", "sentZh": "編譯原始碼。"}, {"en": "execute", "zh": "執行", "sent": "Execute the program.", "sentZh": "執行程式。"}, {"en": "database", "zh": "資料庫", "sent": "Save to database.", "sentZh": "存入資料庫。"}, {"en": "algorithm", "zh": "演算法", "sent": "Sorting algorithms are fast.", "sentZh": "排序演算法很快。"}, {"en": "parameter", "zh": "參數", "sent": "Define function parameters.", "sentZh": "定義函式參數。"}, {"en": "argument", "zh": "引數", "sent": "Pass arguments to function.", "sentZh": "傳遞引數給函式。"}, {"en": "return", "zh": "回傳", "sent": "Return the result.", "sentZh": "回傳結果。"}, {"en": "class", "zh": "類別", "sent": "Class defines objects.", "sentZh": "類別定義物件。"}, {"en": "object", "zh": "物件", "sent": "Create a new object.", "sentZh": "建立一個新物件。"}];
 
@@ -159,6 +172,7 @@
     function showSection(section) {
         document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
         document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        document.getElementById('listen-section').style.display = section === 'listen' ? 'block' : 'none';
     }
 
     let currentQuestion = 0;
@@ -241,6 +255,84 @@
         document.getElementById('restart-btn').style.display = 'inline-block';
     }
 
+    
+    // --- Listening Mode Logic ---
+    let listenQ = 0;
+    let listenScore = 0;
+    let listenList = [];
+    
+    function startListening() {
+        showSection('listen');
+        listenQ = 0;
+        listenScore = 0;
+        document.getElementById('listen-final-score').style.display = 'none';
+        document.getElementById('listen-restart-btn').style.display = 'none';
+        document.getElementById('listen-container').style.display = 'block';
+        listenList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadListenQ();
+    }
+
+    function loadListenQ() {
+        if (listenQ >= listenList.length) {
+            endListening();
+            return;
+        }
+        const current = listenList[listenQ];
+        document.getElementById('listen-result-msg').className = '';
+        document.getElementById('listen-result-msg').innerHTML = '';
+        
+        // Auto play audio
+        setTimeout(() => speak(current.en), 300);
+
+        let options = [current.zh];
+        while (options.length < 4) {
+            const r = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(r.zh)) options.push(r.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const area = document.getElementById('listen-options-area');
+        area.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkListenAns(opt, current.zh);
+            area.appendChild(btn);
+        });
+    }
+
+    function playCurrentAudio() {
+        if (listenQ < listenList.length) {
+            speak(listenList[listenQ].en);
+        }
+    }
+
+    function checkListenAns(selected, correct) {
+        const resDiv = document.getElementById('listen-result-msg');
+        document.querySelectorAll('#listen-options-area .option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            listenScore++;
+            resDiv.textContent = "✅ Correct!";
+            resDiv.className = "result-message correct";
+        } else {
+            resDiv.textContent = `❌ Wrong! It was: ${correct}`;
+            resDiv.className = "result-message wrong";
+        }
+        setTimeout(() => {
+            listenQ++;
+            loadListenQ();
+        }, 1200);
+    }
+
+    function endListening() {
+        document.getElementById('listen-container').style.display = 'none';
+        const board = document.getElementById('listen-final-score');
+        board.style.display = 'block';
+        board.innerHTML = `LISTENING SCORE: ${listenScore} / ${wordsDB.length}`;
+        document.getElementById('listen-restart-btn').style.display = 'inline-block';
+    }
+    
     initLearn();
 </script>
     <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
