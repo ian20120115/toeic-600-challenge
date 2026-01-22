@@ -161,34 +161,121 @@ for d in range(9, 13):
 
 # Part 3: Conversations (Day 13-20)
 # 2 conversations per day
+# Part 3: Conversations (Day 13-20) - Fully Populated
 part3_db = {
     13: [
         ("W: Did you see the new schedule? M: Yes, they changed the meeting time. W: Oh no, I have a dentist appointment then.",
-         [("What are they discussing?", ["Schedulue", "Food", "Weather", "Traffic"], "A"), ("What is the woman's problem?", ["She is sick", "She has conflict", "She is late", "She lost key"], "B")]),
+         [("What are they discussing?", ["Schedule change", "Food", "Weather", "Traffic"], "A"), ("What is the woman's problem?", ["She is sick", "She has conflict", "She is late", "She lost key"], "B")]),
         ("M: I'd like to book a room. W: For how many nights? M: Just two nights. W: Okay, that will be $200.",
          [("Where does this take place?", ["Hotel", "Bank", "School", "Park"], "A"), ("How long is the stay?", ["1 night", "2 nights", "3 nights", "1 week"], "B")])
+    ],
+    14: [
+        ("M: Excuse me, does this bus go to the city center? W: No, you need the number 5 bus. M: Where can I catch that? W: The stop is just around the corner.",
+         [("Where does the man want to go?", ["City center", "Airport", "Train station", "Park"], "A"), ("Which bus does he need?", ["Number 10", "Number 5", "Number 3", "Number 1"], "B")]),
+        ("W: The printer is out of paper again. M: I'll go get some from the supply room. W: Thanks, I need to print these reports by noon.",
+         [("What is the problem?", ["No ink", "No paper", "Power outage", "Broken printer"], "B"), ("When are the reports due?", ["10 AM", "11 AM", "12 PM", "1 PM"], "C")])
+    ],
+    15: [
+        ("M: How was your vacation? W: It was great, but it rained for two days. M: That's too bad. Did you go swimming? W: Yes, when the sun finally came out.",
+         [("What is the woman talking about?", ["Her job", "Her vacation", "Her car", "Her house"], "B"), ("What happened during the trip?", ["Lost luggage", "Rained", "Got sick", "Flight delayed"], "B")]),
+        ("W: I'd like to return this shirt. It's too small. M: Do you have the receipt? W: Yes, here it is. M: Okay, would you like a refund or an exchange?",
+         [("Why is the woman returning the item?", ["Wrong color", "Too small", "Damaged", "Changed mind"], "B"), ("What does the man ask for?", ["ID", "Credit card", "Receipt", "Phone number"], "C")])
+    ],
+    16: [
+        ("M: Are you ready to order? W: I'm not sure yet. What do you recommend? M: The seafood pasta is very popular today. W: Sounds delicious, I'll have that.",
+         [("Where are the speakers?", ["Library", "Restaurant", "Hospital", "Cinema"], "B"), ("What does the woman order?", ["Steak", "Salad", "Seafood pasta", "Soup"], "C")]),
+        ("W: Did you finish the project? M: Almost, I just need to check the figures. W: Great, let's review it tomorrow morning.",
+         [("What is the man doing?", ["Starting a project", "Finishing a project", "Quitting", "Sleeping"], "B"), ("When will they meet?", ["Tonight", "Tomorrow morning", "Next week", "Sunday"], "B")])
+    ],
+    17: [
+        ("M: Hello, tech support. How can I help? W: My computer screen is black. M: Is it plugged in? W: Let me check... oh, the cable was loose.",
+         [("Who is the man?", ["Doctor", "Tech support", "Police", "Teacher"], "B"), ("What was the problem?", ["Broken screen", "Loose cable", "Virus", "No power"], "B")]),
+        ("W: We are looking for a new marketing manager. M: Do we have any candidates? W: Yes, three people applied yesterday.",
+         [("What position is open?", ["Sales", "Marketing Manager", "Accountant", "Driver"], "B"), ("How many applicants?", ["One", "Two", "Three", "Four"], "C")])
+    ],
+    18: [
+        ("M: Can you give me a ride to the airport? W: Sure, what time is your flight? M: It leaves at 6 PM. W: Okay, let's leave at 3 PM to avoid traffic.",
+         [("Where is the man going?", ["Station", "Airport", "Office", "Home"], "B"), ("Why leave early?", ["To eat", "Avoid traffic", "Shop", "Get gas"], "B")]),
+        ("W: Your total comes to $45. M: Do you accept credit cards? W: We only take cash or debit. M: Oh, let me find an ATM.",
+         [("How much is the total?", ["$25", "$35", "$45", "$55"], "C"), ("What is not accepted?", ["Cash", "Debit", "Credit cards", "Coins"], "C")])
+    ],
+    19: [
+        ("M: I heard you're moving to Tokyo. W: Yes, I got transferred to the branch there. M: When do you leave? W: Next Friday.",
+         [("Where is the woman moving?", ["London", "Paris", "Tokyo", "New York"], "C"), ("Why is she moving?", ["New job", "Transfer", "School", "Family"], "B")]),
+        ("W: This coffee machine is driven me crazy. M: Is it broken again? W: It makes a loud noise but no coffee comes out.",
+         [("What is malfunctioning?", ["Printer", "Coffee machine", "Phone", "Elevator"], "B"), ("What happens?", ["Fire", "Loud noise", "Water leak", "Explosion"], "B")])
+    ],
+    20: [
+        ("M: Excuse me, is this seat taken? W: No, go ahead. Are you new here? M: Yes, it's my first day.",
+         [("What does the man ask?", ["Time", "Direction", "Seat availability", "Name"], "C"), ("Who is the man?", ["New employee", "Boss", "Customer", "Security"], "A")]),
+        ("W: We need to buy a gift for Sarah's retirement. M: How about a watch? W: That's a classic idea. Let's pool our money.",
+         [("Why are they buying a gift?", ["Birthday", "Wedding", "Retirement", "Promotion"], "C"), ("What do they suggest?", ["Bag", "Watch", "Pen", "Flower"], "B")])
     ]
 }
-# Generate generic for rest for now to ensure structure exists
-for d in range(14, 21):
-    part3_db[d] = [
-        (f"M: Use conversation {i}. W: Okay day {d}.", [("Q1", ["A","B","C","D"], "A"), ("Q2", ["A","B","C","D"], "A")]) for i in range(2)
-    ]
 
-# Part 4: Talks (Day 21-30)
-# 2 talks per day
+# Part 4: Talks (Day 21-30) - Fully Populated
 part4_db = {
     21: [
-        ("Attention please. The library will close in 15 minutes. Please check out your books now.",
-         [("Where is this?", ["Library", "School", "Store", "Bank"], "A"), ("When closing?", ["15m", "1 hour", "Now", "Never"], "A")]),
-        ("Welcome to the zoo. Do not feed the animals. Tours start at 10 AM.", 
-         [("What is forbidden?", ["Feeding", "Walking", "Talking", "Sleeping"], "A"), ("Tour time?", ["9", "10", "11", "12"], "B")])
+        ("Attention please. The library will close in 15 minutes. Please check out your books now. Computers will shut down automatically in 5 minutes.",
+         [("Where is this announcement?", ["Library", "School", "Store", "Bank"], "A"), ("When do computers shut down?", ["5 mins", "10 mins", "15 mins", "Now"], "A")]),
+        ("Welcome to the City Zoo. Please remember: do not feed the animals as they are on strict diets. Guided tours start at 10 AM at the main gate.", 
+         [("What is forbidden?", ["Feeding animals", "Walking", "Talking", "Taking photos"], "A"), ("Where do tours start?", ["Gift shop", "Main gate", "Exit", "Cafe"], "B")])
+    ],
+    22: [
+        ("Passengers for Flight 880 to London, please proceed to Gate 12. We apologize for the 30-minute delay due to a mechanical check.",
+         [("Where is the flight going?", ["Paris", "London", "Tokyo", "Berlin"], "B"), ("Why is it delayed?", ["Weather", "Mechanical check", "Crew late", "Security"], "B")]),
+        ("Good morning staff. I'm happy to announce that our sales increased by 20% this quarter. As a result, everyone will receive a bonus.",
+         [("Who is the speaker?", ["Manager", "Customer", "Pilot", "Doctor"], "A"), ("What is the good news?", ["New office", "Sales increase", "New product", "Holiday"], "B")])
+    ],
+    23: [
+        ("This is a traffic update. There is a heavy accident on Highway 5. Please take the detour through the riverside road. Expect delays of up to an hour.",
+         [("What is the report about?", ["Weather", "Traffic", "Sports", "News"], "B"), ("What is recommended?", ["Stay home", "Take detour", "Wait", "Walk"], "B")]),
+        ("Thank you for calling City Bank. Our hours are 9 AM to 5 PM, Monday through Friday. For lost cards, please press 1 now.",
+         [("What business is this?", ["Hospital", "Bank", "School", "Hotel"], "B"), ("When are they open?", ["Weekends", "Mon-Fri", "24/7", "Nights only"], "B")])
+    ],
+    24: [
+        ("Welcome to the National Museum. Please do not use flash photography inside the galleries. Audio guides are available at the front desk for $5.",
+         [("Where is this?", ["Museum", "Park", "Cinema", "Stadium"], "A"), ("What costs $5?", ["Entry", "Audio guide", "Map", "Photo"], "B")]),
+        ("Attention shoppers. We have a lost child at the customer service desk. A little boy named Timmy in a red shirt. Parents please come to the desk.",
+         [("Who is lost?", ["A dog", "A girl", "A boy", "An old man"], "C"), ("What is he wearing?", ["Blue hat", "Red shirt", "Green coat", "Black shoes"], "B")])
+    ],
+    25: [
+        ("The weather forecast for tomorrow predicts heavy snow. Public transport may be affected. Residents are advised to stay indoors if possible.",
+         [("What is the forecast?", ["Rain", "Snow", "Sun", "Wind"], "B"), ("What might be affected?", ["Internet", "Public transport", "Water", "Gas"], "B")]),
+        ("Dr. Smith's dental clinic. We are currently closed for lunch. We will reopen at 2 PM. Please leave a message after the beep.",
+         [("What kind of clinic is this?", ["Medical", "Dental", "Eye", "Skin"], "B"), ("When do they reopen?", ["1 PM", "2 PM", "3 PM", "4 PM"], "B")])
+    ],
+    26: [
+        ("Welcome aboard the express train to Central Station. We will be making stops at Northgate and Westside. Please keep your ticket visible.",
+         [("What is the final destination?", ["Northgate", "Westside", "Central Station", "Airport"], "C"), ("What should passengers do?", ["Sleep", "Show ticket", "Eat", "Stand"], "B")]),
+        ("Tonight's concert has been cancelled due to the singer's illness. Refunds will be issued at the point of purchase starting tomorrow.",
+         [("Why is the concert cancelled?", ["Weather", "Illness", "Low sales", "Venue problem"], "B"), ("When do refunds start?", ["Today", "Tomorrow", "Next week", "Never"], "B")])
+    ],
+    27: [
+        ("Attention employees. The fire alarm test will take place at 11 AM today. You do not need to evacuate deeply; it is just a test.",
+         [("What will happen at 11 AM?", ["Meeting", "Fire alarm test", "Lunch", "Party"], "B"), ("Do they need to evacuate?", ["Yes", "No", "Maybe", "Only managers"], "B")]),
+        ("Thank you for purchasing the SmartVacuum. Before using, please charge the battery for at least 4 hours. Read the manual for safety instructions.",
+         [("What product is this?", ["Phone", "Car", "SmartVacuum", "Laptop"], "C"), ("How long to charge?", ["1 hour", "2 hours", "4 hours", "8 hours"], "C")])
+    ],
+    28: [
+        ("The new city park is finally open. It features a jogging track, a playground, and a rose garden. The park is open daily from sunrise to sunset.",
+         [("What is new?", ["Mall", "School", "Park", "Bridge"], "C"), ("When is it open?", ["24 hours", "Sunrise to sunset", "Weekends only", "Nights"], "B")]),
+        ("To reset your password, please enter your username and click 'Forgot Password'. A link will be sent to your registered email address.",
+         [("What is the instruction for?", ["Buying online", "Resetting password", "Creating account", "Deleting file"], "B"), ("Where is the link sent?", ["SMS", "Email", "Mail", "Fax"], "B")])
+    ],
+    29: [
+        ("We are sorry to announce that the 4 PM workshop is full. There are still seats available for the 6 PM session. Please sign up at the registration table.",
+         [("Which session is full?", ["2 PM", "4 PM", "6 PM", "8 PM"], "B"), ("Where to sign up?", ["Online", "Registration table", "By phone", "In classroom"], "B")]),
+        ("Local news alert. The annual marathon will close Main Street this Sunday morning. Drivers should use alternative routes.",
+         [("What event is happening?", ["Parade", "Marathon", "Concert", "Protest"], "B"), ("Which street is closed?", ["First St", "Main St", "Side St", "Park Ave"], "B")])
+    ],
+    30: [
+        ("Thank you for visiting the Space Museum. The museum is closing now. Please head to the exit. We hope to see you again soon.",
+         [("What is the status of the museum?", ["Opening", "Closing", "Renovating", "Moving"], "B"), ("Where should visitors go?", ["Gift shop", "Exit", "Toilet", "Roof"], "B")]),
+        ("Congratulations to the sales team for winning the 'Best Performance' award. The ceremony will be held in the grand ballroom tonight.",
+         [("Who won the award?", ["Marketing", "HR", "Sales team", "IT"], "C"), ("Where is the ceremony?", ["Office", "Cafeteria", "Ballroom", "Park"], "C")])
     ]
 }
-for d in range(22, 31):
-    part4_db[d] = [
-        (f"This is talk {i} for day {d}. Please listen.", [("Q1", ["A","B","C","D"], "A"), ("Q2", ["A","B","C","D"], "A")]) for i in range(2)
-    ]
 
 def gen_part1_content(idx, sc):
     # Map descriptions to images if available
