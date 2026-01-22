@@ -142,7 +142,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Interface", "zh": "介面", "sent": "USB interface.", "sentZh": "USB 介面。"}, {"en": "Wifi Module", "zh": "Wifi 模組", "sent": "ESP8266 Wifi module.", "sentZh": "ESP8266 Wifi 模組。"}, {"en": "SSD", "zh": "固態硬碟", "sent": "SSDs are faster than HDDs.", "sentZh": "SSD 比 HDD 快。"}, {"en": "Ground", "zh": "接地", "sent": "Connect the wire to ground.", "sentZh": "將線接地。"}, {"en": "Microcontroller", "zh": "微控制器", "sent": "Arduino is a microcontroller.", "sentZh": "Arduino 是一個微控制器。"}, {"en": "Actuator", "zh": "作動器/致動器", "sent": "The actuator moves the arm.", "sentZh": "作動器移動手臂。"}, {"en": "Clock Speed", "zh": "時脈速度", "sent": "Overclocking increases clock speed.", "sentZh": "超頻增加時脈速度。"}, {"en": "Benchmark", "zh": "跑分/基準測試", "sent": "Run a benchmark test.", "sentZh": "執行基準測試。"}, {"en": "Voltage", "zh": "電壓", "sent": "Check the voltage.", "sentZh": "檢查電壓。"}, {"en": "Sync", "zh": "同步", "sent": "V-Sync enabled.", "sentZh": "啟用垂直同步。"}, {"en": "Graphics Card", "zh": "顯示卡", "sent": "Install the graphics card driver.", "sentZh": "安裝顯示卡驅動程式。"}, {"en": "Short Circuit", "zh": "短路", "sent": "A short circuit caused a fire.", "sentZh": "短路引起了火災。"}, {"en": "Latency", "zh": "延遲", "sent": "Reduce input latency.", "sentZh": "減少輸入延遲。"}, {"en": "Keyboard", "zh": "鍵盤", "sent": "Mechanical keyboard switches.", "sentZh": "機械鍵盤軸體。"}, {"en": "CPU", "zh": "中央處理器", "sent": "The CPU is the brain.", "sentZh": "CPU 是大腦。"}, {"en": "Wireless", "zh": "無線", "sent": "Wireless charging.", "sentZh": "無線充電。"}, {"en": "Circuit", "zh": "電路", "sent": "Complete the circuit.", "sentZh": "完成電路。"}, {"en": "Battery", "zh": "電池", "sent": "Low battery warning.", "sentZh": "低電量警告。"}, {"en": "Hard Drive", "zh": "硬碟", "sent": "The hard drive is full.", "sentZh": "硬碟滿了。"}, {"en": "RAM", "zh": "隨機存取記憶體", "sent": "Upgrade the RAM to 32GB.", "sentZh": "將 RAM 升級到 32GB。"}];
+    const wordsDB = [{"en": "Circuit", "zh": "電路", "sent": "Complete the circuit.", "sentZh": "完成電路。"}, {"en": "Latency", "zh": "延遲", "sent": "Reduce input latency.", "sentZh": "減少輸入延遲。"}, {"en": "Boot", "zh": "開機/啟動", "sent": "The system failed to boot.", "sentZh": "系統啟動失敗。"}, {"en": "Actuator", "zh": "作動器/致動器", "sent": "The actuator moves the arm.", "sentZh": "作動器移動手臂。"}, {"en": "Connector", "zh": "接頭", "sent": "Check the cable connector.", "sentZh": "檢查電纜接頭。"}, {"en": "Interface", "zh": "介面", "sent": "USB interface.", "sentZh": "USB 介面。"}, {"en": "Soldering", "zh": "焊接", "sent": "Soldering iron is hot.", "sentZh": "烙鐵很燙。"}, {"en": "Sync", "zh": "同步", "sent": "V-Sync enabled.", "sentZh": "啟用垂直同步。"}, {"en": "Protocol", "zh": "協定", "sent": "MQTT protocol for IoT.", "sentZh": "IoT 使用的 MQTT 協定。"}, {"en": "Battery", "zh": "電池", "sent": "Low battery warning.", "sentZh": "低電量警告。"}, {"en": "Peripheral", "zh": "周邊設備", "sent": "Connect peripherals via USB.", "sentZh": "透過 USB 連接周邊設備。"}, {"en": "Clock Speed", "zh": "時脈速度", "sent": "Overclocking increases clock speed.", "sentZh": "超頻增加時脈速度。"}, {"en": "Wireless", "zh": "無線", "sent": "Wireless charging.", "sentZh": "無線充電。"}, {"en": "Benchmark", "zh": "跑分/基準測試", "sent": "Run a benchmark test.", "sentZh": "執行基準測試。"}, {"en": "PCB", "zh": "印刷電路板", "sent": "Design the PCB layout.", "sentZh": "設計 PCB 佈局。"}, {"en": "Resolution", "zh": "解析度", "sent": "1080p resolution.", "sentZh": "1080p 解析度。"}, {"en": "Hard Drive", "zh": "硬碟", "sent": "The hard drive is full.", "sentZh": "硬碟滿了。"}, {"en": "Microcontroller", "zh": "微控制器", "sent": "Arduino is a microcontroller.", "sentZh": "Arduino 是一個微控制器。"}, {"en": "Heatsink", "zh": "散熱片", "sent": "The heatsink cools the chip.", "sentZh": "散熱片冷卻晶片。"}, {"en": "Keyboard", "zh": "鍵盤", "sent": "Mechanical keyboard switches.", "sentZh": "機械鍵盤軸體。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -259,6 +259,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('System optimized! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

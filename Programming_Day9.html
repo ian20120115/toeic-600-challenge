@@ -125,7 +125,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "scrum", "zh": "Scrum", "sent": "Daily scrum meetings keep us synced.", "sentZh": "每日 Scrum 會議讓我們保持同步。"}, {"en": "delivery", "zh": "交付", "sent": "Continuous delivery updates software.", "sentZh": "持續交付更新軟體。"}, {"en": "byte", "zh": "位元組", "sent": "8 bits make a byte.", "sentZh": "8 個位元組成一個位元組。"}, {"en": "algorithm", "zh": "演算法", "sent": "Binary search is an efficient algorithm.", "sentZh": "二分搜尋是一種高效的演算法。"}, {"en": "pipeline", "zh": "管線", "sent": "Build pipeline failed.", "sentZh": "建置管線失敗。"}, {"en": "container", "zh": "容器", "sent": "Docker containers are lightweight.", "sentZh": "Docker 容器是輕量級的。"}, {"en": "machine learning", "zh": "機器學習", "sent": "ML models learn from data.", "sentZh": "機器學習模型從資料中學習。"}, {"en": "latency", "zh": "延遲", "sent": "Reduce network latency.", "sentZh": "減少網路延遲。"}, {"en": "hash", "zh": "雜湊", "sent": "Hash functions map data to keys.", "sentZh": "雜湊函式將資料對應到鍵值。"}, {"en": "node", "zh": "節點", "sent": "Each node contains data.", "sentZh": "每個節點包含資料。"}, {"en": "dataset", "zh": "資料集", "sent": "Clean the dataset before training.", "sentZh": "訓練前清理資料集。"}, {"en": "exploit", "zh": "利用(漏洞)", "sent": "Hackers exploit weaknesses.", "sentZh": "駭客利用弱點。"}, {"en": "edge", "zh": "邊", "sent": "Edges connect nodes in a graph.", "sentZh": "邊連接圖形中的節點。"}, {"en": "decryption", "zh": "解密", "sent": "Decryption requires a private key.", "sentZh": "解密需要私鑰。"}, {"en": "accessibility", "zh": "無障礙", "sent": "Web accessibility is important.", "sentZh": "網頁無障礙性很重要。"}, {"en": "cloud", "zh": "雲端", "sent": "AWS is a cloud provider.", "sentZh": "AWS 是一個雲端供應商。"}, {"en": "bit", "zh": "位元", "sent": "A bit is 0 or 1.", "sentZh": "位元是 0 或 1。"}, {"en": "interface", "zh": "介面", "sent": "The UI should be intuitive.", "sentZh": "使用者介面應該直觀。"}, {"en": "artifact", "zh": "產出物", "sent": "Store build artifacts.", "sentZh": "儲存建置產出物。"}, {"en": "artificial intelligence", "zh": "人工智慧", "sent": "AI powers smart assistants.", "sentZh": "人工智慧驅動智慧助理。"}];
+    const wordsDB = [{"en": "hexadecimal", "zh": "十六進位", "sent": "Colors are often in hexadecimal.", "sentZh": "顏色通常是十六進位的。"}, {"en": "accessibility", "zh": "無障礙", "sent": "Web accessibility is important.", "sentZh": "網頁無障礙性很重要。"}, {"en": "binary", "zh": "二進位", "sent": "Computers use binary logic.", "sentZh": "電腦使用二進位邏輯。"}, {"en": "pipeline", "zh": "管線", "sent": "Build pipeline failed.", "sentZh": "建置管線失敗。"}, {"en": "vulnerability", "zh": "漏洞", "sent": "Patch the security vulnerability.", "sentZh": "修補安全漏洞。"}, {"en": "decryption", "zh": "解密", "sent": "Decryption requires a private key.", "sentZh": "解密需要私鑰。"}, {"en": "backlog", "zh": "待辦清單", "sent": "Prioritize tasks in the backlog.", "sentZh": "優先處理待辦清單中的任務。"}, {"en": "artificial intelligence", "zh": "人工智慧", "sent": "AI powers smart assistants.", "sentZh": "人工智慧驅動智慧助理。"}, {"en": "edge", "zh": "邊", "sent": "Edges connect nodes in a graph.", "sentZh": "邊連接圖形中的節點。"}, {"en": "byte", "zh": "位元組", "sent": "8 bits make a byte.", "sentZh": "8 個位元組成一個位元組。"}, {"en": "machine learning", "zh": "機器學習", "sent": "ML models learn from data.", "sentZh": "機器學習模型從資料中學習。"}, {"en": "user story", "zh": "使用者故事", "sent": "Write user stories for features.", "sentZh": "為功能撰寫使用者故事。"}, {"en": "sprint", "zh": "衝刺", "sent": "The sprint lasts two weeks.", "sentZh": "這個衝刺持續兩週。"}, {"en": "scrum", "zh": "Scrum", "sent": "Daily scrum meetings keep us synced.", "sentZh": "每日 Scrum 會議讓我們保持同步。"}, {"en": "hash", "zh": "雜湊", "sent": "Hash functions map data to keys.", "sentZh": "雜湊函式將資料對應到鍵值。"}, {"en": "structure", "zh": "結構", "sent": "Data structure organizes data.", "sentZh": "資料結構組織資料。"}, {"en": "exploit", "zh": "利用(漏洞)", "sent": "Hackers exploit weaknesses.", "sentZh": "駭客利用弱點。"}, {"en": "neural network", "zh": "神經網路", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網路。"}, {"en": "tree", "zh": "樹狀結構", "sent": "A binary tree has two children nodes.", "sentZh": "二元樹有兩個子節點。"}, {"en": "delivery", "zh": "交付", "sent": "Continuous delivery updates software.", "sentZh": "持續交付更新軟體。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -242,6 +242,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Compiled Successfully! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

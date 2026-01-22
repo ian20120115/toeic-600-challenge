@@ -138,7 +138,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Healer", "zh": "補師", "sent": "Protect the healer.", "sentZh": "保護補師。"}, {"en": "Toxic", "zh": "嘴臭/惡質", "sent": "The community is toxic.", "sentZh": "這社群很惡質。"}, {"en": "Alert", "zh": "通知(跳通知)", "sent": "The sub alert didn't trigger.", "sentZh": "訂閱通知沒跳出來。"}, {"en": "Tilt", "zh": "心態崩越打越爛", "sent": "I'm on full tilt.", "sentZh": "我心態全崩了。"}, {"en": "MP (Mana Points)", "zh": "魔力值", "sent": "Out of MP.", "sentZh": "沒魔了。"}, {"en": "Meta", "zh": "主流戰術", "sent": "This is the current meta.", "sentZh": "這是目前的主流玩法。"}, {"en": "Cooldown", "zh": "冷卻時間", "sent": "Skill is on cooldown.", "sentZh": "技能冷卻中。"}, {"en": "Quest", "zh": "任務", "sent": "Complete the quest.", "sentZh": "完成任務。"}, {"en": "Emote", "zh": "表情符號", "sent": "Spam emotes in chat.", "sentZh": "在聊天室狂刷表情。"}, {"en": "Loot", "zh": "戰利品", "sent": "Pick up the loot.", "sentZh": "撿起戰利品。"}, {"en": "NPC", "zh": "非玩家角色", "sent": "Talk to the NPC.", "sentZh": "跟 NPC 對話。"}, {"en": "Subscribe", "zh": "訂閱", "sent": "Don't forget to subscribe.", "sentZh": "別忘了訂閱。"}, {"en": "Carry", "zh": "凱瑞(帶飛)", "sent": "Please carry me.", "sentZh": "拜託凱瑞我。"}, {"en": "Streamer", "zh": "實況主", "sent": "My favorite streamer is live.", "sentZh": "我最愛的實況主開台了。"}, {"en": "Bitrate", "zh": "位元率", "sent": "Increase the streaming bitrate.", "sentZh": "提高串流位元率。"}, {"en": "Highlights", "zh": "精華片段", "sent": "Watch the stream highlights.", "sentZh": "觀看實況精華。"}, {"en": "Lag", "zh": "延遲/卡頓", "sent": "The lag is terrible.", "sentZh": "這延遲太糟糕了。"}, {"en": "GG (Good Game)", "zh": "好局(結束了)", "sent": "GG WP (Well Played).", "sentZh": "好局，打得好。"}, {"en": "Spawn", "zh": "重生/生成", "sent": "Enemy spawned behind you.", "sentZh": "敵人在你後面重生了。"}, {"en": "Follow", "zh": "追隨", "sent": "Thanks for the follow.", "sentZh": "謝謝追隨。"}];
+    const wordsDB = [{"en": "Smurf", "zh": "炸魚(開小號)", "sent": "He is smurfing in low rank.", "sentZh": "他在低排位炸魚。"}, {"en": "XP (Experience)", "zh": "經驗值", "sent": "Gain XP to level up.", "sentZh": "獲得經驗值升級。"}, {"en": "Facecam", "zh": "視訊鏡頭", "sent": "Turn on the facecam.", "sentZh": "開啟視訊鏡頭。"}, {"en": "Mod (Moderator)", "zh": "板手(管理員)", "sent": "Mods, ban him.", "sentZh": "管理員，Ban 掉他。"}, {"en": "Raid", "zh": "揪團(導流)", "sent": "We are raiding Ian's channel.", "sentZh": "我們要去揪團 Ian 的頻道。"}, {"en": "DPS", "zh": "輸出(每秒傷害)", "sent": "Low DPS output.", "sentZh": "低傷害輸出。"}, {"en": "Clutch", "zh": "關鍵時刻逆轉", "sent": "That was a clutch play!", "sentZh": "那操作太關鍵了！"}, {"en": "Chat", "zh": "聊天室", "sent": "Read the chat.", "sentZh": "看聊天室。"}, {"en": "Carry", "zh": "凱瑞(帶飛)", "sent": "Please carry me.", "sentZh": "拜託凱瑞我。"}, {"en": "Lag", "zh": "延遲/卡頓", "sent": "The lag is terrible.", "sentZh": "這延遲太糟糕了。"}, {"en": "Overlay", "zh": "介面層", "sent": "New stream overlay.", "sentZh": "新的實況介面。"}, {"en": "AFK", "zh": "掛網(不在電腦前)", "sent": "He went AFK.", "sentZh": "他掛網了。"}, {"en": "Gank", "zh": "偷襲", "sent": "Jungler is coming to gank.", "sentZh": "打野要來偷襲了。"}, {"en": "MP (Mana Points)", "zh": "魔力值", "sent": "Out of MP.", "sentZh": "沒魔了。"}, {"en": "Streamer", "zh": "實況主", "sent": "My favorite streamer is live.", "sentZh": "我最愛的實況主開台了。"}, {"en": "Cooldown", "zh": "冷卻時間", "sent": "Skill is on cooldown.", "sentZh": "技能冷卻中。"}, {"en": "Toxic", "zh": "嘴臭/惡質", "sent": "The community is toxic.", "sentZh": "這社群很惡質。"}, {"en": "Follow", "zh": "追隨", "sent": "Thanks for the follow.", "sentZh": "謝謝追隨。"}, {"en": "Quest", "zh": "任務", "sent": "Complete the quest.", "sentZh": "完成任務。"}, {"en": "Tilt", "zh": "心態崩越打越爛", "sent": "I'm on full tilt.", "sentZh": "我心態全崩了。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -255,6 +255,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('GG! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

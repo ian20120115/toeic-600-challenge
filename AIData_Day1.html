@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Algorithm", "zh": "演算法", "sent": "The algorithm optimizes the path.", "sentZh": "該演算法優化了路徑。"}, {"en": "Attention Mechanism", "zh": "注意力機制", "sent": "Attention focuses on key words.", "sentZh": "注意力機制聚焦於關鍵字。"}, {"en": "Big Data", "zh": "大數據", "sent": "Big data analysis finds trends.", "sentZh": "大數據分析發現趨勢。"}, {"en": "Classification", "zh": "分類", "sent": "Image classification.", "sentZh": "圖像分類。"}, {"en": "Correlation", "zh": "相關性", "sent": "Correlation does not imply causation.", "sentZh": "相關性不代表因果關係。"}, {"en": "Throughput", "zh": "吞吐量", "sent": "Maximize data throughput.", "sentZh": "最大化數據吞吐量。"}, {"en": "Pipeline", "zh": "管線/流程", "sent": "Build a data pipeline.", "sentZh": "建立數據處理流程。"}, {"en": "Deployment", "zh": "部署", "sent": "Deploy the model to production.", "sentZh": "將模型部署到生產環境。"}, {"en": "Detection", "zh": "偵測", "sent": "Object detection finds cars.", "sentZh": "物件偵測找出汽車。"}, {"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}, {"en": "Backpropagation", "zh": "反向傳播", "sent": "Backpropagation updates weights.", "sentZh": "反向傳播更新權重。"}, {"en": "Model", "zh": "模型", "sent": "Train the model on the dataset.", "sentZh": "在數據集上訓練模型。"}, {"en": "Token", "zh": "詞元 (Token)", "sent": "The model processes tokens.", "sentZh": "模型處理 Token。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Gradient Descent", "zh": "梯度下降", "sent": "Use gradient descent to optimize.", "sentZh": "使用梯度下降來優化。"}, {"en": "Neural Network", "zh": "神經網絡", "sent": "The neural network mimics the brain.", "sentZh": "神經網絡模仿大腦。"}, {"en": "Underfitting", "zh": "擬合不足", "sent": "Underfitting means the model is too simple.", "sentZh": "擬合不足意味著模型太簡單。"}, {"en": "Overfitting", "zh": "過度擬合", "sent": "Overfitting performs poorly on new data.", "sentZh": "過度擬合在數據上表現不佳。"}, {"en": "Accuracy", "zh": "準確率", "sent": "The model has 98% accuracy.", "sentZh": "該模型有 98% 的準確率。"}, {"en": "Visualization", "zh": "視覺化", "sent": "Data visualization helps understanding.", "sentZh": "數據視覺化有助於理解。"}];
+    const wordsDB = [{"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}, {"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}, {"en": "GPU", "zh": "圖形處理器", "sent": "GPUs accelerate AI training.", "sentZh": "GPU 加速 AI 訓練。"}, {"en": "Label", "zh": "標籤", "sent": "Annotate data with labels.", "sentZh": "用標籤標註數據。"}, {"en": "Model", "zh": "模型", "sent": "Train the model on the dataset.", "sentZh": "在數據集上訓練模型。"}, {"en": "Weight", "zh": "權重", "sent": "The weights determine the output.", "sentZh": "權重決定輸出。"}, {"en": "Pixel", "zh": "像素", "sent": "An image is a grid of pixels.", "sentZh": "圖像是像素網格。"}, {"en": "Visualization", "zh": "視覺化", "sent": "Data visualization helps understanding.", "sentZh": "數據視覺化有助於理解。"}, {"en": "Backpropagation", "zh": "反向傳播", "sent": "Backpropagation updates weights.", "sentZh": "反向傳播更新權重。"}, {"en": "Algorithm", "zh": "演算法", "sent": "The algorithm optimizes the path.", "sentZh": "該演算法優化了路徑。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Classification", "zh": "分類", "sent": "Image classification.", "sentZh": "圖像分類。"}, {"en": "Detection", "zh": "偵測", "sent": "Object detection finds cars.", "sentZh": "物件偵測找出汽車。"}, {"en": "Latency", "zh": "延遲", "sent": "Low latency is critical for real-time AI.", "sentZh": "低延遲對即時 AI 至關重要。"}, {"en": "Underfitting", "zh": "擬合不足", "sent": "Underfitting means the model is too simple.", "sentZh": "擬合不足意味著模型太簡單。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Deep Learning", "zh": "深度學習", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網絡。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}, {"en": "Learning Rate", "zh": "學習率", "sent": "Adjust the learning rate.", "sentZh": "調整學習率。"}, {"en": "Throughput", "zh": "吞吐量", "sent": "Maximize data throughput.", "sentZh": "最大化數據吞吐量。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -247,6 +247,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Great job! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

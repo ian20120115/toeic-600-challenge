@@ -125,7 +125,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "accessibility", "zh": "無障礙", "sent": "Web accessibility is important.", "sentZh": "網頁無障礙性很重要。"}, {"en": "protocol", "zh": "協定", "sent": "TCP is a reliable protocol.", "sentZh": "TCP 是一個可靠的協定。"}, {"en": "node", "zh": "節點", "sent": "Each node contains data.", "sentZh": "每個節點包含資料。"}, {"en": "algorithm", "zh": "演算法", "sent": "Binary search is an efficient algorithm.", "sentZh": "二分搜尋是一種高效的演算法。"}, {"en": "throughput", "zh": "吞吐量", "sent": "Increase the system throughput.", "sentZh": "增加系統吞吐量。"}, {"en": "wireframe", "zh": "線框圖", "sent": "Design a wireframe first.", "sentZh": "先設計線框圖。"}, {"en": "kanban", "zh": "看板", "sent": "Use a Kanban board to track progress.", "sentZh": "使用看板來追蹤進度。"}, {"en": "firewall", "zh": "防火牆", "sent": "Configure the firewall rules.", "sentZh": "設定防火牆規則。"}, {"en": "orchestration", "zh": "編排", "sent": "Kubernetes handles orchestration.", "sentZh": "Kubernetes 處理編排。"}, {"en": "delivery", "zh": "交付", "sent": "Continuous delivery updates software.", "sentZh": "持續交付更新軟體。"}, {"en": "interface", "zh": "介面", "sent": "The UI should be intuitive.", "sentZh": "使用者介面應該直觀。"}, {"en": "graph", "zh": "圖形", "sent": "Graphs model network connections.", "sentZh": "圖形模擬網路連接。"}, {"en": "dns", "zh": "DNS", "sent": "DNS resolves domain names.", "sentZh": "DNS 解析網域名稱。"}, {"en": "bandwidth", "zh": "頻寬", "sent": "High bandwidth is needed for video.", "sentZh": "影片需要高頻寬。"}, {"en": "artificial intelligence", "zh": "人工智慧", "sent": "AI powers smart assistants.", "sentZh": "人工智慧驅動智慧助理。"}, {"en": "prototype", "zh": "原型", "sent": "Test the interactive prototype.", "sentZh": "測試互動原型。"}, {"en": "edge", "zh": "邊", "sent": "Edges connect nodes in a graph.", "sentZh": "邊連接圖形中的節點。"}, {"en": "serverless", "zh": "無伺服器", "sent": "Serverless functions scale auto.", "sentZh": "無伺服器函式自動擴展。"}, {"en": "artifact", "zh": "產出物", "sent": "Store build artifacts.", "sentZh": "儲存建置產出物。"}, {"en": "agile", "zh": "敏捷", "sent": "Agile methodology focuses on speed.", "sentZh": "敏捷方法論著重於速度。"}];
+    const wordsDB = [{"en": "container", "zh": "容器", "sent": "Docker containers are lightweight.", "sentZh": "Docker 容器是輕量級的。"}, {"en": "kanban", "zh": "看板", "sent": "Use a Kanban board to track progress.", "sentZh": "使用看板來追蹤進度。"}, {"en": "virtualization", "zh": "虛擬化", "sent": "VMware provides virtualization.", "sentZh": "VMware 提供虛擬化。"}, {"en": "artificial intelligence", "zh": "人工智慧", "sent": "AI powers smart assistants.", "sentZh": "人工智慧驅動智慧助理。"}, {"en": "neural network", "zh": "神經網路", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網路。"}, {"en": "binary", "zh": "二進位", "sent": "Computers use binary logic.", "sentZh": "電腦使用二進位邏輯。"}, {"en": "delivery", "zh": "交付", "sent": "Continuous delivery updates software.", "sentZh": "持續交付更新軟體。"}, {"en": "experience", "zh": "體驗", "sent": "UX focuses on user satisfaction.", "sentZh": "UX 著重於使用者滿意度。"}, {"en": "sprint", "zh": "衝刺", "sent": "The sprint lasts two weeks.", "sentZh": "這個衝刺持續兩週。"}, {"en": "agile", "zh": "敏捷", "sent": "Agile methodology focuses on speed.", "sentZh": "敏捷方法論著重於速度。"}, {"en": "linked list", "zh": "連結串列", "sent": "Linked lists are dynamic.", "sentZh": "連結串列是動態的。"}, {"en": "accessibility", "zh": "無障礙", "sent": "Web accessibility is important.", "sentZh": "網頁無障礙性很重要。"}, {"en": "edge", "zh": "邊", "sent": "Edges connect nodes in a graph.", "sentZh": "邊連接圖形中的節點。"}, {"en": "dns", "zh": "DNS", "sent": "DNS resolves domain names.", "sentZh": "DNS 解析網域名稱。"}, {"en": "dataset", "zh": "資料集", "sent": "Clean the dataset before training.", "sentZh": "訓練前清理資料集。"}, {"en": "graph", "zh": "圖形", "sent": "Graphs model network connections.", "sentZh": "圖形模擬網路連接。"}, {"en": "artifact", "zh": "產出物", "sent": "Store build artifacts.", "sentZh": "儲存建置產出物。"}, {"en": "integration", "zh": "整合", "sent": "Continuous integration (CI) is key.", "sentZh": "持續整合 (CI) 是關鍵。"}, {"en": "decryption", "zh": "解密", "sent": "Decryption requires a private key.", "sentZh": "解密需要私鑰。"}, {"en": "backlog", "zh": "待辦清單", "sent": "Prioritize tasks in the backlog.", "sentZh": "優先處理待辦清單中的任務。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -242,6 +242,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Compiled Successfully! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

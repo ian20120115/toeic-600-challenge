@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Sentiment Analysis", "zh": "情感分析", "sent": "Analyze customer sentiment.", "sentZh": "分析客戶情感。"}, {"en": "Algorithm", "zh": "演算法", "sent": "The algorithm optimizes the path.", "sentZh": "該演算法優化了路徑。"}, {"en": "Visualization", "zh": "視覺化", "sent": "Data visualization helps understanding.", "sentZh": "數據視覺化有助於理解。"}, {"en": "Dimension", "zh": "維度", "sent": "Reduce dimensions to simplify.", "sentZh": "降低維度以簡化。"}, {"en": "Model", "zh": "模型", "sent": "Train the model on the dataset.", "sentZh": "在數據集上訓練模型。"}, {"en": "Training", "zh": "訓練", "sent": "Training takes 3 days.", "sentZh": "訓練需要 3 天。"}, {"en": "Underfitting", "zh": "擬合不足", "sent": "Underfitting means the model is too simple.", "sentZh": "擬合不足意味著模型太簡單。"}, {"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}, {"en": "Cloud Computing", "zh": "雲端運算", "sent": "We train models in the cloud.", "sentZh": "我們在雲端訓練模型。"}, {"en": "Artificial Intelligence", "zh": "人工智慧", "sent": "AI is changing the world.", "sentZh": "人工智慧正在改變世界。"}, {"en": "Data Mining", "zh": "資料探勘", "sent": "Data mining extracts useful info.", "sentZh": "資料探勘提取有用資訊。"}, {"en": "GPU", "zh": "圖形處理器", "sent": "GPUs accelerate AI training.", "sentZh": "GPU 加速 AI 訓練。"}, {"en": "Big Data", "zh": "大數據", "sent": "Big data analysis finds trends.", "sentZh": "大數據分析發現趨勢。"}, {"en": "Inference", "zh": "推論", "sent": "Run inference on the new image.", "sentZh": "對這張新圖片進行推論。"}, {"en": "Latency", "zh": "延遲", "sent": "Low latency is critical for real-time AI.", "sentZh": "低延遲對即時 AI 至關重要。"}, {"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}, {"en": "Neuron", "zh": "神經元", "sent": "Neurons activate based on input.", "sentZh": "神經元根據輸入激活。"}, {"en": "TPU", "zh": "張量處理器", "sent": "Google uses TPUs for AI.", "sentZh": "Google 使用 TPU 進行 AI 運算。"}, {"en": "Overfitting", "zh": "過度擬合", "sent": "Overfitting performs poorly on new data.", "sentZh": "過度擬合在數據上表現不佳。"}, {"en": "Classification", "zh": "分類", "sent": "Image classification.", "sentZh": "圖像分類。"}];
+    const wordsDB = [{"en": "GPU", "zh": "圖形處理器", "sent": "GPUs accelerate AI training.", "sentZh": "GPU 加速 AI 訓練。"}, {"en": "Deep Learning", "zh": "深度學習", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網絡。"}, {"en": "Backpropagation", "zh": "反向傳播", "sent": "Backpropagation updates weights.", "sentZh": "反向傳播更新權重。"}, {"en": "Neural Network", "zh": "神經網絡", "sent": "The neural network mimics the brain.", "sentZh": "神經網絡模仿大腦。"}, {"en": "Dimension", "zh": "維度", "sent": "Reduce dimensions to simplify.", "sentZh": "降低維度以簡化。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Hallucination", "zh": "幻覺 (AI胡說)", "sent": "LLMs can suffer from hallucination.", "sentZh": "大型語言模型可能會產生幻覺。"}, {"en": "Transformer", "zh": "Transformer 架構", "sent": "GPT is based on Transformer.", "sentZh": "GPT 基於 Transformer 架構。"}, {"en": "Machine Learning", "zh": "機器學習", "sent": "ML learns from data.", "sentZh": "機器學習從數據中學習。"}, {"en": "Epoch", "zh": "週期 (訓練輪數)", "sent": "Train for 100 epochs.", "sentZh": "訓練 100 個週期。"}, {"en": "Embedding", "zh": "嵌入向量", "sent": "Convert words to embeddings.", "sentZh": "將文字轉換為嵌入向量。"}, {"en": "Layer", "zh": "層", "sent": "A deep network has many layers.", "sentZh": "深層網絡有很多層。"}, {"en": "Sentiment Analysis", "zh": "情感分析", "sent": "Analyze customer sentiment.", "sentZh": "分析客戶情感。"}, {"en": "Batch", "zh": "批次", "sent": "Process data in batches.", "sentZh": "分批處理數據。"}, {"en": "Visualization", "zh": "視覺化", "sent": "Data visualization helps understanding.", "sentZh": "數據視覺化有助於理解。"}, {"en": "Model", "zh": "模型", "sent": "Train the model on the dataset.", "sentZh": "在數據集上訓練模型。"}, {"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}, {"en": "Weight", "zh": "權重", "sent": "The weights determine the output.", "sentZh": "權重決定輸出。"}, {"en": "Clustering", "zh": "分群", "sent": "K-means clustering groups data.", "sentZh": "K-means 分群將數據分組。"}, {"en": "Recall", "zh": "召回率", "sent": "Recall is important for medical diagnosis.", "sentZh": "召回率對醫療診斷很重要。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -247,6 +247,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Great job! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

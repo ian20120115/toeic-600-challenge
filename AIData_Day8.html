@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Accuracy", "zh": "準確率", "sent": "The model has 98% accuracy.", "sentZh": "該模型有 98% 的準確率。"}, {"en": "Throughput", "zh": "吞吐量", "sent": "Maximize data throughput.", "sentZh": "最大化數據吞吐量。"}, {"en": "Machine Learning", "zh": "機器學習", "sent": "ML learns from data.", "sentZh": "機器學習從數據中學習。"}, {"en": "Overfitting", "zh": "過度擬合", "sent": "Overfitting performs poorly on new data.", "sentZh": "過度擬合在數據上表現不佳。"}, {"en": "Latency", "zh": "延遲", "sent": "Low latency is critical for real-time AI.", "sentZh": "低延遲對即時 AI 至關重要。"}, {"en": "Regression", "zh": "迴歸", "sent": "Linear regression predicts values.", "sentZh": "線性迴歸預測數值。"}, {"en": "Training", "zh": "訓練", "sent": "Training takes 3 days.", "sentZh": "訓練需要 3 天。"}, {"en": "Epoch", "zh": "週期 (訓練輪數)", "sent": "Train for 100 epochs.", "sentZh": "訓練 100 個週期。"}, {"en": "Precision", "zh": "精確率", "sent": "High precision reduces false positives.", "sentZh": "高精確率減少假陽性。"}, {"en": "Model", "zh": "模型", "sent": "Train the model on the dataset.", "sentZh": "在數據集上訓練模型。"}, {"en": "Variance", "zh": "變異數/方差", "sent": "Trade-off between bias and variance.", "sentZh": "在偏差和變異數之間權衡。"}, {"en": "Underfitting", "zh": "擬合不足", "sent": "Underfitting means the model is too simple.", "sentZh": "擬合不足意味著模型太簡單。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Cloud Computing", "zh": "雲端運算", "sent": "We train models in the cloud.", "sentZh": "我們在雲端訓練模型。"}, {"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}, {"en": "Prompt", "zh": "提示詞", "sent": "Write a clear prompt.", "sentZh": "寫一個清楚的提示詞。"}, {"en": "Data Mining", "zh": "資料探勘", "sent": "Data mining extracts useful info.", "sentZh": "資料探勘提取有用資訊。"}, {"en": "Hallucination", "zh": "幻覺 (AI胡說)", "sent": "LLMs can suffer from hallucination.", "sentZh": "大型語言模型可能會產生幻覺。"}, {"en": "Learning Rate", "zh": "學習率", "sent": "Adjust the learning rate.", "sentZh": "調整學習率。"}, {"en": "GPU", "zh": "圖形處理器", "sent": "GPUs accelerate AI training.", "sentZh": "GPU 加速 AI 訓練。"}];
+    const wordsDB = [{"en": "Overfitting", "zh": "過度擬合", "sent": "Overfitting performs poorly on new data.", "sentZh": "過度擬合在數據上表現不佳。"}, {"en": "Batch", "zh": "批次", "sent": "Process data in batches.", "sentZh": "分批處理數據。"}, {"en": "Variance", "zh": "變異數/方差", "sent": "Trade-off between bias and variance.", "sentZh": "在偏差和變異數之間權衡。"}, {"en": "Deep Learning", "zh": "深度學習", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網絡。"}, {"en": "Prompt", "zh": "提示詞", "sent": "Write a clear prompt.", "sentZh": "寫一個清楚的提示詞。"}, {"en": "Underfitting", "zh": "擬合不足", "sent": "Underfitting means the model is too simple.", "sentZh": "擬合不足意味著模型太簡單。"}, {"en": "Artificial Intelligence", "zh": "人工智慧", "sent": "AI is changing the world.", "sentZh": "人工智慧正在改變世界。"}, {"en": "Pixel", "zh": "像素", "sent": "An image is a grid of pixels.", "sentZh": "圖像是像素網格。"}, {"en": "Algorithm", "zh": "演算法", "sent": "The algorithm optimizes the path.", "sentZh": "該演算法優化了路徑。"}, {"en": "TPU", "zh": "張量處理器", "sent": "Google uses TPUs for AI.", "sentZh": "Google 使用 TPU 進行 AI 運算。"}, {"en": "Precision", "zh": "精確率", "sent": "High precision reduces false positives.", "sentZh": "高精確率減少假陽性。"}, {"en": "Token", "zh": "詞元 (Token)", "sent": "The model processes tokens.", "sentZh": "模型處理 Token。"}, {"en": "Accuracy", "zh": "準確率", "sent": "The model has 98% accuracy.", "sentZh": "該模型有 98% 的準確率。"}, {"en": "Detection", "zh": "偵測", "sent": "Object detection finds cars.", "sentZh": "物件偵測找出汽車。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Model", "zh": "模型", "sent": "Train the model on the dataset.", "sentZh": "在數據集上訓練模型。"}, {"en": "Backpropagation", "zh": "反向傳播", "sent": "Backpropagation updates weights.", "sentZh": "反向傳播更新權重。"}, {"en": "Feature", "zh": "特徵", "sent": "Select the best features.", "sentZh": "選擇最好的特徵。"}, {"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -247,6 +247,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Great job! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

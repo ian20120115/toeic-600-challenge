@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}, {"en": "Outlier", "zh": "離群值", "sent": "Remove outliers from the data.", "sentZh": "從數據中移除離群值。"}, {"en": "Layer", "zh": "層", "sent": "A deep network has many layers.", "sentZh": "深層網絡有很多層。"}, {"en": "Label", "zh": "標籤", "sent": "Annotate data with labels.", "sentZh": "用標籤標註數據。"}, {"en": "Embedding", "zh": "嵌入向量", "sent": "Convert words to embeddings.", "sentZh": "將文字轉換為嵌入向量。"}, {"en": "Throughput", "zh": "吞吐量", "sent": "Maximize data throughput.", "sentZh": "最大化數據吞吐量。"}, {"en": "Latency", "zh": "延遲", "sent": "Low latency is critical for real-time AI.", "sentZh": "低延遲對即時 AI 至關重要。"}, {"en": "Epoch", "zh": "週期 (訓練輪數)", "sent": "Train for 100 epochs.", "sentZh": "訓練 100 個週期。"}, {"en": "Neural Network", "zh": "神經網絡", "sent": "The neural network mimics the brain.", "sentZh": "神經網絡模仿大腦。"}, {"en": "Deployment", "zh": "部署", "sent": "Deploy the model to production.", "sentZh": "將模型部署到生產環境。"}, {"en": "Prompt", "zh": "提示詞", "sent": "Write a clear prompt.", "sentZh": "寫一個清楚的提示詞。"}, {"en": "Learning Rate", "zh": "學習率", "sent": "Adjust the learning rate.", "sentZh": "調整學習率。"}, {"en": "Underfitting", "zh": "擬合不足", "sent": "Underfitting means the model is too simple.", "sentZh": "擬合不足意味著模型太簡單。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Training", "zh": "訓練", "sent": "Training takes 3 days.", "sentZh": "訓練需要 3 天。"}, {"en": "Cloud Computing", "zh": "雲端運算", "sent": "We train models in the cloud.", "sentZh": "我們在雲端訓練模型。"}, {"en": "Accuracy", "zh": "準確率", "sent": "The model has 98% accuracy.", "sentZh": "該模型有 98% 的準確率。"}, {"en": "TPU", "zh": "張量處理器", "sent": "Google uses TPUs for AI.", "sentZh": "Google 使用 TPU 進行 AI 運算。"}, {"en": "Algorithm", "zh": "演算法", "sent": "The algorithm optimizes the path.", "sentZh": "該演算法優化了路徑。"}, {"en": "Transformer", "zh": "Transformer 架構", "sent": "GPT is based on Transformer.", "sentZh": "GPT 基於 Transformer 架構。"}];
+    const wordsDB = [{"en": "Variance", "zh": "變異數/方差", "sent": "Trade-off between bias and variance.", "sentZh": "在偏差和變異數之間權衡。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}, {"en": "Prompt", "zh": "提示詞", "sent": "Write a clear prompt.", "sentZh": "寫一個清楚的提示詞。"}, {"en": "Hallucination", "zh": "幻覺 (AI胡說)", "sent": "LLMs can suffer from hallucination.", "sentZh": "大型語言模型可能會產生幻覺。"}, {"en": "Epoch", "zh": "週期 (訓練輪數)", "sent": "Train for 100 epochs.", "sentZh": "訓練 100 個週期。"}, {"en": "Precision", "zh": "精確率", "sent": "High precision reduces false positives.", "sentZh": "高精確率減少假陽性。"}, {"en": "Big Data", "zh": "大數據", "sent": "Big data analysis finds trends.", "sentZh": "大數據分析發現趨勢。"}, {"en": "Detection", "zh": "偵測", "sent": "Object detection finds cars.", "sentZh": "物件偵測找出汽車。"}, {"en": "Transformer", "zh": "Transformer 架構", "sent": "GPT is based on Transformer.", "sentZh": "GPT 基於 Transformer 架構。"}, {"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}, {"en": "Training", "zh": "訓練", "sent": "Training takes 3 days.", "sentZh": "訓練需要 3 天。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}, {"en": "Classification", "zh": "分類", "sent": "Image classification.", "sentZh": "圖像分類。"}, {"en": "Layer", "zh": "層", "sent": "A deep network has many layers.", "sentZh": "深層網絡有很多層。"}, {"en": "Feature", "zh": "特徵", "sent": "Select the best features.", "sentZh": "選擇最好的特徵。"}, {"en": "Algorithm", "zh": "演算法", "sent": "The algorithm optimizes the path.", "sentZh": "該演算法優化了路徑。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Artificial Intelligence", "zh": "人工智慧", "sent": "AI is changing the world.", "sentZh": "人工智慧正在改變世界。"}, {"en": "Batch", "zh": "批次", "sent": "Process data in batches.", "sentZh": "分批處理數據。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -247,6 +247,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Great job! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

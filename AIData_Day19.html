@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Training", "zh": "訓練", "sent": "Training takes 3 days.", "sentZh": "訓練需要 3 天。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Chatbot", "zh": "聊天機器人", "sent": "The chatbot answers questions.", "sentZh": "聊天機器人回答問題。"}, {"en": "Backpropagation", "zh": "反向傳播", "sent": "Backpropagation updates weights.", "sentZh": "反向傳播更新權重。"}, {"en": "Accuracy", "zh": "準確率", "sent": "The model has 98% accuracy.", "sentZh": "該模型有 98% 的準確率。"}, {"en": "Deployment", "zh": "部署", "sent": "Deploy the model to production.", "sentZh": "將模型部署到生產環境。"}, {"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}, {"en": "Precision", "zh": "精確率", "sent": "High precision reduces false positives.", "sentZh": "高精確率減少假陽性。"}, {"en": "Outlier", "zh": "離群值", "sent": "Remove outliers from the data.", "sentZh": "從數據中移除離群值。"}, {"en": "Neuron", "zh": "神經元", "sent": "Neurons activate based on input.", "sentZh": "神經元根據輸入激活。"}, {"en": "Gradient Descent", "zh": "梯度下降", "sent": "Use gradient descent to optimize.", "sentZh": "使用梯度下降來優化。"}, {"en": "Cloud Computing", "zh": "雲端運算", "sent": "We train models in the cloud.", "sentZh": "我們在雲端訓練模型。"}, {"en": "Hallucination", "zh": "幻覺 (AI胡說)", "sent": "LLMs can suffer from hallucination.", "sentZh": "大型語言模型可能會產生幻覺。"}, {"en": "Big Data", "zh": "大數據", "sent": "Big data analysis finds trends.", "sentZh": "大數據分析發現趨勢。"}, {"en": "Loss Function", "zh": "損失函數", "sent": "Minimize the loss function.", "sentZh": "最小化損失函數。"}, {"en": "Visualization", "zh": "視覺化", "sent": "Data visualization helps understanding.", "sentZh": "數據視覺化有助於理解。"}, {"en": "Recall", "zh": "召回率", "sent": "Recall is important for medical diagnosis.", "sentZh": "召回率對醫療診斷很重要。"}, {"en": "Transformer", "zh": "Transformer 架構", "sent": "GPT is based on Transformer.", "sentZh": "GPT 基於 Transformer 架構。"}, {"en": "Sentiment Analysis", "zh": "情感分析", "sent": "Analyze customer sentiment.", "sentZh": "分析客戶情感。"}];
+    const wordsDB = [{"en": "Classification", "zh": "分類", "sent": "Image classification.", "sentZh": "圖像分類。"}, {"en": "TPU", "zh": "張量處理器", "sent": "Google uses TPUs for AI.", "sentZh": "Google 使用 TPU 進行 AI 運算。"}, {"en": "Backpropagation", "zh": "反向傳播", "sent": "Backpropagation updates weights.", "sentZh": "反向傳播更新權重。"}, {"en": "Gradient Descent", "zh": "梯度下降", "sent": "Use gradient descent to optimize.", "sentZh": "使用梯度下降來優化。"}, {"en": "Pipeline", "zh": "管線/流程", "sent": "Build a data pipeline.", "sentZh": "建立數據處理流程。"}, {"en": "Deployment", "zh": "部署", "sent": "Deploy the model to production.", "sentZh": "將模型部署到生產環境。"}, {"en": "Data Mining", "zh": "資料探勘", "sent": "Data mining extracts useful info.", "sentZh": "資料探勘提取有用資訊。"}, {"en": "Detection", "zh": "偵測", "sent": "Object detection finds cars.", "sentZh": "物件偵測找出汽車。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Cloud Computing", "zh": "雲端運算", "sent": "We train models in the cloud.", "sentZh": "我們在雲端訓練模型。"}, {"en": "Layer", "zh": "層", "sent": "A deep network has many layers.", "sentZh": "深層網絡有很多層。"}, {"en": "Algorithm", "zh": "演算法", "sent": "The algorithm optimizes the path.", "sentZh": "該演算法優化了路徑。"}, {"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}, {"en": "Neuron", "zh": "神經元", "sent": "Neurons activate based on input.", "sentZh": "神經元根據輸入激活。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}, {"en": "Precision", "zh": "精確率", "sent": "High precision reduces false positives.", "sentZh": "高精確率減少假陽性。"}, {"en": "Deep Learning", "zh": "深度學習", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網絡。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Hallucination", "zh": "幻覺 (AI胡說)", "sent": "LLMs can suffer from hallucination.", "sentZh": "大型語言模型可能會產生幻覺。"}, {"en": "Token", "zh": "詞元 (Token)", "sent": "The model processes tokens.", "sentZh": "模型處理 Token。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -247,6 +247,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Great job! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

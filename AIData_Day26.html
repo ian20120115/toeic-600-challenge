@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Regression", "zh": "迴歸", "sent": "Linear regression predicts values.", "sentZh": "線性迴歸預測數值。"}, {"en": "Token", "zh": "詞元 (Token)", "sent": "The model processes tokens.", "sentZh": "模型處理 Token。"}, {"en": "Overfitting", "zh": "過度擬合", "sent": "Overfitting performs poorly on new data.", "sentZh": "過度擬合在數據上表現不佳。"}, {"en": "Precision", "zh": "精確率", "sent": "High precision reduces false positives.", "sentZh": "高精確率減少假陽性。"}, {"en": "Gradient Descent", "zh": "梯度下降", "sent": "Use gradient descent to optimize.", "sentZh": "使用梯度下降來優化。"}, {"en": "Classification", "zh": "分類", "sent": "Image classification.", "sentZh": "圖像分類。"}, {"en": "Correlation", "zh": "相關性", "sent": "Correlation does not imply causation.", "sentZh": "相關性不代表因果關係。"}, {"en": "Recall", "zh": "召回率", "sent": "Recall is important for medical diagnosis.", "sentZh": "召回率對醫療診斷很重要。"}, {"en": "Feature", "zh": "特徵", "sent": "Select the best features.", "sentZh": "選擇最好的特徵。"}, {"en": "Machine Learning", "zh": "機器學習", "sent": "ML learns from data.", "sentZh": "機器學習從數據中學習。"}, {"en": "Hallucination", "zh": "幻覺 (AI胡說)", "sent": "LLMs can suffer from hallucination.", "sentZh": "大型語言模型可能會產生幻覺。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}, {"en": "Chatbot", "zh": "聊天機器人", "sent": "The chatbot answers questions.", "sentZh": "聊天機器人回答問題。"}, {"en": "Visualization", "zh": "視覺化", "sent": "Data visualization helps understanding.", "sentZh": "數據視覺化有助於理解。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Training", "zh": "訓練", "sent": "Training takes 3 days.", "sentZh": "訓練需要 3 天。"}, {"en": "Neuron", "zh": "神經元", "sent": "Neurons activate based on input.", "sentZh": "神經元根據輸入激活。"}, {"en": "Edge Computing", "zh": "邊緣運算", "sent": "Run AI on edge devices.", "sentZh": "在邊緣裝置上運行 AI。"}, {"en": "Deployment", "zh": "部署", "sent": "Deploy the model to production.", "sentZh": "將模型部署到生產環境。"}, {"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}];
+    const wordsDB = [{"en": "Loss Function", "zh": "損失函數", "sent": "Minimize the loss function.", "sentZh": "最小化損失函數。"}, {"en": "Hallucination", "zh": "幻覺 (AI胡說)", "sent": "LLMs can suffer from hallucination.", "sentZh": "大型語言模型可能會產生幻覺。"}, {"en": "Dimension", "zh": "維度", "sent": "Reduce dimensions to simplify.", "sentZh": "降低維度以簡化。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}, {"en": "Deployment", "zh": "部署", "sent": "Deploy the model to production.", "sentZh": "將模型部署到生產環境。"}, {"en": "Token", "zh": "詞元 (Token)", "sent": "The model processes tokens.", "sentZh": "模型處理 Token。"}, {"en": "Precision", "zh": "精確率", "sent": "High precision reduces false positives.", "sentZh": "高精確率減少假陽性。"}, {"en": "GPU", "zh": "圖形處理器", "sent": "GPUs accelerate AI training.", "sentZh": "GPU 加速 AI 訓練。"}, {"en": "Data Mining", "zh": "資料探勘", "sent": "Data mining extracts useful info.", "sentZh": "資料探勘提取有用資訊。"}, {"en": "Pipeline", "zh": "管線/流程", "sent": "Build a data pipeline.", "sentZh": "建立數據處理流程。"}, {"en": "TPU", "zh": "張量處理器", "sent": "Google uses TPUs for AI.", "sentZh": "Google 使用 TPU 進行 AI 運算。"}, {"en": "Chatbot", "zh": "聊天機器人", "sent": "The chatbot answers questions.", "sentZh": "聊天機器人回答問題。"}, {"en": "Underfitting", "zh": "擬合不足", "sent": "Underfitting means the model is too simple.", "sentZh": "擬合不足意味著模型太簡單。"}, {"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}, {"en": "Recall", "zh": "召回率", "sent": "Recall is important for medical diagnosis.", "sentZh": "召回率對醫療診斷很重要。"}, {"en": "Cloud Computing", "zh": "雲端運算", "sent": "We train models in the cloud.", "sentZh": "我們在雲端訓練模型。"}, {"en": "Training", "zh": "訓練", "sent": "Training takes 3 days.", "sentZh": "訓練需要 3 天。"}, {"en": "Neuron", "zh": "神經元", "sent": "Neurons activate based on input.", "sentZh": "神經元根據輸入激活。"}, {"en": "Classification", "zh": "分類", "sent": "Image classification.", "sentZh": "圖像分類。"}, {"en": "Transformer", "zh": "Transformer 架構", "sent": "GPT is based on Transformer.", "sentZh": "GPT 基於 Transformer 架構。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -247,6 +247,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Great job! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

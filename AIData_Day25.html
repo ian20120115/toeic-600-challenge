@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Weight", "zh": "權重", "sent": "The weights determine the output.", "sentZh": "權重決定輸出。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Pipeline", "zh": "管線/流程", "sent": "Build a data pipeline.", "sentZh": "建立數據處理流程。"}, {"en": "Edge Computing", "zh": "邊緣運算", "sent": "Run AI on edge devices.", "sentZh": "在邊緣裝置上運行 AI。"}, {"en": "Sentiment Analysis", "zh": "情感分析", "sent": "Analyze customer sentiment.", "sentZh": "分析客戶情感。"}, {"en": "Dimension", "zh": "維度", "sent": "Reduce dimensions to simplify.", "sentZh": "降低維度以簡化。"}, {"en": "Overfitting", "zh": "過度擬合", "sent": "Overfitting performs poorly on new data.", "sentZh": "過度擬合在數據上表現不佳。"}, {"en": "Clustering", "zh": "分群", "sent": "K-means clustering groups data.", "sentZh": "K-means 分群將數據分組。"}, {"en": "Recall", "zh": "召回率", "sent": "Recall is important for medical diagnosis.", "sentZh": "召回率對醫療診斷很重要。"}, {"en": "Visualization", "zh": "視覺化", "sent": "Data visualization helps understanding.", "sentZh": "數據視覺化有助於理解。"}, {"en": "Model", "zh": "模型", "sent": "Train the model on the dataset.", "sentZh": "在數據集上訓練模型。"}, {"en": "Accuracy", "zh": "準確率", "sent": "The model has 98% accuracy.", "sentZh": "該模型有 98% 的準確率。"}, {"en": "Underfitting", "zh": "擬合不足", "sent": "Underfitting means the model is too simple.", "sentZh": "擬合不足意味著模型太簡單。"}, {"en": "Latency", "zh": "延遲", "sent": "Low latency is critical for real-time AI.", "sentZh": "低延遲對即時 AI 至關重要。"}, {"en": "Gradient Descent", "zh": "梯度下降", "sent": "Use gradient descent to optimize.", "sentZh": "使用梯度下降來優化。"}, {"en": "Transformer", "zh": "Transformer 架構", "sent": "GPT is based on Transformer.", "sentZh": "GPT 基於 Transformer 架構。"}, {"en": "Chatbot", "zh": "聊天機器人", "sent": "The chatbot answers questions.", "sentZh": "聊天機器人回答問題。"}, {"en": "Deep Learning", "zh": "深度學習", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網絡。"}, {"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}, {"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}];
+    const wordsDB = [{"en": "Gradient Descent", "zh": "梯度下降", "sent": "Use gradient descent to optimize.", "sentZh": "使用梯度下降來優化。"}, {"en": "Visualization", "zh": "視覺化", "sent": "Data visualization helps understanding.", "sentZh": "數據視覺化有助於理解。"}, {"en": "Hallucination", "zh": "幻覺 (AI胡說)", "sent": "LLMs can suffer from hallucination.", "sentZh": "大型語言模型可能會產生幻覺。"}, {"en": "Feature", "zh": "特徵", "sent": "Select the best features.", "sentZh": "選擇最好的特徵。"}, {"en": "Training", "zh": "訓練", "sent": "Training takes 3 days.", "sentZh": "訓練需要 3 天。"}, {"en": "Layer", "zh": "層", "sent": "A deep network has many layers.", "sentZh": "深層網絡有很多層。"}, {"en": "Machine Learning", "zh": "機器學習", "sent": "ML learns from data.", "sentZh": "機器學習從數據中學習。"}, {"en": "Chatbot", "zh": "聊天機器人", "sent": "The chatbot answers questions.", "sentZh": "聊天機器人回答問題。"}, {"en": "Learning Rate", "zh": "學習率", "sent": "Adjust the learning rate.", "sentZh": "調整學習率。"}, {"en": "Edge Computing", "zh": "邊緣運算", "sent": "Run AI on edge devices.", "sentZh": "在邊緣裝置上運行 AI。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Regression", "zh": "迴歸", "sent": "Linear regression predicts values.", "sentZh": "線性迴歸預測數值。"}, {"en": "Neuron", "zh": "神經元", "sent": "Neurons activate based on input.", "sentZh": "神經元根據輸入激活。"}, {"en": "Clustering", "zh": "分群", "sent": "K-means clustering groups data.", "sentZh": "K-means 分群將數據分組。"}, {"en": "Label", "zh": "標籤", "sent": "Annotate data with labels.", "sentZh": "用標籤標註數據。"}, {"en": "Deployment", "zh": "部署", "sent": "Deploy the model to production.", "sentZh": "將模型部署到生產環境。"}, {"en": "Accuracy", "zh": "準確率", "sent": "The model has 98% accuracy.", "sentZh": "該模型有 98% 的準確率。"}, {"en": "Classification", "zh": "分類", "sent": "Image classification.", "sentZh": "圖像分類。"}, {"en": "Epoch", "zh": "週期 (訓練輪數)", "sent": "Train for 100 epochs.", "sentZh": "訓練 100 個週期。"}, {"en": "Latency", "zh": "延遲", "sent": "Low latency is critical for real-time AI.", "sentZh": "低延遲對即時 AI 至關重要。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -247,6 +247,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Great job! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

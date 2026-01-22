@@ -138,7 +138,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "HP (Health Points)", "zh": "生命值", "sent": "My HP is low.", "sentZh": "我血量很低。"}, {"en": "Buff", "zh": "增強", "sent": "They buffed this weapon.", "sentZh": "他們增強了這把武器。"}, {"en": "Loot", "zh": "戰利品", "sent": "Pick up the loot.", "sentZh": "撿起戰利品。"}, {"en": "Op (Overpowered)", "zh": "過強(做壞了)", "sent": "That gun is OP.", "sentZh": "那把槍太 OP 了。"}, {"en": "Healer", "zh": "補師", "sent": "Protect the healer.", "sentZh": "保護補師。"}, {"en": "Follow", "zh": "追隨", "sent": "Thanks for the follow.", "sentZh": "謝謝追隨。"}, {"en": "GG (Good Game)", "zh": "好局(結束了)", "sent": "GG WP (Well Played).", "sentZh": "好局，打得好。"}, {"en": "Tilt", "zh": "心態崩越打越爛", "sent": "I'm on full tilt.", "sentZh": "我心態全崩了。"}, {"en": "Alert", "zh": "通知(跳通知)", "sent": "The sub alert didn't trigger.", "sentZh": "訂閱通知沒跳出來。"}, {"en": "DPS", "zh": "輸出(每秒傷害)", "sent": "Low DPS output.", "sentZh": "低傷害輸出。"}, {"en": "Overlay", "zh": "介面層", "sent": "New stream overlay.", "sentZh": "新的實況介面。"}, {"en": "Gank", "zh": "偷襲", "sent": "Jungler is coming to gank.", "sentZh": "打野要來偷襲了。"}, {"en": "Tank", "zh": "坦克(肉盾)", "sent": "We need a tank.", "sentZh": "我們需要一個坦克。"}, {"en": "Facecam", "zh": "視訊鏡頭", "sent": "Turn on the facecam.", "sentZh": "開啟視訊鏡頭。"}, {"en": "Raid", "zh": "揪團(導流)", "sent": "We are raiding Ian's channel.", "sentZh": "我們要去揪團 Ian 的頻道。"}, {"en": "Smurf", "zh": "炸魚(開小號)", "sent": "He is smurfing in low rank.", "sentZh": "他在低排位炸魚。"}, {"en": "Chat", "zh": "聊天室", "sent": "Read the chat.", "sentZh": "看聊天室。"}, {"en": "Emote", "zh": "表情符號", "sent": "Spam emotes in chat.", "sentZh": "在聊天室狂刷表情。"}, {"en": "Salty", "zh": "惱羞", "sent": "Why are you so salty?", "sentZh": "你幹嘛這麼惱羞？"}, {"en": "Streamer", "zh": "實況主", "sent": "My favorite streamer is live.", "sentZh": "我最愛的實況主開台了。"}];
+    const wordsDB = [{"en": "Follow", "zh": "追隨", "sent": "Thanks for the follow.", "sentZh": "謝謝追隨。"}, {"en": "Loot", "zh": "戰利品", "sent": "Pick up the loot.", "sentZh": "撿起戰利品。"}, {"en": "Clutch", "zh": "關鍵時刻逆轉", "sent": "That was a clutch play!", "sentZh": "那操作太關鍵了！"}, {"en": "Toxic", "zh": "嘴臭/惡質", "sent": "The community is toxic.", "sentZh": "這社群很惡質。"}, {"en": "Ult / Ultimate", "zh": "大招/終極技能", "sent": "My ult is ready.", "sentZh": "我的大招好了。"}, {"en": "XP (Experience)", "zh": "經驗值", "sent": "Gain XP to level up.", "sentZh": "獲得經驗值升級。"}, {"en": "Smurf", "zh": "炸魚(開小號)", "sent": "He is smurfing in low rank.", "sentZh": "他在低排位炸魚。"}, {"en": "Spawn", "zh": "重生/生成", "sent": "Enemy spawned behind you.", "sentZh": "敵人在你後面重生了。"}, {"en": "Carry", "zh": "凱瑞(帶飛)", "sent": "Please carry me.", "sentZh": "拜託凱瑞我。"}, {"en": "Emote", "zh": "表情符號", "sent": "Spam emotes in chat.", "sentZh": "在聊天室狂刷表情。"}, {"en": "Grind", "zh": "農怪/苦練", "sent": "I have to grind for XP.", "sentZh": "我必須農經驗值。"}, {"en": "Nerf", "zh": "削弱", "sent": "The hero got nerfed.", "sentZh": "這英雄被削弱了。"}, {"en": "Gank", "zh": "偷襲", "sent": "Jungler is coming to gank.", "sentZh": "打野要來偷襲了。"}, {"en": "Raid", "zh": "揪團(導流)", "sent": "We are raiding Ian's channel.", "sentZh": "我們要去揪團 Ian 的頻道。"}, {"en": "Buff", "zh": "增強", "sent": "They buffed this weapon.", "sentZh": "他們增強了這把武器。"}, {"en": "Chat", "zh": "聊天室", "sent": "Read the chat.", "sentZh": "看聊天室。"}, {"en": "GG (Good Game)", "zh": "好局(結束了)", "sent": "GG WP (Well Played).", "sentZh": "好局，打得好。"}, {"en": "Alert", "zh": "通知(跳通知)", "sent": "The sub alert didn't trigger.", "sentZh": "訂閱通知沒跳出來。"}, {"en": "Healer", "zh": "補師", "sent": "Protect the healer.", "sentZh": "保護補師。"}, {"en": "AFK", "zh": "掛網(不在電腦前)", "sent": "He went AFK.", "sentZh": "他掛網了。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -255,6 +255,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('GG! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

@@ -142,7 +142,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Sync", "zh": "同步", "sent": "V-Sync enabled.", "sentZh": "啟用垂直同步。"}, {"en": "Screen", "zh": "螢幕/面板", "sent": "Touch screen display.", "sentZh": "觸控螢幕顯示。"}, {"en": "Interface", "zh": "介面", "sent": "USB interface.", "sentZh": "USB 介面。"}, {"en": "SSD", "zh": "固態硬碟", "sent": "SSDs are faster than HDDs.", "sentZh": "SSD 比 HDD 快。"}, {"en": "Raspberry Pi", "zh": "樹莓派", "sent": "Use Raspberry Pi for IoT.", "sentZh": "使用樹莓派做 IoT。"}, {"en": "Hard Drive", "zh": "硬碟", "sent": "The hard drive is full.", "sentZh": "硬碟滿了。"}, {"en": "PCB", "zh": "印刷電路板", "sent": "Design the PCB layout.", "sentZh": "設計 PCB 佈局。"}, {"en": "Heatsink", "zh": "散熱片", "sent": "The heatsink cools the chip.", "sentZh": "散熱片冷卻晶片。"}, {"en": "Wireless", "zh": "無線", "sent": "Wireless charging.", "sentZh": "無線充電。"}, {"en": "Graphics Card", "zh": "顯示卡", "sent": "Install the graphics card driver.", "sentZh": "安裝顯示卡驅動程式。"}, {"en": "Clock Speed", "zh": "時脈速度", "sent": "Overclocking increases clock speed.", "sentZh": "超頻增加時脈速度。"}, {"en": "Bios", "zh": "BIOS/韌體介面", "sent": "Enter BIOS setup.", "sentZh": "進入 BIOS 設定。"}, {"en": "Soldering", "zh": "焊接", "sent": "Soldering iron is hot.", "sentZh": "烙鐵很燙。"}, {"en": "Battery", "zh": "電池", "sent": "Low battery warning.", "sentZh": "低電量警告。"}, {"en": "Lag", "zh": "延遲/卡頓", "sent": "Input lag.", "sentZh": "輸入延遲。"}, {"en": "Fan", "zh": "風扇", "sent": "Fan noise is loud.", "sentZh": "風扇噪音很大。"}, {"en": "Circuit", "zh": "電路", "sent": "Complete the circuit.", "sentZh": "完成電路。"}, {"en": "Driver", "zh": "驅動程式", "sent": "Update audio drivers.", "sentZh": "更新音效驅動。"}, {"en": "Protocol", "zh": "協定", "sent": "MQTT protocol for IoT.", "sentZh": "IoT 使用的 MQTT 協定。"}, {"en": "Pixel", "zh": "像素", "sent": "Dead pixel on screen.", "sentZh": "螢幕上有亮點/死點。"}];
+    const wordsDB = [{"en": "Frame Rate", "zh": "幀率 (FPS)", "sent": "60 frames per second.", "sentZh": "每秒 60 幀。"}, {"en": "Firmware", "zh": "韌體", "sent": "Update the firmware.", "sentZh": "更新韌體。"}, {"en": "Diode", "zh": "二極體", "sent": "LED is a light emitting diode.", "sentZh": "LED 是發光二極體。"}, {"en": "Short Circuit", "zh": "短路", "sent": "A short circuit caused a fire.", "sentZh": "短路引起了火災。"}, {"en": "Transistor", "zh": "電晶體", "sent": "Billions of transistors.", "sentZh": "數十億個電晶體。"}, {"en": "RAM", "zh": "隨機存取記憶體", "sent": "Upgrade the RAM to 32GB.", "sentZh": "將 RAM 升級到 32GB。"}, {"en": "Resolution", "zh": "解析度", "sent": "1080p resolution.", "sentZh": "1080p 解析度。"}, {"en": "PCB", "zh": "印刷電路板", "sent": "Design the PCB layout.", "sentZh": "設計 PCB 佈局。"}, {"en": "Soldering", "zh": "焊接", "sent": "Soldering iron is hot.", "sentZh": "烙鐵很燙。"}, {"en": "Graphics Card", "zh": "顯示卡", "sent": "Install the graphics card driver.", "sentZh": "安裝顯示卡驅動程式。"}, {"en": "Actuator", "zh": "作動器/致動器", "sent": "The actuator moves the arm.", "sentZh": "作動器移動手臂。"}, {"en": "SSD", "zh": "固態硬碟", "sent": "SSDs are faster than HDDs.", "sentZh": "SSD 比 HDD 快。"}, {"en": "Voltage", "zh": "電壓", "sent": "Check the voltage.", "sentZh": "檢查電壓。"}, {"en": "Ground", "zh": "接地", "sent": "Connect the wire to ground.", "sentZh": "將線接地。"}, {"en": "Heatsink", "zh": "散熱片", "sent": "The heatsink cools the chip.", "sentZh": "散熱片冷卻晶片。"}, {"en": "Clock Speed", "zh": "時脈速度", "sent": "Overclocking increases clock speed.", "sentZh": "超頻增加時脈速度。"}, {"en": "Monitor", "zh": "螢幕", "sent": "The monitor resolution is 4K.", "sentZh": "螢幕解析度為 4K。"}, {"en": "Wireless", "zh": "無線", "sent": "Wireless charging.", "sentZh": "無線充電。"}, {"en": "Resistor", "zh": "電阻", "sent": "A 100-ohm resistor.", "sentZh": "一顆 100 歐姆的電阻。"}, {"en": "Case / Chassis", "zh": "機殼", "sent": "Open the computer case.", "sentZh": "打開電腦機殼。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -259,6 +259,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('System optimized! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

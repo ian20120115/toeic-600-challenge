@@ -142,7 +142,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Peripheral", "zh": "周邊設備", "sent": "Connect peripherals via USB.", "sentZh": "透過 USB 連接周邊設備。"}, {"en": "CPU", "zh": "中央處理器", "sent": "The CPU is the brain.", "sentZh": "CPU 是大腦。"}, {"en": "Fan", "zh": "風扇", "sent": "Fan noise is loud.", "sentZh": "風扇噪音很大。"}, {"en": "RAM", "zh": "隨機存取記憶體", "sent": "Upgrade the RAM to 32GB.", "sentZh": "將 RAM 升級到 32GB。"}, {"en": "Sync", "zh": "同步", "sent": "V-Sync enabled.", "sentZh": "啟用垂直同步。"}, {"en": "Clock Speed", "zh": "時脈速度", "sent": "Overclocking increases clock speed.", "sentZh": "超頻增加時脈速度。"}, {"en": "Capacitor", "zh": "電容", "sent": "Capacitors store energy.", "sentZh": "電容儲存能量。"}, {"en": "Actuator", "zh": "作動器/致動器", "sent": "The actuator moves the arm.", "sentZh": "作動器移動手臂。"}, {"en": "Case / Chassis", "zh": "機殼", "sent": "Open the computer case.", "sentZh": "打開電腦機殼。"}, {"en": "Bios", "zh": "BIOS/韌體介面", "sent": "Enter BIOS setup.", "sentZh": "進入 BIOS 設定。"}, {"en": "SSD", "zh": "固態硬碟", "sent": "SSDs are faster than HDDs.", "sentZh": "SSD 比 HDD 快。"}, {"en": "Connector", "zh": "接頭", "sent": "Check the cable connector.", "sentZh": "檢查電纜接頭。"}, {"en": "Port", "zh": "連接埠", "sent": "HDMI port.", "sentZh": "HDMI 連接埠。"}, {"en": "Ground", "zh": "接地", "sent": "Connect the wire to ground.", "sentZh": "將線接地。"}, {"en": "Current", "zh": "電流", "sent": "Measure the current in Amps.", "sentZh": "以安培測量電流。"}, {"en": "Pixel", "zh": "像素", "sent": "Dead pixel on screen.", "sentZh": "螢幕上有亮點/死點。"}, {"en": "Interface", "zh": "介面", "sent": "USB interface.", "sentZh": "USB 介面。"}, {"en": "Bluetooth", "zh": "藍牙", "sent": "Pair via Bluetooth.", "sentZh": "透過藍牙配對。"}, {"en": "Power Supply (PSU)", "zh": "電源供應器", "sent": "Use a 750W power supply.", "sentZh": "使用 750W 的電源供應器。"}, {"en": "Circuit", "zh": "電路", "sent": "Complete the circuit.", "sentZh": "完成電路。"}];
+    const wordsDB = [{"en": "Pixel", "zh": "像素", "sent": "Dead pixel on screen.", "sentZh": "螢幕上有亮點/死點。"}, {"en": "Capacitor", "zh": "電容", "sent": "Capacitors store energy.", "sentZh": "電容儲存能量。"}, {"en": "Resistor", "zh": "電阻", "sent": "A 100-ohm resistor.", "sentZh": "一顆 100 歐姆的電阻。"}, {"en": "PCB", "zh": "印刷電路板", "sent": "Design the PCB layout.", "sentZh": "設計 PCB 佈局。"}, {"en": "Monitor", "zh": "螢幕", "sent": "The monitor resolution is 4K.", "sentZh": "螢幕解析度為 4K。"}, {"en": "Short Circuit", "zh": "短路", "sent": "A short circuit caused a fire.", "sentZh": "短路引起了火災。"}, {"en": "Sync", "zh": "同步", "sent": "V-Sync enabled.", "sentZh": "啟用垂直同步。"}, {"en": "Bios", "zh": "BIOS/韌體介面", "sent": "Enter BIOS setup.", "sentZh": "進入 BIOS 設定。"}, {"en": "GPIO", "zh": "通用輸入輸出", "sent": "Connect LED to GPIO pin.", "sentZh": "將 LED 接到 GPIO 腳位。"}, {"en": "Peripheral", "zh": "周邊設備", "sent": "Connect peripherals via USB.", "sentZh": "透過 USB 連接周邊設備。"}, {"en": "Thermal Paste", "zh": "散熱膏", "sent": "Apply thermal paste to CPU.", "sentZh": "在 CPU 塗散熱膏。"}, {"en": "Interface", "zh": "介面", "sent": "USB interface.", "sentZh": "USB 介面。"}, {"en": "Ground", "zh": "接地", "sent": "Connect the wire to ground.", "sentZh": "將線接地。"}, {"en": "Fan", "zh": "風扇", "sent": "Fan noise is loud.", "sentZh": "風扇噪音很大。"}, {"en": "Lag", "zh": "延遲/卡頓", "sent": "Input lag.", "sentZh": "輸入延遲。"}, {"en": "Resolution", "zh": "解析度", "sent": "1080p resolution.", "sentZh": "1080p 解析度。"}, {"en": "SSD", "zh": "固態硬碟", "sent": "SSDs are faster than HDDs.", "sentZh": "SSD 比 HDD 快。"}, {"en": "RAM", "zh": "隨機存取記憶體", "sent": "Upgrade the RAM to 32GB.", "sentZh": "將 RAM 升級到 32GB。"}, {"en": "Firmware", "zh": "韌體", "sent": "Update the firmware.", "sentZh": "更新韌體。"}, {"en": "Circuit", "zh": "電路", "sent": "Complete the circuit.", "sentZh": "完成電路。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -259,6 +259,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('System optimized! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

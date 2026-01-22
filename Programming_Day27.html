@@ -125,7 +125,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "neural network", "zh": "神經網路", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網路。"}, {"en": "interface", "zh": "介面", "sent": "The UI should be intuitive.", "sentZh": "使用者介面應該直觀。"}, {"en": "hash", "zh": "雜湊", "sent": "Hash functions map data to keys.", "sentZh": "雜湊函式將資料對應到鍵值。"}, {"en": "latency", "zh": "延遲", "sent": "Reduce network latency.", "sentZh": "減少網路延遲。"}, {"en": "encryption", "zh": "加密", "sent": "SSL uses encryption for security.", "sentZh": "SSL 使用加密來確保安全。"}, {"en": "edge", "zh": "邊", "sent": "Edges connect nodes in a graph.", "sentZh": "邊連接圖形中的節點。"}, {"en": "dataset", "zh": "資料集", "sent": "Clean the dataset before training.", "sentZh": "訓練前清理資料集。"}, {"en": "delivery", "zh": "交付", "sent": "Continuous delivery updates software.", "sentZh": "持續交付更新軟體。"}, {"en": "graph", "zh": "圖形", "sent": "Graphs model network connections.", "sentZh": "圖形模擬網路連接。"}, {"en": "bandwidth", "zh": "頻寬", "sent": "High bandwidth is needed for video.", "sentZh": "影片需要高頻寬。"}, {"en": "tree", "zh": "樹狀結構", "sent": "A binary tree has two children nodes.", "sentZh": "二元樹有兩個子節點。"}, {"en": "hexadecimal", "zh": "十六進位", "sent": "Colors are often in hexadecimal.", "sentZh": "顏色通常是十六進位的。"}, {"en": "experience", "zh": "體驗", "sent": "UX focuses on user satisfaction.", "sentZh": "UX 著重於使用者滿意度。"}, {"en": "exploit", "zh": "利用(漏洞)", "sent": "Hackers exploit weaknesses.", "sentZh": "駭客利用弱點。"}, {"en": "machine learning", "zh": "機器學習", "sent": "ML models learn from data.", "sentZh": "機器學習模型從資料中學習。"}, {"en": "user story", "zh": "使用者故事", "sent": "Write user stories for features.", "sentZh": "為功能撰寫使用者故事。"}, {"en": "algorithm", "zh": "演算法", "sent": "Binary search is an efficient algorithm.", "sentZh": "二分搜尋是一種高效的演算法。"}, {"en": "stack", "zh": "堆疊", "sent": "Stack follows LIFO principle.", "sentZh": "堆疊遵循 LIFO 原則。"}, {"en": "cloud", "zh": "雲端", "sent": "AWS is a cloud provider.", "sentZh": "AWS 是一個雲端供應商。"}, {"en": "scrum", "zh": "Scrum", "sent": "Daily scrum meetings keep us synced.", "sentZh": "每日 Scrum 會議讓我們保持同步。"}];
+    const wordsDB = [{"en": "artificial intelligence", "zh": "人工智慧", "sent": "AI powers smart assistants.", "sentZh": "人工智慧驅動智慧助理。"}, {"en": "experience", "zh": "體驗", "sent": "UX focuses on user satisfaction.", "sentZh": "UX 著重於使用者滿意度。"}, {"en": "virtualization", "zh": "虛擬化", "sent": "VMware provides virtualization.", "sentZh": "VMware 提供虛擬化。"}, {"en": "linked list", "zh": "連結串列", "sent": "Linked lists are dynamic.", "sentZh": "連結串列是動態的。"}, {"en": "interface", "zh": "介面", "sent": "The UI should be intuitive.", "sentZh": "使用者介面應該直觀。"}, {"en": "pipeline", "zh": "管線", "sent": "Build pipeline failed.", "sentZh": "建置管線失敗。"}, {"en": "protocol", "zh": "協定", "sent": "TCP is a reliable protocol.", "sentZh": "TCP 是一個可靠的協定。"}, {"en": "node", "zh": "節點", "sent": "Each node contains data.", "sentZh": "每個節點包含資料。"}, {"en": "hash", "zh": "雜湊", "sent": "Hash functions map data to keys.", "sentZh": "雜湊函式將資料對應到鍵值。"}, {"en": "hexadecimal", "zh": "十六進位", "sent": "Colors are often in hexadecimal.", "sentZh": "顏色通常是十六進位的。"}, {"en": "prototype", "zh": "原型", "sent": "Test the interactive prototype.", "sentZh": "測試互動原型。"}, {"en": "scrum", "zh": "Scrum", "sent": "Daily scrum meetings keep us synced.", "sentZh": "每日 Scrum 會議讓我們保持同步。"}, {"en": "accessibility", "zh": "無障礙", "sent": "Web accessibility is important.", "sentZh": "網頁無障礙性很重要。"}, {"en": "stack", "zh": "堆疊", "sent": "Stack follows LIFO principle.", "sentZh": "堆疊遵循 LIFO 原則。"}, {"en": "byte", "zh": "位元組", "sent": "8 bits make a byte.", "sentZh": "8 個位元組成一個位元組。"}, {"en": "kanban", "zh": "看板", "sent": "Use a Kanban board to track progress.", "sentZh": "使用看板來追蹤進度。"}, {"en": "cloud", "zh": "雲端", "sent": "AWS is a cloud provider.", "sentZh": "AWS 是一個雲端供應商。"}, {"en": "user story", "zh": "使用者故事", "sent": "Write user stories for features.", "sentZh": "為功能撰寫使用者故事。"}, {"en": "machine learning", "zh": "機器學習", "sent": "ML models learn from data.", "sentZh": "機器學習模型從資料中學習。"}, {"en": "sprint", "zh": "衝刺", "sent": "The sprint lasts two weeks.", "sentZh": "這個衝刺持續兩週。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -242,6 +242,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Compiled Successfully! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

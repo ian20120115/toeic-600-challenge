@@ -149,6 +149,19 @@
             background: #f9f9f9;
         }
 
+        /* Completed Day Style */
+        .day-btn.completed {
+            background-color: #d5f5e3;
+            border-color: #27ae60;
+            color: #27ae60;
+            box-shadow: inset 0 0 5px rgba(39, 174, 96, 0.2);
+        }
+
+        .day-btn.completed:hover {
+            background-color: #27ae60;
+            color: white;
+        }
+
         .tips {
             margin-top: 40px;
             background: #fff3cd;
@@ -168,6 +181,7 @@
             flex-wrap: wrap;
             /* Critical for mobile */
         }
+
 
         .cat-btn {
             padding: 10px 25px;
@@ -228,7 +242,8 @@
         <!-- Top Changelog Banner -->
         <div class="changelog-banner">
             <div class="cl-badge">📢 最新更新 (2026/01/22)</div>
-            <div class="cl-text">全站「例句發音」功能上線！點擊小喇叭 🔊 即可練習聽力。</div>
+            <div class="cl-text">全站「例句發音」功能上線！點擊小喇叭 🔊 。</div>
+            <div class="cl-text">更新進度紀錄功能。</div>
         </div>
 
         <header>
@@ -349,26 +364,42 @@
 
                 for (let i = 1; i <= config.totalDays; i++) {
                     const link = document.createElement('a');
-                    link.href = `${config.prefix}${i}.html`;
+                    const pageId = `${config.prefix}${i}`;
+                    link.href = `${pageId}.html`;
                     link.className = 'day-btn';
+
+                    // Check progress
+                    const isCompleted = localStorage.getItem('EnglishHub_Progress_' + pageId) === 'true';
 
                     // Custom style for different categories if needed
                     link.style.borderColor = config.color;
                     link.style.color = config.color;
 
+                    if (isCompleted) {
+                        link.classList.add('completed');
+                        link.style.borderColor = '#27ae60'; // Override with green
+                        link.style.color = '#27ae60';
+                    }
+
+                    const checkMark = isCompleted ? '✅ ' : '';
+
                     link.innerHTML = `
-                        <span class="day-label">${config.label} ${i}</span>
-                        <span class="day-sub">Go ➔</span>
+                        <span class="day-label">${checkMark}${config.label} ${i}</span>
+                        <span class="day-sub">${isCompleted ? 'Completed' : 'Go ➔'}</span>
                     `;
 
                     // Add hover effect specifically for dynamic color
                     link.onmouseenter = function () {
-                        this.style.backgroundColor = config.color;
-                        this.style.color = 'white';
+                        if (!this.classList.contains('completed')) {
+                            this.style.backgroundColor = config.color;
+                            this.style.color = 'white';
+                        }
                     };
                     link.onmouseleave = function () {
-                        this.style.backgroundColor = 'white';
-                        this.style.color = config.color;
+                        if (!this.classList.contains('completed')) {
+                            this.style.backgroundColor = 'white';
+                            this.style.color = config.color;
+                        }
                     };
 
                     grid.appendChild(link);

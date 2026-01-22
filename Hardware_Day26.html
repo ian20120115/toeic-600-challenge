@@ -142,7 +142,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Resolution", "zh": "解析度", "sent": "1080p resolution.", "sentZh": "1080p 解析度。"}, {"en": "Wifi Module", "zh": "Wifi 模組", "sent": "ESP8266 Wifi module.", "sentZh": "ESP8266 Wifi 模組。"}, {"en": "Hard Drive", "zh": "硬碟", "sent": "The hard drive is full.", "sentZh": "硬碟滿了。"}, {"en": "Ground", "zh": "接地", "sent": "Connect the wire to ground.", "sentZh": "將線接地。"}, {"en": "Power Supply (PSU)", "zh": "電源供應器", "sent": "Use a 750W power supply.", "sentZh": "使用 750W 的電源供應器。"}, {"en": "Boot", "zh": "開機/啟動", "sent": "The system failed to boot.", "sentZh": "系統啟動失敗。"}, {"en": "Firmware", "zh": "韌體", "sent": "Update the firmware.", "sentZh": "更新韌體。"}, {"en": "Battery", "zh": "電池", "sent": "Low battery warning.", "sentZh": "低電量警告。"}, {"en": "Connector", "zh": "接頭", "sent": "Check the cable connector.", "sentZh": "檢查電纜接頭。"}, {"en": "Bandwidth", "zh": "頻寬", "sent": "High bandwidth connection.", "sentZh": "高頻寬連線。"}, {"en": "Bluetooth", "zh": "藍牙", "sent": "Pair via Bluetooth.", "sentZh": "透過藍牙配對。"}, {"en": "Monitor", "zh": "螢幕", "sent": "The monitor resolution is 4K.", "sentZh": "螢幕解析度為 4K。"}, {"en": "RAM", "zh": "隨機存取記憶體", "sent": "Upgrade the RAM to 32GB.", "sentZh": "將 RAM 升級到 32GB。"}, {"en": "Latency", "zh": "延遲", "sent": "Reduce input latency.", "sentZh": "減少輸入延遲。"}, {"en": "Capacitor", "zh": "電容", "sent": "Capacitors store energy.", "sentZh": "電容儲存能量。"}, {"en": "Screen", "zh": "螢幕/面板", "sent": "Touch screen display.", "sentZh": "觸控螢幕顯示。"}, {"en": "Resistor", "zh": "電阻", "sent": "A 100-ohm resistor.", "sentZh": "一顆 100 歐姆的電阻。"}, {"en": "Port", "zh": "連接埠", "sent": "HDMI port.", "sentZh": "HDMI 連接埠。"}, {"en": "Voltage", "zh": "電壓", "sent": "Check the voltage.", "sentZh": "檢查電壓。"}, {"en": "Motherboard", "zh": "主機板", "sent": "Connect to the motherboard.", "sentZh": "連接到主機板。"}];
+    const wordsDB = [{"en": "Short Circuit", "zh": "短路", "sent": "A short circuit caused a fire.", "sentZh": "短路引起了火災。"}, {"en": "Ground", "zh": "接地", "sent": "Connect the wire to ground.", "sentZh": "將線接地。"}, {"en": "Mouse", "zh": "滑鼠", "sent": "Adjust mouse sensitivity.", "sentZh": "調整滑鼠靈敏度。"}, {"en": "Capacitor", "zh": "電容", "sent": "Capacitors store energy.", "sentZh": "電容儲存能量。"}, {"en": "Monitor", "zh": "螢幕", "sent": "The monitor resolution is 4K.", "sentZh": "螢幕解析度為 4K。"}, {"en": "Heatsink", "zh": "散熱片", "sent": "The heatsink cools the chip.", "sentZh": "散熱片冷卻晶片。"}, {"en": "Sensor", "zh": "感測器", "sent": "Temperature sensor reading.", "sentZh": "溫度感測器讀數。"}, {"en": "Bandwidth", "zh": "頻寬", "sent": "High bandwidth connection.", "sentZh": "高頻寬連線。"}, {"en": "Case / Chassis", "zh": "機殼", "sent": "Open the computer case.", "sentZh": "打開電腦機殼。"}, {"en": "Thermal Paste", "zh": "散熱膏", "sent": "Apply thermal paste to CPU.", "sentZh": "在 CPU 塗散熱膏。"}, {"en": "Frame Rate", "zh": "幀率 (FPS)", "sent": "60 frames per second.", "sentZh": "每秒 60 幀。"}, {"en": "Benchmark", "zh": "跑分/基準測試", "sent": "Run a benchmark test.", "sentZh": "執行基準測試。"}, {"en": "Power Supply (PSU)", "zh": "電源供應器", "sent": "Use a 750W power supply.", "sentZh": "使用 750W 的電源供應器。"}, {"en": "Soldering", "zh": "焊接", "sent": "Soldering iron is hot.", "sentZh": "烙鐵很燙。"}, {"en": "Pixel", "zh": "像素", "sent": "Dead pixel on screen.", "sentZh": "螢幕上有亮點/死點。"}, {"en": "RAM", "zh": "隨機存取記憶體", "sent": "Upgrade the RAM to 32GB.", "sentZh": "將 RAM 升級到 32GB。"}, {"en": "Raspberry Pi", "zh": "樹莓派", "sent": "Use Raspberry Pi for IoT.", "sentZh": "使用樹莓派做 IoT。"}, {"en": "Screen", "zh": "螢幕/面板", "sent": "Touch screen display.", "sentZh": "觸控螢幕顯示。"}, {"en": "Current", "zh": "電流", "sent": "Measure the current in Amps.", "sentZh": "以安培測量電流。"}, {"en": "Keyboard", "zh": "鍵盤", "sent": "Mechanical keyboard switches.", "sentZh": "機械鍵盤軸體。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -259,6 +259,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('System optimized! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>

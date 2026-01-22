@@ -130,7 +130,7 @@
 </div>
 
 <script>
-    const wordsDB = [{"en": "Learning Rate", "zh": "學習率", "sent": "Adjust the learning rate.", "sentZh": "調整學習率。"}, {"en": "Pipeline", "zh": "管線/流程", "sent": "Build a data pipeline.", "sentZh": "建立數據處理流程。"}, {"en": "Latency", "zh": "延遲", "sent": "Low latency is critical for real-time AI.", "sentZh": "低延遲對即時 AI 至關重要。"}, {"en": "Segmentation", "zh": "分割", "sent": "Image segmentation separates objects.", "sentZh": "圖像分割分離物體。"}, {"en": "Pixel", "zh": "像素", "sent": "An image is a grid of pixels.", "sentZh": "圖像是像素網格。"}, {"en": "Weight", "zh": "權重", "sent": "The weights determine the output.", "sentZh": "權重決定輸出。"}, {"en": "Token", "zh": "詞元 (Token)", "sent": "The model processes tokens.", "sentZh": "模型處理 Token。"}, {"en": "Batch", "zh": "批次", "sent": "Process data in batches.", "sentZh": "分批處理數據。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}, {"en": "Attention Mechanism", "zh": "注意力機制", "sent": "Attention focuses on key words.", "sentZh": "注意力機制聚焦於關鍵字。"}, {"en": "Gradient Descent", "zh": "梯度下降", "sent": "Use gradient descent to optimize.", "sentZh": "使用梯度下降來優化。"}, {"en": "Sentiment Analysis", "zh": "情感分析", "sent": "Analyze customer sentiment.", "sentZh": "分析客戶情感。"}, {"en": "Model", "zh": "模型", "sent": "Train the model on the dataset.", "sentZh": "在數據集上訓練模型。"}, {"en": "Big Data", "zh": "大數據", "sent": "Big data analysis finds trends.", "sentZh": "大數據分析發現趨勢。"}, {"en": "Detection", "zh": "偵測", "sent": "Object detection finds cars.", "sentZh": "物件偵測找出汽車。"}, {"en": "TPU", "zh": "張量處理器", "sent": "Google uses TPUs for AI.", "sentZh": "Google 使用 TPU 進行 AI 運算。"}, {"en": "Cloud Computing", "zh": "雲端運算", "sent": "We train models in the cloud.", "sentZh": "我們在雲端訓練模型。"}, {"en": "Outlier", "zh": "離群值", "sent": "Remove outliers from the data.", "sentZh": "從數據中移除離群值。"}, {"en": "Neuron", "zh": "神經元", "sent": "Neurons activate based on input.", "sentZh": "神經元根據輸入激活。"}];
+    const wordsDB = [{"en": "Prompt", "zh": "提示詞", "sent": "Write a clear prompt.", "sentZh": "寫一個清楚的提示詞。"}, {"en": "Activation Function", "zh": "激活函數", "sent": "ReLU is a common activation function.", "sentZh": "ReLU 是常見的激活函數。"}, {"en": "Variance", "zh": "變異數/方差", "sent": "Trade-off between bias and variance.", "sentZh": "在偏差和變異數之間權衡。"}, {"en": "Pipeline", "zh": "管線/流程", "sent": "Build a data pipeline.", "sentZh": "建立數據處理流程。"}, {"en": "TPU", "zh": "張量處理器", "sent": "Google uses TPUs for AI.", "sentZh": "Google 使用 TPU 進行 AI 運算。"}, {"en": "Bias", "zh": "偏差", "sent": "Reduce bias in your data.", "sentZh": "減少數據中的偏差。"}, {"en": "Gradient Descent", "zh": "梯度下降", "sent": "Use gradient descent to optimize.", "sentZh": "使用梯度下降來優化。"}, {"en": "Pixel", "zh": "像素", "sent": "An image is a grid of pixels.", "sentZh": "圖像是像素網格。"}, {"en": "Deep Learning", "zh": "深度學習", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網絡。"}, {"en": "Regression", "zh": "迴歸", "sent": "Linear regression predicts values.", "sentZh": "線性迴歸預測數值。"}, {"en": "Edge Computing", "zh": "邊緣運算", "sent": "Run AI on edge devices.", "sentZh": "在邊緣裝置上運行 AI。"}, {"en": "Batch", "zh": "批次", "sent": "Process data in batches.", "sentZh": "分批處理數據。"}, {"en": "Attention Mechanism", "zh": "注意力機制", "sent": "Attention focuses on key words.", "sentZh": "注意力機制聚焦於關鍵字。"}, {"en": "Visualization", "zh": "視覺化", "sent": "Data visualization helps understanding.", "sentZh": "數據視覺化有助於理解。"}, {"en": "Dataset", "zh": "數據集", "sent": "Clean the dataset before use.", "sentZh": "使用前清理數據集。"}, {"en": "Accuracy", "zh": "準確率", "sent": "The model has 98% accuracy.", "sentZh": "該模型有 98% 的準確率。"}, {"en": "Deployment", "zh": "部署", "sent": "Deploy the model to production.", "sentZh": "將模型部署到生產環境。"}, {"en": "Bounding Box", "zh": "邊界框", "sent": "Draw a bounding box around the face.", "sentZh": "在臉周圍畫一個邊界框。"}, {"en": "Chatbot", "zh": "聊天機器人", "sent": "The chatbot answers questions.", "sentZh": "聊天機器人回答問題。"}, {"en": "Training", "zh": "訓練", "sent": "Training takes 3 days.", "sentZh": "訓練需要 3 天。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -247,6 +247,18 @@
     }
 
     initLearn();
+</script>
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+        <button onclick="markComplete()" style="padding: 15px 30px; background: #27ae60; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(39,174,96,0.3);">✅ 完成今日學習 (Mark Complete)</button>
+    </div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Great job! 今日學習進度已保存。');
+        location.href = 'index.html';
+    }
 </script>
 </body>
 </html>
