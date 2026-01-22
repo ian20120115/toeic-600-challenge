@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC 600 - Day 30 特訓 (總複習)</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 15px; }
+        .nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
+        .btn { padding: 10px 25px; border: none; border-radius: 50px; cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; }
+        .btn-learn { background-color: #3498db; color: white; }
+        .btn-quiz { background-color: #e74c3c; color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .word-card { border-left: 5px solid #3498db; background: #f9f9f9; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .word-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .english-word { font-size: 22px; font-weight: bold; color: #2980b9; }
+        .speak-btn { background: none; border: 1px solid #ccc; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .speak-btn:hover { background: #e0e0e0; }
+        .meaning { color: #555; font-weight: bold; font-size: 18px; }
+        .sentence-box { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #ddd; }
+        .sentence { font-style: italic; color: #2c3e50; font-size: 1em; margin-bottom: 2px; }
+        .sentence-zh { color: #7f8c8d; font-size: 0.9em; }
+        #quiz-section { display: none; text-align: center; }
+        .question-word { font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #2c3e50; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { background: white; border: 2px solid #bdc3c7; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .option-btn:hover { background-color: #ecf0f1; border-color: #3498db; }
+        .result-message { font-size: 20px; font-weight: bold; margin-top: 20px; padding: 15px; border-radius: 8px; }
+        .correct { color: #27ae60; background: #d5f5e3; }
+        .wrong { color: #c0392b; background: #fadbd8; }
+        .score-board { font-size: 24px; color: #2c3e50; font-weight: bold; margin-top: 30px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>TOEIC 600 - Day 30 Challenge</h1>
+    <div class="nav">
+        <a href="index.html" class="btn btn-learn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">🏠 回主選單</a>
+        <button class="btn btn-learn" onclick="showSection('learn')">📖 學習單字</button>
+        <button class="btn btn-quiz" onclick="startQuiz()">📝 開始測驗</button>
+    </div>
+    <div id="learn-section"></div>
+    <div id="quiz-section">
+        <div id="quiz-container">
+            <div class="question-word" id="q-word">Word</div>
+            <div class="options-grid" id="options-area"></div>
+            <div id="result-msg"></div>
+        </div>
+        <div id="final-score" style="display:none;" class="score-board"></div>
+        <button id="restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startQuiz()">重新測驗</button>
+    </div>
+</div>
+<script>
+    const wordsDB = [
+        { en: "accept", zh: "接受", sent: "I accept your apology.", sentZh: "我接受你的道歉。" },
+        { en: "allow", zh: "允許", sent: "Smoking is not allowed here.", sentZh: "這裡禁止吸煙。" },
+        { en: "announce", zh: "宣佈", sent: "They announced their engagement.", sentZh: "他們宣佈訂婚。" },
+        { en: "approve", zh: "批准", sent: "The budget was approved.", sentZh: "預算已獲批准。" },
+        { en: "cause", zh: "造成", sent: "The storm caused damage.", sentZh: "風暴造成了損害。" },
+        { en: "consider", zh: "考慮", sent: "Please consider my offer.", sentZh: "請考慮我的提議。" },
+        { en: "contain", zh: "包含", sent: "This box contains books.", sentZh: "這箱子裡裝有書。" },
+        { en: "create", zh: "創造", sent: "He created a new app.", sentZh: "他創造了一個新應用程式。" },
+        { en: "depend", zh: "取決於；依賴", sent: "It depends on the weather.", sentZh: "這取決於天氣。" },
+        { en: "describe", zh: "描述", sent: "Can you describe the thief?", sentZh: "你能描述一下那個小偷嗎？" },
+        { en: "encourage", zh: "鼓勵", sent: "My teacher encouraged me to study.", sentZh: "我的老師鼓勵我唸書。" },
+        { en: "expect", zh: "預期；期待", sent: "I expect him to be late.", sentZh: "我預期他會遲到。" },
+        { en: "explain", zh: "解釋", sent: "Can you explain this rule?", sentZh: "你能解釋這條規則嗎？" },
+        { en: "involve", zh: "涉及；包含", sent: "The job involves travel.", sentZh: "這份工作涉及出差。" },
+        { en: "mention", zh: "提及", sent: "He mentioned your name.", sentZh: "他提到了你的名字。" },
+        { en: "obtain", zh: "獲得", sent: "Where can I obtain a map?", sentZh: "我在哪裡可以獲得地圖？" },
+        { en: "provide", zh: "提供", sent: "We provide free wifi.", sentZh: "我們提供免費無線網路。" },
+        { en: "reduce", zh: "減少", sent: "We need to reduce waste.", sentZh: "我們需要減少浪費。" },
+        { en: "require", zh: "需要", sent: "This job requires experience.", sentZh: "這份工作需要經驗。" },
+        { en: "suggest", zh: "建議", sent: "I suggest we go home.", sentZh: "我建議我們回家。" }
+    ];
+
+    function initLearn() {
+        const container = document.getElementById('learn-section');
+        container.innerHTML = '';
+        wordsDB.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `
+                <div class="word-header">
+                    <span class="english-word">${item.en}</span>
+                    <button class="speak-btn" onclick="speak('${item.en}')" title="點擊發音">🔊</button>
+                    <span class="meaning">${item.zh}</span>
+                </div>
+                <div class="sentence-box"><div class="sentence">${item.sent}</div><div class="sentence-zh">${item.sentZh}</div></div>
+            `;
+            container.appendChild(card);
+        });
+    }
+    function speak(text) { const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; window.speechSynthesis.speak(utterance); }
+    function showSection(section) {
+        document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+    }
+    let currentQuestion = 0, score = 0, quizList = []; wrongAnswers = [];
+    function startQuiz() {
+        showSection('quiz'); currentQuestion = 0; score = 0; wrongAnswers = [];
+        document.getElementById('final-score').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        quizList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadQuestion();
+    }
+    function loadQuestion() {
+        if (currentQuestion >= quizList.length) { endQuiz(); return; }
+        const currentWord = quizList[currentQuestion];
+        document.getElementById('q-word').textContent = currentWord.en;
+        document.getElementById('result-msg').className = ''; document.getElementById('result-msg').innerHTML = '';
+        let options = [currentWord.zh];
+        while (options.length < 4) {
+            const randomWord = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(randomWord.zh)) options.push(randomWord.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+        const optionsArea = document.getElementById('options-area'); optionsArea.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt;
+            btn.onclick = () => checkAnswer(opt, currentWord.zh); optionsArea.appendChild(btn);
+        });
+    }
+    function checkAnswer(selected, correct) {
+        const resultDiv = document.getElementById('result-msg');
+        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) { score++; resultDiv.textContent = "✅ 正確 Correct!"; resultDiv.className = "result-message correct"; } 
+        else { resultDiv.textContent = `❌ 錯誤! 正解是: ${correct}`; resultDiv.className = "result-message wrong"; wrongAnswers.push({...quizList[currentQuestion], selected: selected}); }
+        setTimeout(() => { currentQuestion++; loadQuestion(); }, 1500);
+    }
+    function endQuiz() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const scoreBoard = document.getElementById('final-score'); scoreBoard.style.display = 'block';
+        
+        let report = `測驗結束!<br>你的分數: ${score} / ${wordsDB.length}`;
+        if (typeof wrongAnswers !== 'undefined' && wrongAnswers.length > 0) {
+            report += '<div style="margin-top:20px; text-align:left; background:#fff0f0; padding:15px; border-radius:10px;">';
+            report += '<h3 style="color:#c0392b; margin-top:0;">需複習單字 (Incorrect):</h3><ul style="padding-left:20px;">';
+            wrongAnswers.forEach(w => {
+                report += `<li style="margin-bottom:5px;"><strong>${w.en}</strong>: <span style="color:#27ae60;">${w.zh}</span> <span style="color:#999; font-size:0.9em;">(你選了: ${w.selected})</span></li>`;
+            });
+            report += '</ul></div>';
+        }
+        scoreBoard.innerHTML = report;
+    
+        document.getElementById('restart-btn').style.display = 'inline-block';
+    }
+    initLearn();
+</script>
+</body>
+</html>
