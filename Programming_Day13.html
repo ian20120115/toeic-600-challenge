@@ -5,41 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Programming English - Day 13 - 進階程式術語 (Advanced)</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #27ae60; padding-bottom: 15px; }
-        
-        /* Navigation */
-        .nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
-        .btn { padding: 10px 25px; border: none; border-radius: 50px; cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; }
-        .btn-learn { background-color: #27ae60; color: white; }
-        .btn-quiz { background-color: #e67e22; color: white; }
-        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        /* Dark Theme Variables */
+        :root {
+            --bg-color: #0f172a; /* Deep Blue/Black */
+            --card-bg: #1e293b;  /* Slate 800 */
+            --text-main: #e2e8f0; /* Slate 200 */
+            --text-sub: #94a3b8;  /* Slate 400 */
+            --accent-primary: #38bdf8; /* Sky Blue (Cyan) */
+            --accent-secondary: #818cf8; /* Indigo */
+            --success: #4ade80;   /* Green */
+            --error: #f87171;     /* Red */
+            --tech-font: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
 
-        /* Learning Mode */
-        .word-card { border-left: 5px solid #27ae60; background: #f9f9f9; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
-        .word-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .english-word { font-size: 22px; font-weight: bold; color: #2ecc71; }
-        .speak-btn { background: none; border: 1px solid #ccc; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .speak-btn:hover { background: #e0e0e0; }
-        .meaning { color: #555; font-weight: bold; font-size: 18px; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: var(--bg-color); 
+            /* Subtle Grid Pattern for "Texture" */
+            background-image: linear-gradient(#1e293b 1px, transparent 1px), linear-gradient(90deg, #1e293b 1px, transparent 1px);
+            background-size: 30px 30px;
+            margin: 0; padding: 20px; 
+            color: var(--text-main); 
+        }
         
-        .sentence-box { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #ddd; }
-        .sentence { font-style: italic; color: #2c3e50; font-size: 1em; margin-bottom: 2px; }
-        .sentence-zh { color: #7f8c8d; font-size: 0.9em; }
+        .container { 
+            max-width: 800px; margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            border: 1px solid #334155;
+        }
+
+        h1 { 
+            text-align: center; color: var(--accent-primary); 
+            border-bottom: 2px solid var(--accent-secondary); 
+            padding-bottom: 15px; 
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+        
+        /* Navigation Buttons */
+        .nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
+        .btn { 
+            padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer; 
+            font-size: 16px; transition: 0.3s; font-weight: bold; 
+            font-family: var(--tech-font);
+        }
+        .btn-learn { background-color: var(--accent-primary); color: #0f172a; }
+        .btn-quiz { background-color: var(--accent-secondary); color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
+
+        /* Learning Mode Cards */
+        .word-card { 
+            border-left: 5px solid var(--accent-primary); 
+            background: #0f172a; /* Darker inner card */
+            padding: 20px; margin-bottom: 20px; 
+            border-radius: 8px; 
+            border: 1px solid #334155;
+        }
+        .word-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .english-word { 
+            font-size: 24px; font-weight: bold; color: var(--accent-primary); 
+            font-family: var(--tech-font);
+        }
+        .speak-btn { 
+            background: rgba(255,255,255,0.1); border: 1px solid #475569; 
+            border-radius: 50%; width: 32px; height: 32px; color: var(--text-main);
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; 
+        }
+        .speak-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: var(--accent-primary); }
+        .meaning { color: var(--success); font-weight: bold; font-size: 20px; }
+        
+        .sentence-box { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #334155; }
+        .sentence { font-style: italic; color: #cbd5e1; font-size: 1.1em; margin-bottom: 4px; font-family: var(--tech-font); }
+        .sentence-zh { color: var(--text-sub); font-size: 0.95em; }
 
         /* Quiz Mode */
         #quiz-section { display: none; text-align: center; }
-        .question-box { margin-top: 20px; }
-        .question-word { font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #2c3e50; }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .option-btn { background: white; border: 2px solid #bdc3c7; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
-        .option-btn:hover { background-color: #ecf0f1; border-color: #27ae60; }
+        .question-word { 
+            font-size: 32px; font-weight: bold; margin-bottom: 30px; 
+            color: var(--accent-primary); font-family: var(--tech-font);
+        }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .option-btn { 
+            background: #1e293b; border: 2px solid #475569; color: var(--text-main);
+            padding: 20px; border-radius: 12px; cursor: pointer; font-size: 18px; transition: 0.2s; 
+        }
+        .option-btn:hover { background-color: #334155; border-color: var(--accent-primary); }
+        .option-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         
-        .result-message { font-size: 20px; font-weight: bold; margin-top: 20px; padding: 15px; border-radius: 8px; }
-        .correct { color: #27ae60; background: #d5f5e3; }
-        .wrong { color: #c0392b; background: #fadbd8; }
-        .score-board { font-size: 24px; color: #2c3e50; font-weight: bold; margin-top: 30px; }
+        .result-message { font-size: 22px; font-weight: bold; margin-top: 25px; padding: 15px; border-radius: 12px; }
+        .correct { color: #064e3b; background: var(--success); text-shadow: none; box-shadow: 0 0 10px var(--success); }
+        .wrong { color: #7f1d1d; background: var(--error); box-shadow: 0 0 10px var(--error); }
+        .score-board { font-size: 28px; color: var(--accent-primary); font-weight: bold; margin-top: 30px; }
     </style>
 </head>
 <body>
@@ -48,9 +106,9 @@
     <h1>Day 13 - 進階程式術語 (Advanced)</h1>
     
     <div class="nav">
-        <a href="index.html" class="btn btn-learn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">🏠 回主選單</a>
-        <button class="btn btn-learn" onclick="showSection('learn')">📖 學習單字</button>
-        <button class="btn btn-quiz" onclick="startQuiz()">📝 開始測驗</button>
+        <a href="index.html" class="btn btn-learn" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">🏠 主選單</a>
+        <button class="btn btn-learn" onclick="showSection('learn')">📖 學習模式</button>
+        <button class="btn btn-quiz" onclick="startQuiz()">📝 挑戰測驗</button>
     </div>
 
     <div id="learn-section"></div>
@@ -62,12 +120,12 @@
             <div id="result-msg"></div>
         </div>
         <div id="final-score" style="display:none;" class="score-board"></div>
-        <button id="restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startQuiz()">重新測驗</button>
+        <button id="restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startQuiz()">🔄 重新挑戰</button>
     </div>
 </div>
 
 <script>
-    const wordsDB = [{"en": "algorithm", "zh": "演算法", "sent": "This is an example sentence for algorithm.", "sentZh": "這是 演算法 的例句。"}, {"en": "graph", "zh": "圖形", "sent": "Graphs model network connections.", "sentZh": "圖形模擬網路連接。"}, {"en": "backlog", "zh": "待辦清單", "sent": "Prioritize tasks in the backlog.", "sentZh": "優先處理待辦清單中的任務。"}, {"en": "hexadecimal", "zh": "十六進位", "sent": "This is an example sentence for hexadecimal.", "sentZh": "這是 十六進位 的例句。"}, {"en": "hash", "zh": "雜湊", "sent": "Hash functions map data to keys.", "sentZh": "雜湊函式將資料對應到鍵值。"}, {"en": "bit", "zh": "位元", "sent": "This is an example sentence for bit.", "sentZh": "這是 位元 的例句。"}, {"en": "stack", "zh": "堆疊", "sent": "This is an example sentence for stack.", "sentZh": "這是 堆疊 的例句。"}, {"en": "tree", "zh": "樹狀結構", "sent": "A binary tree has two children nodes.", "sentZh": "二元樹有兩個子節點。"}, {"en": "throughput", "zh": "吞吐量", "sent": "Increase the system throughput.", "sentZh": "增加系統吞吐量。"}, {"en": "agile", "zh": "敏捷", "sent": "Agile methodology focuses on speed.", "sentZh": "敏捷方法論著重於速度。"}, {"en": "virtualization", "zh": "虛擬化", "sent": "VMware provides virtualization.", "sentZh": "VMware 提供虛擬化。"}, {"en": "structure", "zh": "結構", "sent": "This is an example sentence for structure.", "sentZh": "這是 結構 的例句。"}, {"en": "orchestration", "zh": "編排", "sent": "Kubernetes handles orchestration.", "sentZh": "Kubernetes 處理編排。"}, {"en": "scrum", "zh": "Scrum", "sent": "Daily scrum meetings keep us synced.", "sentZh": "每日 Scrum 會議讓我們保持同步。"}, {"en": "integration", "zh": "整合", "sent": "Continuous integration (CI) is key.", "sentZh": "持續整合 (CI) 是關鍵。"}, {"en": "reference", "zh": "參照", "sent": "This is an example sentence for reference.", "sentZh": "這是 參照 的例句。"}, {"en": "encryption", "zh": "加密", "sent": "SSL uses encryption for security.", "sentZh": "SSL 使用加密來確保安全。"}, {"en": "smart contract", "zh": "智慧合約", "sent": "Smart contracts run on Ethereum.", "sentZh": "智慧合約在以太坊上執行。"}, {"en": "edge", "zh": "邊", "sent": "Edges connect nodes in a graph.", "sentZh": "邊連接圖形中的節點。"}, {"en": "firewall", "zh": "防火牆", "sent": "Configure the firewall rules.", "sentZh": "設定防火牆規則。"}];
+    const wordsDB = [{"en": "container", "zh": "容器", "sent": "Docker containers are lightweight.", "sentZh": "Docker 容器是輕量級的。"}, {"en": "protocol", "zh": "協定", "sent": "TCP is a reliable protocol.", "sentZh": "TCP 是一個可靠的協定。"}, {"en": "machine learning", "zh": "機器學習", "sent": "ML models learn from data.", "sentZh": "機器學習模型從資料中學習。"}, {"en": "prototype", "zh": "原型", "sent": "Test the interactive prototype.", "sentZh": "測試互動原型。"}, {"en": "encryption", "zh": "加密", "sent": "SSL uses encryption for security.", "sentZh": "SSL 使用加密來確保安全。"}, {"en": "firewall", "zh": "防火牆", "sent": "Configure the firewall rules.", "sentZh": "設定防火牆規則。"}, {"en": "throughput", "zh": "吞吐量", "sent": "Increase the system throughput.", "sentZh": "增加系統吞吐量。"}, {"en": "byte", "zh": "位元組", "sent": "8 bits make a byte.", "sentZh": "8 個位元組成一個位元組。"}, {"en": "neural network", "zh": "神經網路", "sent": "Deep learning uses neural networks.", "sentZh": "深度學習使用神經網路。"}, {"en": "hash", "zh": "雜湊", "sent": "Hash functions map data to keys.", "sentZh": "雜湊函式將資料對應到鍵值。"}, {"en": "experience", "zh": "體驗", "sent": "UX focuses on user satisfaction.", "sentZh": "UX 著重於使用者滿意度。"}, {"en": "interface", "zh": "介面", "sent": "The UI should be intuitive.", "sentZh": "使用者介面應該直觀。"}, {"en": "linked list", "zh": "連結串列", "sent": "Linked lists are dynamic.", "sentZh": "連結串列是動態的。"}, {"en": "training", "zh": "訓練", "sent": "Model training takes time.", "sentZh": "模型訓練需要時間。"}, {"en": "serverless", "zh": "無伺服器", "sent": "Serverless functions scale auto.", "sentZh": "無伺服器函式自動擴展。"}, {"en": "graph", "zh": "圖形", "sent": "Graphs model network connections.", "sentZh": "圖形模擬網路連接。"}, {"en": "stack", "zh": "堆疊", "sent": "Stack follows LIFO principle.", "sentZh": "堆疊遵循 LIFO 原則。"}, {"en": "scrum", "zh": "Scrum", "sent": "Daily scrum meetings keep us synced.", "sentZh": "每日 Scrum 會議讓我們保持同步。"}, {"en": "virtualization", "zh": "虛擬化", "sent": "VMware provides virtualization.", "sentZh": "VMware 提供虛擬化。"}, {"en": "delivery", "zh": "交付", "sent": "Continuous delivery updates software.", "sentZh": "持續交付更新軟體。"}];
 
     function initLearn() {
         const container = document.getElementById('learn-section');
@@ -78,11 +136,11 @@
             card.innerHTML = `
                 <div class="word-header">
                     <span class="english-word">${item.en}</span>
-                    <button class="speak-btn" onclick="speak('${item.en}')" title="點擊發音">🔊</button>
+                    <button class="speak-btn" onclick="speak('${item.en}')" title="發音">🔊</button>
                     <span class="meaning">${item.zh}</span>
                 </div>
                 <div class="sentence-box">
-                    <div class="sentence">${item.sent}</div>
+                    <div class="sentence">"${item.sent}"</div>
                     <div class="sentence-zh">${item.sentZh}</div>
                 </div>
             `;
@@ -170,10 +228,10 @@
         scoreBoard.style.display = 'block';
         let report = `測驗結束!<br>你的分數: ${score} / ${wordsDB.length}`;
         if (wrongAnswers.length > 0) {
-            report += '<div style="margin-top:20px; text-align:left; background:#fff0f0; padding:15px; border-radius:10px;">';
-            report += '<h3 style="color:#c0392b; margin-top:0;">需複習單字 (Incorrect):</h3><ul style="padding-left:20px;">';
+            report += '<div style="margin-top:20px; text-align:left; background:#24283b; padding:15px; border-radius:10px; border:1px solid #f87171;">';
+            report += '<h3 style="color:#f87171; margin-top:0;">需複習單字 (Incorrect):</h3><ul style="padding-left:20px; color:#cbd5e1;">';
             wrongAnswers.forEach(w => {
-                report += `<li style="margin-bottom:5px;"><strong>${w.en}</strong>: <span style="color:#27ae60;">${w.zh}</span> <span style="color:#999; font-size:0.9em;">(你選了: ${w.selected})</span></li>`;
+                report += `<li style="margin-bottom:5px;"><strong>${w.en}</strong>: <span style="color:#4ade80;">${w.zh}</span> <span style="color:#64748b; font-size:0.9em;">(你選了: ${w.selected})</span></li>`;
             });
             report += '</ul></div>';
         }
