@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel English - Day 6 - 自助旅行實戰 (Travel)</title>
+    <style>
+        /* Travel Theme Variables */
+        :root {
+            --bg-color: #fffdf5;   /* Creamy White */
+            --card-bg: #ffffff;    /* White */
+            --text-main: #2c3e50;  /* Dark Blue Grey */
+            --text-sub: #7f8c8d;   /* Grey */
+            --accent: #16a085;     /* Sea Green/Teal */
+            --accent-warm: #f39c12;/* Sunset Orange/Yellow */
+            --font-main: 'Segoe UI', sans-serif;
+            --font-hand: 'Brush Script MT', cursive; /* Fun font for title if available, simplistic fallback */
+        }
+
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg-color); 
+            /* Subtle map pattern or texture */
+            background-image: repeating-linear-gradient(45deg, #fffdf5 25%, #f4f7f6 25%, #f4f7f6 50%, #fffdf5 50%, #fffdf5 75%, #f4f7f6 75%, #f4f7f6 100%);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px; 
+            color: var(--text-main); 
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 800px; margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            border-top: 8px solid var(--accent);
+            border-bottom: 8px solid var(--accent-warm);
+        }
+
+        h1 { 
+            text-align: center; color: var(--accent); 
+            font-family: var(--font-main);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center; color: var(--accent-warm);
+            font-size: 1.2em; margin-bottom: 30px; font-weight: bold;
+        }
+        
+        /* Navigation Buttons */
+        .nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .btn { 
+            padding: 12px 25px; border: none; border-radius: 25px;
+            cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: flex; align-items: center; gap: 5px;
+        }
+        
+        .btn-learn { background-color: var(--accent); color: white; }
+        .btn-quiz { background-color: var(--accent-warm); color: white; }
+        .btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Learning Mode Cards */
+        .word-card { 
+            border-left: 5px solid var(--accent-warm); 
+            background: #fdfdfd; 
+            padding: 20px; margin-bottom: 20px; 
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+        .word-card:hover { transform: scale(1.01); background: #fffcf5; }
+
+        .word-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .english-word { 
+            font-size: 26px; font-weight: bold; color: var(--accent); 
+        }
+        .speak-btn { 
+            background: #eee; border: none; 
+            border-radius: 50%; width: 36px; height: 36px; color: var(--text-main);
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; 
+        }
+        .speak-btn:hover { background: var(--accent-warm); color: white; }
+        .meaning { color: var(--text-main); font-weight: bold; font-size: 20px; }
+        
+        .sentence-box { margin-top: 10px; padding: 10px; background: #f4f6f7; border-radius: 6px; }
+        .sentence { font-style: italic; color: #2c3e50; font-size: 1.1em; margin-bottom: 4px; }
+        .sentence-zh { color: #7f8c8d; font-size: 0.95em; }
+
+        /* Quiz Mode */
+        #quiz-section { display: none; text-align: center; }
+        .question-word { 
+            font-size: 32px; font-weight: bold; margin-bottom: 30px; 
+            color: var(--accent); 
+        }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+        }
+
+        .option-btn { 
+            background: white; border: 2px solid #ecf0f1; color: var(--text-main);
+            padding: 15px; border-radius: 10px; cursor: pointer; font-size: 18px; transition: 0.2s; 
+            font-weight: bold;
+        }
+        .option-btn:hover { background-color: #e8f8f5; border-color: var(--accent); }
+        .option-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .result-message { font-size: 22px; font-weight: bold; margin-top: 25px; padding: 15px; border-radius: 8px; }
+        .correct { color: #16a085; background: #e8f8f5; border: 1px solid #16a085; }
+        .wrong { color: #c0392b; background: #fadbd8; border: 1px solid #c0392b; }
+        .score-board { font-size: 28px; color: var(--accent-warm); margin-top: 30px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✈️ Travel English</h1>
+    <div class="subtitle">Day 6 - 自助旅行實戰 (Travel)</div>
+    
+    <div class="nav">
+        <a href="index.html" class="btn btn-learn" style="text-decoration:none;">🏠 Main Menu</a>
+        <button class="btn btn-learn" onclick="showSection('learn')">📖 Vocabulary</button>
+        <button class="btn btn-quiz" onclick="startQuiz()">📝 Quiz</button>
+    </div>
+
+    <div id="learn-section"></div>
+
+    <div id="quiz-section">
+        <div id="quiz-container">
+            <div class="question-word" id="q-word">Word</div>
+            <div class="options-grid" id="options-area"></div>
+            <div id="result-msg"></div>
+        </div>
+        <div id="final-score" style="display:none;" class="score-board"></div>
+        <button id="restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startQuiz()">🔄 Review</button>
+    </div>
+</div>
+
+<script>
+    const wordsDB = [{"en": "Reservation", "zh": "預訂", "sent": "I have a reservation under Ian.", "sentZh": "我用 Ian 的名字有預訂。"}, {"en": "Amenities", "zh": "設施/備品", "sent": "The hotel has great amenities.", "sentZh": "這間飯店設施很好。"}, {"en": "Menu", "zh": "菜單", "sent": "Could we have the menu, please?", "sentZh": "請給我們菜單好嗎？"}, {"en": "Local Speciality", "zh": "當地特產", "sent": "Try the local speciality.", "sentZh": "嘗試當地特產。"}, {"en": "ATM", "zh": "提款機", "sent": "Where is the nearest ATM?", "sentZh": "最近的提款機在哪？"}, {"en": "Fare", "zh": "車資", "sent": "What is the bus fare?", "sentZh": "公車票價多少？"}, {"en": "Vacancy", "zh": "空房", "sent": "Do you have any vacancies?", "sentZh": "還有空房嗎？"}, {"en": "Check-in", "zh": "入住", "sent": "What time is check-in?", "sentZh": "幾點可以入住？"}, {"en": "Insurance", "zh": "保險", "sent": "Did you buy travel insurance?", "sentZh": "你有買旅遊保險嗎？"}, {"en": "Tip", "zh": "小費", "sent": "Leave a tip for the waiter.", "sentZh": "留小費給服務生。"}, {"en": "Bill / Check", "zh": "帳單", "sent": "Can I have the check, please?", "sentZh": "請給我帳單(結帳)。"}, {"en": "Sightseeing", "zh": "觀光", "sent": "We went sightseeing in Paris.", "sentZh": "我們去巴黎觀光。"}, {"en": "Pharmacy", "zh": "藥局", "sent": "Is there a pharmacy nearby?", "sentZh": "附近有藥局嗎？"}, {"en": "Transfer", "zh": "轉乘", "sent": "Transfer to the blue line.", "sentZh": "轉乘藍線。"}, {"en": "Check-out", "zh": "退房", "sent": "I would like to check out.", "sentZh": "我想要退房。"}, {"en": "Guidemap", "zh": "導覽圖", "sent": "Get a guidemap at the entrance.", "sentZh": "在入口拿一張導覽圖。"}, {"en": "Suite", "zh": "套房", "sent": "Upgrade to a suite.", "sentZh": "升級到套房。"}, {"en": "Platform", "zh": "月台", "sent": "The train leaves from platform 3.", "sentZh": "火車從第 3 月台發車。"}, {"en": "Bargain", "zh": "殺價/便宜貨", "sent": "Don't be afraid to bargain.", "sentZh": "別害怕殺價。"}, {"en": "Admission", "zh": "入場費", "sent": "Admission is free.", "sentZh": "免費入場。"}];
+
+    function initLearn() {
+        const container = document.getElementById('learn-section');
+        container.innerHTML = '';
+        wordsDB.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `
+                <div class="word-header">
+                    <span class="english-word">${item.en}</span>
+                    <button class="speak-btn" onclick="speak('${item.en}')" title="Listen">🔊</button>
+                    <span class="meaning">${item.zh}</span>
+                </div>
+                <div class="sentence-box">
+                    <div class="sentence">"${item.sent}"</div>
+                    <div class="sentence-zh">${item.sentZh}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US'; 
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function showSection(section) {
+        document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+    }
+
+    let currentQuestion = 0;
+    let score = 0;
+    let quizList = [];
+    let wrongAnswers = [];
+
+    function startQuiz() {
+        showSection('quiz');
+        currentQuestion = 0;
+        score = 0;
+        wrongAnswers = [];
+        document.getElementById('final-score').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        quizList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentQuestion >= quizList.length) {
+            endQuiz();
+            return;
+        }
+        const currentWord = quizList[currentQuestion];
+        document.getElementById('q-word').textContent = currentWord.en;
+        document.getElementById('result-msg').className = '';
+        document.getElementById('result-msg').innerHTML = '';
+
+        let options = [currentWord.zh];
+        while (options.length < 4) {
+            const randomWord = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(randomWord.zh)) options.push(randomWord.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const optionsArea = document.getElementById('options-area');
+        optionsArea.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(opt, currentWord.zh);
+            optionsArea.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct) {
+        const resultDiv = document.getElementById('result-msg');
+        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            score++;
+            resultDiv.textContent = "✅ Correct!";
+            resultDiv.className = "result-message correct";
+        } else {
+            resultDiv.textContent = `❌ Correct Answer: ${correct}`;
+            resultDiv.className = "result-message wrong";
+            wrongAnswers.push({...quizList[currentQuestion], selected: selected});
+        }
+        setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+        }, 1500);
+    }
+
+    function endQuiz() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const scoreBoard = document.getElementById('final-score');
+        scoreBoard.style.display = 'block';
+        let report = `Great Job!<br>Score: ${score} / ${wordsDB.length}`;
+        if (wrongAnswers.length > 0) {
+            report += '<div style="margin-top:20px; text-align:left; background:#fff5f5; padding:15px; border-radius:8px; border:1px solid #fab1a0;">';
+            report += '<h3 style="color:#e17055; margin-top:0;">Words to Review:</h3><ul style="padding-left:20px; color:#636e72;">';
+            wrongAnswers.forEach(w => {
+                report += `<li style="margin-bottom:5px;"><strong>${w.en}</strong>: <span style="color:#00b894;">${w.zh}</span> <span style="color:#b2bec3; font-size:0.9em;">(You chose: ${w.selected})</span></li>`;
+            });
+            report += '</ul></div>';
+        }
+        scoreBoard.innerHTML = report;
+        document.getElementById('restart-btn').style.display = 'inline-block';
+    }
+
+    initLearn();
+</script>
+</body>
+</html>

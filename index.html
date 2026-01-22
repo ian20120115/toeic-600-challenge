@@ -169,6 +169,7 @@
             <button id="tab-coding" class="cat-btn" onclick="switchCategory('coding')">程式專業英文 (Coding)</button>
             <button id="tab-simracing" class="cat-btn" onclick="switchCategory('simracing')">Sim Racing (賽車)</button>
             <button id="tab-aviation" class="cat-btn" onclick="switchCategory('aviation')">Aviation (航空)</button>
+            <button id="tab-travel" class="cat-btn" onclick="switchCategory('travel')">Travel (旅遊)</button>
         </div>
 
         <div class="grid-container" id="button-grid">
@@ -207,6 +208,12 @@
                     prefix: 'Aviation_Day',
                     color: '#00a8e8',
                     label: 'Flight'
+                },
+                'travel': {
+                    totalDays: 30,
+                    prefix: 'Travel_Day',
+                    color: '#f39c12',
+                    label: 'Trip'
                 }
             };
 
@@ -216,7 +223,7 @@
                 currentCategory = cat;
 
                 // Update Tab Styles
-                const tabs = ['toeic', 'coding', 'simracing', 'aviation'];
+                const tabs = ['toeic', 'coding', 'simracing', 'aviation', 'travel'];
                 tabs.forEach(t => {
                     const btn = document.getElementById('tab-' + t);
                     if (t === cat) {
