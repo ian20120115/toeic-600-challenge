@@ -102,132 +102,184 @@
             border: 1px solid #ffeeba;
             text-align: center;
         }
-    </style>
-</head>
 
-<body>
+        /* Category Nav Styles */
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            /* Critical for mobile */
+        }
 
-    <div class="container">
-        <header>
-            <h1>English Learning Hub</h1>
-            <p>選擇你的學習主題</p>
-        </header>
+        .cat-btn {
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: none;
+            background: #e0e0e0;
+            color: #555;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            white-space: nowrap;
+            /* Prevent awkward word breaks */
+            flex: 1 1 auto;
+            /* Grow to fill space if needed, but respect content */
+            max-width: 200px;
+            /* Don't get too wide on desktop */
+            min-width: 140px;
+            /* Ensure readability */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
 
-        <!-- Category Tabs -->
-        <div style="display:flex; justify-content:center; gap:20px; margin-bottom:30px;">
-            <button id="tab-toeic" onclick="switchCategory('toeic')"
-                style="padding:10px 30px; border-radius:30px; border:none; background:#3498db; color:white; font-size:18px; cursor:pointer; font-weight:bold; box-shadow:0 4px 10px rgba(52,152,219,0.3);">TOEIC
-                600</button>
-            <button id="tab-coding" onclick="switchCategory('coding')"
-                style="padding:10px 30px; border-radius:30px; border:none; background:#e0e0e0; color:#555; font-size:18px; cursor:pointer; font-weight:bold;">程式專業英文
-                (Coding)</button>
-            <button id="tab-simracing" onclick="switchCategory('simracing')"
-                style="padding:10px 30px; border-radius:30px; border:none; background:#e0e0e0; color:#555; font-size:18px; cursor:pointer; font-weight:bold;">Sim
-                Racing
-                (賽車)</button>
-            <button id="tab-aviation" onclick="switchCategory('aviation')"
-                style="padding:10px 30px; border-radius:30px; border:none; background:#e0e0e0; color:#555; font-size:18px; cursor:pointer; font-weight:bold;">Aviation
-                (航空)</button>
-        </div>
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                /* Less padding on mobile container */
+            }
 
-        <div class="grid-container" id="button-grid">
-        </div>
+            h1 {
+                font-size: 2em;
+            }
 
-        <div class="tips">
-            💡 <a href="https://github.com/ian20120115/toeic-600-challenge" target="_blank"
-                style="text-decoration:none; color:inherit;">@Ian (GitHub)</a>
-        </div>
+            .cat-btn {
+                font-size: 15px;
+                padding: 12px 15px;
+                width: 45%;
+                /* almost half width on mobile */
+                max-width: none;
+            }
+        }
 
-        <script>
-            const grid = document.getElementById('button-grid');
+        </head><body><div class="container"><header><h1>English Learning Hub</h1><p>選擇你的學習主題</p></header>< !-- Category Tabs --><div class="category-nav"><button id="tab-toeic" class="cat-btn" onclick="switchCategory('toeic')">TOEIC 600</button><button id="tab-coding" class="cat-btn" onclick="switchCategory('coding')">程式專業英文 (Coding)</button><button id="tab-simracing" class="cat-btn" onclick="switchCategory('simracing')">Sim Racing (賽車)</button><button id="tab-aviation" class="cat-btn" onclick="switchCategory('aviation')">Aviation (航空)</button></div><div class="grid-container" id="button-grid"></div><div class="tips">💡 <a href="https://github.com/ian20120115/toeic-600-challenge" target="_blank"
+        style="text-decoration:none; color:inherit;">@Ian (GitHub)</a></div><script>const grid=document.getElementById('button-grid');
 
-            // Config for categories
-            const categories = {
-                'toeic': {
-                    totalDays: 30,
+        // Config for categories
+        const categories= {
+            'toeic': {
+                totalDays: 30,
                     prefix: 'TOEIC_Day',
                     color: '#3498db',
                     label: 'Day'
-                },
-                'coding': {
-                    totalDays: 30,
+            }
+
+            ,
+            'coding': {
+                totalDays: 30,
                     prefix: 'Programming_Day',
                     color: '#27ae60',
                     label: 'Level'
-                },
-                'simracing': {
-                    totalDays: 30,
+            }
+
+            ,
+            'simracing': {
+                totalDays: 30,
                     prefix: 'SimRacing_Day',
                     color: '#e74c3c',
                     label: 'Race'
-                },
-                'aviation': {
-                    totalDays: 30,
+            }
+
+            ,
+            'aviation': {
+                totalDays: 30,
                     prefix: 'Aviation_Day',
                     color: '#00a8e8',
                     label: 'Flight'
-                }
-            };
+            }
+        }
 
-            let currentCategory = 'toeic';
+        ;
 
-            function switchCategory(cat) {
-                currentCategory = cat;
+        let currentCategory='toeic';
 
-                // Update Tab Styles
-                const tabs = ['toeic', 'coding', 'simracing', 'aviation'];
-                tabs.forEach(t => {
-                    const btn = document.getElementById('tab-' + t);
-                    if (t === cat) {
-                        btn.style.background = categories[t].color;
-                        btn.style.color = 'white';
-                        btn.style.boxShadow = `0 4px 10px ${categories[t].color}4d`; // 4d is ~30% alpha
-                    } else {
-                        btn.style.background = '#e0e0e0';
-                        btn.style.color = '#555';
-                        btn.style.boxShadow = 'none';
+        function switchCategory(cat) {
+            currentCategory=cat;
+
+            // Update Tab Styles
+            const tabs=['toeic',
+            'coding',
+            'simracing',
+            'aviation'];
+
+            tabs.forEach(t=> {
+                    const btn=document.getElementById('tab-' + t);
+
+                    if (t===cat) {
+                        btn.style.background=categories[t].color;
+                        btn.style.color='white';
+
+                        btn.style.boxShadow=`0 4px 10px $ {
+                            categories[t].color
+                        }
+
+                        4d`; // 4d is ~30% alpha
+                        btn.style.transform='scale(1.05)';
+                    }
+
+                    else {
+                        btn.style.background='#e0e0e0';
+                        btn.style.color='#555';
+                        btn.style.boxShadow='none';
+                        btn.style.transform='none';
                     }
                 });
 
-                renderGrid();
-            }
-
-            function renderGrid() {
-                grid.innerHTML = '';
-                const config = categories[currentCategory];
-
-                for (let i = 1; i <= config.totalDays; i++) {
-                    const link = document.createElement('a');
-                    link.href = `${config.prefix}${i}.html`;
-                    link.className = 'day-btn';
-
-                    // Custom style for different categories if needed
-                    link.style.borderColor = config.color;
-                    link.style.color = config.color;
-
-                    link.innerHTML = `
-                        <span class="day-label">${config.label} ${i}</span>
-                        <span class="day-sub">Go ➔</span>
-                    `;
-
-                    // Add hover effect specifically for dynamic color
-                    link.onmouseenter = function () {
-                        this.style.backgroundColor = config.color;
-                        this.style.color = 'white';
-                    };
-                    link.onmouseleave = function () {
-                        this.style.backgroundColor = 'white';
-                        this.style.color = config.color;
-                    };
-
-                    grid.appendChild(link);
-                }
-            }
-
-            // Initial Render
             renderGrid();
-        </script>
+        }
 
-</body>
+        function renderGrid() {
+            grid.innerHTML='';
+            const config=categories[currentCategory];
 
-</html>
+            for (let i=1; i <=config.totalDays; i++) {
+                const link=document.createElement('a');
+
+                link.href=`$ {
+                    config.prefix
+                }
+
+                $ {
+                    i
+                }
+
+                .html`;
+                link.className='day-btn';
+
+                // Custom style for different categories if needed
+                link.style.borderColor=config.color;
+                link.style.color=config.color;
+
+                link.innerHTML=` <span class="day-label">$ {
+                    config.label
+                }
+
+                $ {
+                    i
+                }
+
+                </span><span class="day-sub">Go ➔</span>`;
+
+                // Add hover effect specifically for dynamic color
+                link.onmouseenter=function () {
+                    this.style.backgroundColor=config.color;
+                    this.style.color='white';
+                }
+
+                ;
+
+                link.onmouseleave=function () {
+                    this.style.backgroundColor='white';
+                    this.style.color=config.color;
+                }
+
+                ;
+
+                grid.appendChild(link);
+            }
+        }
+
+        // Initial Render
+        renderGrid();
+        </script></body></html>
