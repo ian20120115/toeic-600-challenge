@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Conversation - Day 9 - Daily Conversation</title>
+    <style>
+        /* Daily Theme Variables */
+        :root {
+            --bg-color: #e8f5e9;   /* Light Green */
+            --card-bg: #ffffff;    /* White */
+            --text-main: #2e7d32;  /* Dark Green */
+            --text-sub: #66bb6a;   /* Light Green */
+            --accent: #43a047;     /* Green */
+            --accent-glow: #66bb6a; 
+            --secondary: #26a69a;  /* Teal */
+            --font-main: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            --font-code: 'Consolas', 'Monaco', monospace;
+        }
+
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg-color); 
+            /* Leaf pattern? Just circles for now */
+            background-image: radial-gradient(#c8e6c9 20%, transparent 20%), radial-gradient(#c8e6c9 20%, transparent 20%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            margin: 0; padding: 20px; 
+            color: var(--text-main); 
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 800px; margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(46, 125, 50, 0.2); 
+            border: 5px solid #a5d6a7;
+        }
+
+        h1 { 
+            text-align: center; color: var(--accent); 
+            font-family: var(--font-main);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .btn { 
+            padding: 10px 25px; border: 2px solid var(--accent); background: white;
+            color: var(--accent); border-radius: 50px;
+            cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; 
+        }
+        
+        .btn:hover, .btn-active { 
+            background: var(--accent); color: white; 
+            box-shadow: 0 4px 10px rgba(67, 160, 71, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Learning Mode Cards */
+        .word-card { 
+            border: 2px solid #a5d6a7; 
+            background: #fff; 
+            padding: 20px; margin-bottom: 20px; 
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .word-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; flex-wrap: wrap; }
+        .english-word { 
+            font-size: 24px; font-weight: bold; color: var(--text-main); 
+        }
+        .speak-btn { 
+            background: #e8f5e9; border: none; 
+            border-radius: 50%; width: 34px; height: 34px; color: var(--accent);
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; 
+        }
+        .speak-btn:hover { background: var(--secondary); color: white; }
+        .meaning { color: var(--secondary); font-weight: bold; font-size: 20px; }
+        
+        .sentence-box { margin-top: 10px; padding: 15px; background: #f1f8e9; border-radius: 10px; }
+        .sentence { font-style: italic; color: #558b2f; font-size: 1.1em; margin-bottom: 4px; }
+        .sentence-zh { color: #81c784; font-size: 0.95em; }
+
+        /* Quiz Mode */
+        #quiz-section { display: none; text-align: center; }
+        .question-word { 
+            font-size: 32px; font-weight: bold; margin-bottom: 30px; 
+            color: var(--accent);
+        }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { 
+            background: #fff; border: 2px solid #c8e6c9; color: var(--text-main);
+            padding: 15px; border-radius: 15px; cursor: pointer; font-size: 16px; transition: 0.2s; 
+            font-weight: bold;
+        }
+        .option-btn:hover { background-color: #e8f5e9; border-color: var(--accent); }
+        .option-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .result-message { font-size: 22px; font-weight: bold; margin-top: 25px; padding: 15px; border-radius: 10px; }
+        .correct { color: #1b5e20; background: #c8e6c9; }
+        .wrong { color: #b71c1c; background: #ffcdd2; }
+        .score-board { font-size: 28px; color: var(--accent); margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🗣️ Day 9 - Daily Conversation</h1>
+    
+    <div class="nav">
+        <a href="index.html" class="btn">🏠 Home</a>
+        <button class="btn btn-active" onclick="showSection('learn')">👋 Practice</button>
+        <button class="btn" onclick="startQuiz()">🎯 Test</button>
+    </div>
+
+    <div id="learn-section"></div>
+
+    <div id="quiz-section">
+        <div id="quiz-container">
+            <div class="question-word" id="q-word">Word</div>
+            <div class="options-grid" id="options-area"></div>
+            <div id="result-msg"></div>
+        </div>
+        <div id="final-score" style="display:none;" class="score-board"></div>
+        <button id="restart-btn" class="btn" style="display:none; margin-top:20px;" onclick="startQuiz()">🔄 Chat Again</button>
+    </div>
+</div>
+
+<script>
+    const wordsDB = [{"en": "Travel", "zh": "旅行", "sent": "I love to travel.", "sentZh": "我熱愛旅行。"}, {"en": "Weekend", "zh": "週末", "sent": "Any plans for the weekend?", "sentZh": "週末有什麼計畫嗎？"}, {"en": "Phone", "zh": "電話", "sent": "Can I borrow your phone?", "sentZh": "我可以借你的電話嗎？"}, {"en": "Family", "zh": "家庭", "sent": "How is your family?", "sentZh": "你的家人好嗎？"}, {"en": "Shop", "zh": "商店/購物", "sent": "I need to go to the shop.", "sentZh": "我需要去商店。"}, {"en": "Movie", "zh": "電影", "sent": "Let's watch a movie.", "sentZh": "我們去看場電影吧。"}, {"en": "Date", "zh": "日期/約會", "sent": "What is the date today?", "sentZh": "今天是幾號？"}, {"en": "Job / Work", "zh": "工作", "sent": "I like my job.", "sentZh": "我喜歡我的工作。"}, {"en": "Discount", "zh": "折扣", "sent": "Is there a discount?", "sentZh": "有折扣嗎？"}, {"en": "Time", "zh": "時間", "sent": "What time is it?", "sentZh": "現在幾點了？"}, {"en": "Hobby", "zh": "嗜好", "sent": "What is your hobby?", "sentZh": "你的嗜好是什麼？"}, {"en": "Sorry", "zh": "對不起", "sent": "I am sorry for being late.", "sentZh": "抱歉我遲到了。"}, {"en": "Traffic", "zh": "交通", "sent": "The traffic is bad.", "sentZh": "交通很糟（塞車）。"}, {"en": "Hungry", "zh": "餓", "sent": "I am very hungry.", "sentZh": "我非常餓。"}, {"en": "Price", "zh": "價格", "sent": "The price is too high.", "sentZh": "價格太高了。"}, {"en": "Student", "zh": "學生", "sent": "I am a student.", "sentZh": "我是一名學生。"}, {"en": "Tired", "zh": "累", "sent": "I feel really tired.", "sentZh": "我覺得很累。"}, {"en": "Weather", "zh": "天氣", "sent": "The weather is nice today.", "sentZh": "今天天氣很好。"}, {"en": "Train", "zh": "火車", "sent": "The train is late.", "sentZh": "火車誤點了。"}, {"en": "Music", "zh": "音樂", "sent": "I like listening to music.", "sentZh": "我喜歡聽音樂。"}];
+
+    function initLearn() {
+        const container = document.getElementById('learn-section');
+        container.innerHTML = '';
+        wordsDB.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `
+                <div class="word-header">
+                    <span class="english-word">${item.en}</span>
+                    <button class="speak-btn" onclick="speak('${item.en.replace(/'/g, "\'") }')" title="Pronounce">🔊</button>
+                    <span class="meaning">${item.zh}</span>
+                </div>
+                <div class="sentence-box">
+                    <div class="sentence">"${item.sent}"
+                         <button class="speak-btn" style="width:24px; height:24px; font-size:12px; display:inline-flex; vertical-align:middle; margin-left:5px;" onclick="speak(wordsDB[${index}].sent.replace(/'/g, '\\\''))" title="Pronounce Sentence">🔊</button>
+                    </div>
+                    <div class="sentence-zh">${item.sentZh}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US'; 
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function showSection(section) {
+        document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        
+        // Reset button states
+        const btns = document.querySelectorAll('.nav .btn');
+        btns[1].classList.toggle('btn-active', section === 'learn');
+        btns[2].classList.toggle('btn-active', section === 'quiz');
+    }
+
+    let currentQuestion = 0;
+    let score = 0;
+    let quizList = [];
+    let wrongAnswers = [];
+
+    function startQuiz() {
+        showSection('quiz');
+        currentQuestion = 0;
+        score = 0;
+        wrongAnswers = [];
+        document.getElementById('final-score').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        quizList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentQuestion >= quizList.length) {
+            endQuiz();
+            return;
+        }
+        const currentWord = quizList[currentQuestion];
+        document.getElementById('q-word').textContent = currentWord.en;
+        document.getElementById('result-msg').className = '';
+        document.getElementById('result-msg').innerHTML = '';
+
+        let options = [currentWord.zh];
+        while (options.length < 4) {
+            const randomWord = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(randomWord.zh)) options.push(randomWord.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const optionsArea = document.getElementById('options-area');
+        optionsArea.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(opt, currentWord.zh);
+            optionsArea.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct) {
+        const resultDiv = document.getElementById('result-msg');
+        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            score++;
+            resultDiv.textContent = "✅ Nice!";
+            resultDiv.className = "result-message correct";
+        } else {
+            resultDiv.textContent = `❌ Oops! Answer: ${correct}`;
+            resultDiv.className = "result-message wrong";
+            wrongAnswers.push({...quizList[currentQuestion], selected: selected});
+        }
+        setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+        }, 1500);
+    }
+
+    function endQuiz() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const scoreBoard = document.getElementById('final-score');
+        scoreBoard.style.display = 'block';
+        let report = `Great Chat!<br>Score: ${score} / ${wordsDB.length}`;
+        if (wrongAnswers.length > 0) {
+            report += '<div style="margin-top:20px; text-align:left; background:#fff; padding:15px; border-radius:15px; border:2px solid #ef9a9a;">';
+            report += '<h3 style="color:#c62828; margin-top:0;">Words to Review:</h3><ul style="padding-left:20px; color:#555;">';
+            wrongAnswers.forEach(w => {
+                report += `<li style="margin-bottom:5px;"><strong>${w.en}</strong>: <span style="color:#2e7d32;">${w.zh}</span> <span style="color:#999; font-size:0.9em;">(You said: ${w.selected})</span></li>`;
+            });
+            report += '</ul></div>';
+        }
+        scoreBoard.innerHTML = report;
+        document.getElementById('restart-btn').style.display = 'inline-block';
+    }
+
+    initLearn();
+</script>
+
+<div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+    <button onclick="markComplete()" style="padding: 15px 30px; background: #66bb6a; color: white; border: none; border-radius: 50px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(102, 187, 106, 0.3); transition: 0.3s; font-family: 'Comic Sans MS', cursive;">✅ Done! (Complete)</button>
+</div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Good talk! Progress saved.');
+        location.href = 'index.html';
+    }
+</script>
+</body>
+</html>

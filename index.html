@@ -262,14 +262,20 @@
             <button id="tab-hardware" class="cat-btn" onclick="switchCategory('hardware')">Hardware (硬體)</button>
             <button id="tab-gaming" class="cat-btn" onclick="switchCategory('gaming')">Gaming (電競)</button>
             <button id="tab-slang" class="cat-btn" onclick="switchCategory('slang')">Slang (口語)</button>
+            <button id="tab-medical" class="cat-btn" onclick="switchCategory('medical')">Medical (醫療)</button>
+            <button id="tab-food" class="cat-btn" onclick="switchCategory('food')">Food (美食)</button>
+            <button id="tab-social" class="cat-btn" onclick="switchCategory('social')">Social (社群)</button>
+            <button id="tab-technews" class="cat-btn" onclick="switchCategory('technews')">Tech News (科技)</button>
+            <button id="tab-daily" class="cat-btn" onclick="switchCategory('daily')">Daily (日常)</button>
         </div>
 
         <div class="grid-container" id="button-grid">
         </div>
 
-        <div class="tips">
-            💡 <a href="https://github.com/ian20120115/toeic-600-challenge" target="_blank"
-                style="text-decoration:none; color:inherit;">@Ian (GitHub)</a>
+        <div
+            style="margin-top: 50px; text-align: center; border-top: 1px solid #ddd; padding-top: 20px; color: #888; font-size: 0.9em;">
+            &copy; 2026 <strong>English Learning Hub</strong>. Created by
+            <span style="color: #3498db; font-weight: bold;">Ian</span>
         </div>
 
         <script>
@@ -330,6 +336,36 @@
                     prefix: 'Slang_Day',
                     color: '#000000',
                     label: 'Talk'
+                },
+                'medical': {
+                    totalDays: 30,
+                    prefix: 'Medical_Day',
+                    color: '#e74c3c',
+                    label: 'Day'
+                },
+                'food': {
+                    totalDays: 30,
+                    prefix: 'Food_Day',
+                    color: '#ff9800',
+                    label: 'Day'
+                },
+                'social': {
+                    totalDays: 30,
+                    prefix: 'Social_Day',
+                    color: '#e1306c',
+                    label: 'Post'
+                },
+                'technews': {
+                    totalDays: 30,
+                    prefix: 'TechNews_Day',
+                    color: '#4ecca3',
+                    label: 'News'
+                },
+                'daily': {
+                    totalDays: 30,
+                    prefix: 'Daily_Day',
+                    color: '#43a047',
+                    label: 'Chat'
                 }
             };
 
@@ -339,7 +375,7 @@
                 currentCategory = cat;
 
                 // Update Tab Styles
-                const tabs = ['toeic', 'coding', 'simracing', 'aviation', 'travel', 'ai', 'hardware', 'gaming', 'slang'];
+                const tabs = ['toeic', 'coding', 'simracing', 'aviation', 'travel', 'ai', 'hardware', 'gaming', 'slang', 'medical', 'food', 'social', 'technews', 'daily'];
                 tabs.forEach(t => {
                     const btn = document.getElementById('tab-' + t);
                     if (t === cat) {

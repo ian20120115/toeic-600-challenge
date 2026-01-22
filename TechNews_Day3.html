@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech News - Day 3 - Tech News</title>
+    <style>
+        /* Tech News Theme Variables (Dark Mode/News) */
+        :root {
+            --bg-color: #1a1a2e;   /* Dark Navy */
+            --card-bg: #16213e;    /* Lighter Navy */
+            --text-main: #eaeaea;  /* Light Grey */
+            --text-sub: #0f3460;   /* Accent Blue */
+            --accent: #4ecca3;     /* Teal/Green */
+            --accent-glow: #4ecca3; 
+            --secondary: #e94560;  /* Pink/Red */
+            --font-main: 'Segoe UI', 'Roboto', sans-serif;
+            --font-code: 'Consolas', 'Monaco', monospace;
+        }
+
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg-color); 
+            background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            margin: 0; padding: 20px; 
+            color: var(--text-main); 
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 800px; margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5); 
+            border: 1px solid #1f4068;
+        }
+
+        h1 { 
+            text-align: center; color: var(--accent); 
+            font-family: var(--font-code);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .btn { 
+            padding: 10px 25px; border: 1px solid var(--accent); background: transparent;
+            color: var(--accent); border-radius: 2px;
+            cursor: pointer; font-size: 16px; transition: 0.3s; font-family: var(--font-code);
+        }
+        
+        .btn:hover, .btn-active { 
+            background: var(--accent); color: #1a1a2e; 
+            box-shadow: 0 0 10px rgba(78, 204, 163, 0.5);
+        }
+
+        /* Learning Mode Cards */
+        .word-card { 
+            border-left: 3px solid var(--secondary); 
+            background: #1a1a2e; 
+            padding: 20px; margin-bottom: 20px; 
+            border-radius: 4px;
+            border: 1px solid #0f3460;
+        }
+        
+        .word-header { display: flex; align-items: center; gap: 15px; margin-bottom: 8px; flex-wrap: wrap; }
+        .english-word { 
+            font-size: 22px; font-weight: bold; color: #fff; font-family: var(--font-code);
+        }
+        .speak-btn { 
+            background: #0f3460; border: none; 
+            border-radius: 4px; width: 30px; height: 30px; color: #fff;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; 
+        }
+        .speak-btn:hover { background: var(--accent); color: #000; }
+        .meaning { color: var(--accent); font-weight: bold; font-size: 20px; }
+        
+        .sentence-box { margin-top: 10px; padding-top: 10px; border-top: 1px solid #0f3460; }
+        .sentence { font-style: italic; color: #a0a0a0; font-size: 1.1em; margin-bottom: 4px; }
+        .sentence-zh { color: #6b778d; font-size: 0.95em; }
+
+        /* Quiz Mode */
+        #quiz-section { display: none; text-align: center; }
+        .question-word { 
+            font-size: 32px; font-weight: bold; margin-bottom: 30px; 
+            color: var(--secondary); font-family: var(--font-code);
+        }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { 
+            background: #1a1a2e; border: 1px solid #0f3460; color: #fff;
+            padding: 15px; border-radius: 4px; cursor: pointer; font-size: 16px; transition: 0.2s; 
+            font-weight: bold;
+        }
+        .option-btn:hover { background-color: #0f3460; border-color: var(--accent); }
+        .option-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .result-message { font-size: 22px; font-weight: bold; margin-top: 25px; padding: 15px; border-radius: 4px; }
+        .correct { color: #4ecca3; border: 1px solid #4ecca3; background: rgba(78, 204, 163, 0.1); }
+        .wrong { color: #e94560; border: 1px solid #e94560; background: rgba(233, 69, 96, 0.1); }
+        .score-board { font-size: 28px; color: var(--accent); margin-top: 30px; font-family: var(--font-code); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📰 Day 3 - Tech News</h1>
+    
+    <div class="nav">
+        <a href="index.html" class="btn">🏠 Home</a>
+        <button class="btn btn-active" onclick="showSection('learn')">📡 Read</button>
+        <button class="btn" onclick="startQuiz()">🧪 Test</button>
+    </div>
+
+    <div id="learn-section"></div>
+
+    <div id="quiz-section">
+        <div id="quiz-container">
+            <div class="question-word" id="q-word">Word</div>
+            <div class="options-grid" id="options-area"></div>
+            <div id="result-msg"></div>
+        </div>
+        <div id="final-score" style="display:none;" class="score-board"></div>
+        <button id="restart-btn" class="btn" style="display:none; margin-top:20px;" onclick="startQuiz()">🔄 Reboot</button>
+    </div>
+</div>
+
+<script>
+    const wordsDB = [{"en": "Hardware", "zh": "硬體", "sent": "New hardware announcement.", "sentZh": "新硬體公告。"}, {"en": "CEO", "zh": "執行長", "sent": "The CEO stepped down.", "sentZh": "執行長下台了。"}, {"en": "Bug Fix", "zh": "錯誤修復", "sent": "The patch includes bug fixes.", "sentZh": "這個補丁包含了錯誤修復。"}, {"en": "Startup", "zh": "新創公司", "sent": "The startup raised $1M.", "sentZh": "這家新創公司籌集了一百萬美元。"}, {"en": "Update", "zh": "更新", "sent": "Download the software update.", "sentZh": "下載軟體更新。"}, {"en": "Stocks", "zh": "股票", "sent": "Tech stocks are volatile.", "sentZh": "科技股波動很大。"}, {"en": "Launch", "zh": "發布/上市", "sent": "The product launch is tomorrow.", "sentZh": "產品發布會就在明天。"}, {"en": "Disruption", "zh": "顛覆/破壞式創新", "sent": "Digital disruption is real.", "sentZh": "數位顛覆是真實存在的。"}, {"en": "Venture Capital (VC)", "zh": "風險投資", "sent": "VCs are investing in AI.", "sentZh": "風投正在投資人工智慧。"}, {"en": "Feature", "zh": "功能", "sent": "This is a key feature.", "sentZh": "這是一個關鍵功能。"}, {"en": "Antitrust", "zh": "反壟斷", "sent": "Facing an antitrust lawsuit.", "sentZh": "面臨反壟斷訴訟。"}, {"en": "Quarterly Report", "zh": "季報", "sent": "Revenue is up in the quarterly report.", "sentZh": "季報顯示營收成長。"}, {"en": "Cloud", "zh": "雲端", "sent": "Move data to the cloud.", "sentZh": "將資料移至雲端。"}, {"en": "Unicorn", "zh": "獨角獸(估值10億鎂)", "sent": "It became the newest unicorn.", "sentZh": "它成為了最新的獨角獸公司。"}, {"en": "Leak", "zh": "洩漏", "sent": "Photos of the phone leaked.", "sentZh": "手機的照片洩漏了。"}, {"en": "Merger", "zh": "合併", "sent": "The merger created a giant.", "sentZh": "這次合併創造了一個巨頭。"}, {"en": "IPO", "zh": "首次公開募股", "sent": "The company filed for an IPO.", "sentZh": "該公司申請了首次公開募股。"}, {"en": "Rumor", "zh": "謠言/傳聞", "sent": "Rumors say a new iPad is coming.", "sentZh": "傳聞說新的 iPad 即將推出。"}, {"en": "Cybersecurity", "zh": "網路安全", "sent": "Invest in cybersecurity.", "sentZh": "投資網路安全。"}, {"en": "Software", "zh": "軟體", "sent": "Software as a Service (SaaS).", "sentZh": "軟體即服務 (SaaS)。"}];
+
+    function initLearn() {
+        const container = document.getElementById('learn-section');
+        container.innerHTML = '';
+        wordsDB.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `
+                <div class="word-header">
+                    <span class="english-word">${item.en}</span>
+                    <button class="speak-btn" onclick="speak('${item.en.replace(/'/g, "\'") }')" title="Pronounce">🔊</button>
+                    <span class="meaning">${item.zh}</span>
+                </div>
+                <div class="sentence-box">
+                    <div class="sentence">"${item.sent}"
+                         <button class="speak-btn" style="width:24px; height:24px; font-size:12px; display:inline-flex; vertical-align:middle; margin-left:5px;" onclick="speak(wordsDB[${index}].sent.replace(/'/g, '\\\''))" title="Pronounce Sentence">🔊</button>
+                    </div>
+                    <div class="sentence-zh">${item.sentZh}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US'; 
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function showSection(section) {
+        document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+        
+        // Reset button states
+        const btns = document.querySelectorAll('.nav .btn');
+        btns[1].classList.toggle('btn-active', section === 'learn');
+        btns[2].classList.toggle('btn-active', section === 'quiz');
+    }
+
+    let currentQuestion = 0;
+    let score = 0;
+    let quizList = [];
+    let wrongAnswers = [];
+
+    function startQuiz() {
+        showSection('quiz');
+        currentQuestion = 0;
+        score = 0;
+        wrongAnswers = [];
+        document.getElementById('final-score').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        quizList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentQuestion >= quizList.length) {
+            endQuiz();
+            return;
+        }
+        const currentWord = quizList[currentQuestion];
+        document.getElementById('q-word').textContent = currentWord.en;
+        document.getElementById('result-msg').className = '';
+        document.getElementById('result-msg').innerHTML = '';
+
+        let options = [currentWord.zh];
+        while (options.length < 4) {
+            const randomWord = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(randomWord.zh)) options.push(randomWord.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+
+        const optionsArea = document.getElementById('options-area');
+        optionsArea.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(opt, currentWord.zh);
+            optionsArea.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selected, correct) {
+        const resultDiv = document.getElementById('result-msg');
+        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) {
+            score++;
+            resultDiv.textContent = "✅ Validated!";
+            resultDiv.className = "result-message correct";
+        } else {
+            resultDiv.textContent = `❌ Error! Answer: ${correct}`;
+            resultDiv.className = "result-message wrong";
+            wrongAnswers.push({...quizList[currentQuestion], selected: selected});
+        }
+        setTimeout(() => {
+            currentQuestion++;
+            loadQuestion();
+        }, 1500);
+    }
+
+    function endQuiz() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const scoreBoard = document.getElementById('final-score');
+        scoreBoard.style.display = 'block';
+        let report = `Process Finished!<br>Score: ${score} / ${wordsDB.length}`;
+        if (wrongAnswers.length > 0) {
+            report += '<div style="margin-top:20px; text-align:left; background:#1a1a2e; padding:15px; border-radius:4px; border:1px solid #e94560;">';
+            report += '<h3 style="color:#e94560; margin-top:0;">Bugs Found (Errors):</h3><ul style="padding-left:20px; color:#a0a0a0;">';
+            wrongAnswers.forEach(w => {
+                report += `<li style="margin-bottom:5px;"><strong>${w.en}</strong>: <span style="color:#4ecca3;">${w.zh}</span> <span style="color:#666; font-size:0.9em;">(Input: ${w.selected})</span></li>`;
+            });
+            report += '</ul></div>';
+        }
+        scoreBoard.innerHTML = report;
+        document.getElementById('restart-btn').style.display = 'inline-block';
+    }
+
+    initLearn();
+</script>
+
+<div style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+    <button onclick="markComplete()" style="padding: 15px 30px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(78, 204, 163, 0.3); font-family: 'Consolas', monospace;">✅ Deploy (Complete)</button>
+</div>
+
+<script>
+    function markComplete() {
+        const pageId = window.location.pathname.split('/').pop().replace('.html', '');
+        localStorage.setItem('EnglishHub_Progress_' + pageId, 'true');
+        alert('Update Deployed! Progress saved.');
+        location.href = 'index.html';
+    }
+</script>
+</body>
+</html>

@@ -80,7 +80,12 @@ def main():
         "TOEIC_Day*.html",
         "Aviation_Day*.html",
         "SimRacing_Day*.html",
-        "Travel_Day*.html"
+        "Travel_Day*.html",
+        "Medical_Day*.html",
+        "Food_Day*.html",
+        "Social_Day*.html",
+        "TechNews_Day*.html",
+        "Daily_Day*.html"
     ]
 
     for p in patterns:
