@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC 600 - Day 16 特訓</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 15px; }
+        .nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
+        .btn { padding: 10px 25px; border: none; border-radius: 50px; cursor: pointer; font-size: 16px; transition: 0.3s; font-weight: bold; }
+        .btn-learn { background-color: #3498db; color: white; }
+        .btn-quiz { background-color: #e74c3c; color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .word-card { border-left: 5px solid #3498db; background: #f9f9f9; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .word-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .english-word { font-size: 22px; font-weight: bold; color: #2980b9; }
+        .speak-btn { background: none; border: 1px solid #ccc; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .speak-btn:hover { background: #e0e0e0; }
+        .meaning { color: #555; font-weight: bold; font-size: 18px; }
+        .sentence-box { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #ddd; }
+        .sentence { font-style: italic; color: #2c3e50; font-size: 1em; margin-bottom: 2px; }
+        .sentence-zh { color: #7f8c8d; font-size: 0.9em; }
+        #quiz-section { display: none; text-align: center; }
+        .question-word { font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #2c3e50; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { background: white; border: 2px solid #bdc3c7; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .option-btn:hover { background-color: #ecf0f1; border-color: #3498db; }
+        .result-message { font-size: 20px; font-weight: bold; margin-top: 20px; padding: 15px; border-radius: 8px; }
+        .correct { color: #27ae60; background: #d5f5e3; }
+        .wrong { color: #c0392b; background: #fadbd8; }
+        .score-board { font-size: 24px; color: #2c3e50; font-weight: bold; margin-top: 30px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>TOEIC 600 - Day 16 Challenge</h1>
+    <div class="nav">
+        <button class="btn btn-learn" onclick="showSection('learn')">📖 學習單字</button>
+        <button class="btn btn-quiz" onclick="startQuiz()">📝 開始測驗</button>
+    </div>
+    <div id="learn-section"></div>
+    <div id="quiz-section">
+        <div id="quiz-container">
+            <div class="question-word" id="q-word">Word</div>
+            <div class="options-grid" id="options-area"></div>
+            <div id="result-msg"></div>
+        </div>
+        <div id="final-score" style="display:none;" class="score-board"></div>
+        <button id="restart-btn" class="btn btn-learn" style="display:none; margin-top:20px;" onclick="startQuiz()">重新測驗</button>
+    </div>
+</div>
+<script>
+    const wordsDB = [
+        { en: "attendee", zh: "參加者", sent: "Every attendee will receive a welcome pack.", sentZh: "每位參加者都會收到一份歡迎禮包。" },
+        { en: "banquet", zh: "宴會", sent: "The annual banquet is held at the Hilton.", sentZh: "年度宴會在希爾頓飯店舉行。" },
+        { en: "badge", zh: "識別證；徽章", sent: "Please wear your name badge at all times.", sentZh: "請隨時配戴你的名牌識別證。" },
+        { en: "catering", zh: "餐飲服務", sent: "We hired a catering company for the party.", sentZh: "我們為派對雇用了一家外燴公司。" },
+        { en: "convention", zh: "大會；公約", sent: "The comic convention attracts thousands of fans.", sentZh: "這個動漫大會吸引了數千名粉絲。" },
+        { en: "coordinate", zh: "協調", sent: "She coordinates the events team.", sentZh: "她負責協調活動團隊。" },
+        { en: "handout", zh: "講義；傳單", sent: "Please read the handout before we start.", sentZh: "開始前請先閱讀講義。" },
+        { en: "host", zh: "主辦；主持人", sent: "Japan will host the next conference.", sentZh: "日本將主辦下一次的會議。" },
+        { en: "microphone", zh: "麥克風", sent: "Please speak into the microphone.", sentZh: "請對著麥克風說話。" },
+        { en: "panel", zh: "專家小組", sent: "A panel of experts will discuss the topic.", sentZh: "一個專家小組將討論這個議題。" },
+        { en: "participant", zh: "參與者", sent: "Participants are asked to fill out a form.", sentZh: "參與者被要求填寫表格。" },
+        { en: "podium", zh: "講台", sent: "The speaker stood behind the podium.", sentZh: "演講者站在講台後面。" },
+        { en: "presenter", zh: "報告者；頒獎人", sent: "The next presenter is from Google.", sentZh: "下一位報告者來自 Google。" },
+        { en: "register", zh: "註冊；登記", sent: "You need to register online.", sentZh: "你需要在線上註冊。" },
+        { en: "session", zh: "場次；會議", sent: "The morning session begins at 9 AM.", sentZh: "上午場次於早上9點開始。" },
+        { en: "site", zh: "地點；網站", sent: "The construction site is closed.", sentZh: "施工地點已關閉。" },
+        { en: "speaker", zh: "演講者；揚聲器", sent: "The guest speaker was very inspiring.", sentZh: "這位客座演講者非常激勵人心。" },
+        { en: "upcoming", zh: "即將來臨的", sent: "Check our website for upcoming events.", sentZh: "請查看我們的網站以了解即將到來的活動。" },
+        { en: "venue", zh: "場地", sent: "The stadium is a great venue for concerts.", sentZh: "這體育場是舉辦演唱會的絕佳場地。" },
+        { en: "workshop", zh: "研討會；工作坊", sent: "I attended a photography workshop.", sentZh: "我參加了一個攝影工作坊。" }
+    ];
+
+    function initLearn() {
+        const container = document.getElementById('learn-section');
+        container.innerHTML = '';
+        wordsDB.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerHTML = `
+                <div class="word-header">
+                    <span class="english-word">${item.en}</span>
+                    <button class="speak-btn" onclick="speak('${item.en}')" title="點擊發音">🔊</button>
+                    <span class="meaning">${item.zh}</span>
+                </div>
+                <div class="sentence-box"><div class="sentence">${item.sent}</div><div class="sentence-zh">${item.sentZh}</div></div>
+            `;
+            container.appendChild(card);
+        });
+    }
+    function speak(text) { const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; window.speechSynthesis.speak(utterance); }
+    function showSection(section) {
+        document.getElementById('learn-section').style.display = section === 'learn' ? 'block' : 'none';
+        document.getElementById('quiz-section').style.display = section === 'quiz' ? 'block' : 'none';
+    }
+    let currentQuestion = 0, score = 0, quizList = [];
+    function startQuiz() {
+        showSection('quiz'); currentQuestion = 0; score = 0;
+        document.getElementById('final-score').style.display = 'none';
+        document.getElementById('restart-btn').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        quizList = [...wordsDB].sort(() => 0.5 - Math.random());
+        loadQuestion();
+    }
+    function loadQuestion() {
+        if (currentQuestion >= quizList.length) { endQuiz(); return; }
+        const currentWord = quizList[currentQuestion];
+        document.getElementById('q-word').textContent = currentWord.en;
+        document.getElementById('result-msg').className = ''; document.getElementById('result-msg').innerHTML = '';
+        let options = [currentWord.zh];
+        while (options.length < 4) {
+            const randomWord = wordsDB[Math.floor(Math.random() * wordsDB.length)];
+            if (!options.includes(randomWord.zh)) options.push(randomWord.zh);
+        }
+        options.sort(() => 0.5 - Math.random());
+        const optionsArea = document.getElementById('options-area'); optionsArea.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt;
+            btn.onclick = () => checkAnswer(opt, currentWord.zh); optionsArea.appendChild(btn);
+        });
+    }
+    function checkAnswer(selected, correct) {
+        const resultDiv = document.getElementById('result-msg');
+        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+        if (selected === correct) { score++; resultDiv.textContent = "✅ 正確 Correct!"; resultDiv.className = "result-message correct"; } 
+        else { resultDiv.textContent = `❌ 錯誤! 正解是: ${correct}`; resultDiv.className = "result-message wrong"; }
+        setTimeout(() => { currentQuestion++; loadQuestion(); }, 1500);
+    }
+    function endQuiz() {
+        document.getElementById('quiz-container').style.display = 'none';
+        const scoreBoard = document.getElementById('final-score'); scoreBoard.style.display = 'block';
+        scoreBoard.innerHTML = `測驗結束!<br>你的分數: ${score} / ${wordsDB.length}`;
+        document.getElementById('restart-btn').style.display = 'inline-block';
+    }
+    initLearn();
+</script>
+</body>
+</html>
