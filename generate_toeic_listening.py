@@ -321,7 +321,7 @@ def gen_part1_content(idx, sc):
     return f"""
     <div class="question-card">
         <span class="part-label">Part 1: Photographs</span>
-        <div class="photo-placeholder" style="{bg_style}">
+        <div class="photo-placeholder"{f' style="{bg_style}"' if bg_style else ''}>
             {img_html}
         </div>
         <p>Listen to the four statements and select the one that best describes the picture.</p>
