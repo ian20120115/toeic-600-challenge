@@ -111,6 +111,17 @@
     function playAudio(text) {
         window.speechSynthesis.cancel();
         const utt = new SpeechSynthesisUtterance(text);
+        const voices = window.speechSynthesis.getVoices();
+        
+        // Try to find a high-quality English voice
+        const preferredVoice = voices.find(v => 
+            v.lang === 'en-US' && (v.name.includes('Google') || v.name.includes('Premium') || v.name.includes('Enhanced'))
+        );
+
+        if (preferredVoice) {
+            utt.voice = preferredVoice;
+        }
+
         utt.lang = 'en-US';
         utt.rate = 0.9;
         window.speechSynthesis.speak(utt);
